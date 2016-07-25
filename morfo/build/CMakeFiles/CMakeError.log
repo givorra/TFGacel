@@ -1,0 +1,16 @@
+Performing C++ SOURCE FILE Test COMPILER_SUPPORTS_CXX11 failed with the following output:
+Change Dir: /home/gacel/TFGacel/morfo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+make[1]: se ingresa al directorio «/home/gacel/TFGacel/morfo/build/CMakeFiles/CMakeTmp»
+/usr/bin/cmake -E cmake_progress_report /home/gacel/TFGacel/morfo/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec.dir/src.cxx.o
+/usr/bin/c++    -Wno-deprecated  -DCOMPILER_SUPPORTS_CXX11   -std=c++11 -o CMakeFiles/cmTryCompileExec.dir/src.cxx.o -c /home/gacel/TFGacel/morfo/build/CMakeFiles/CMakeTmp/src.cxx
+cc1plus: error: no se reconoce la opción de línea de órdenes ‘-std=c++11’
+make[1]: se sale del directorio «/home/gacel/TFGacel/morfo/build/CMakeFiles/CMakeTmp»
+make[1]: *** [CMakeFiles/cmTryCompileExec.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec/fast] Error 2
+
+Source file was:
+int main() { return 0;}

@@ -28,6 +28,6 @@ link_directories(${PCL_LIBRARY_DIRS})
 
 add_definitions(${PCL_DEFINITIONS})
 
-add_executable(../main src/main.cpp)
+add_executable(morfo/main src/main.cpp)
 
-target_link_libraries(../main ${PCL_LIBRARIES})
+target_link_libraries(morfo/main ${PCL_LIBRARIES})
