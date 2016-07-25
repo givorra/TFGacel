@@ -6,37 +6,18 @@ MathMorph::MathMorph(double sizei, double leafSizei)
 {
     size=sizei;
     leafSize=leafSizei;
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
 }
 
 pcl::PointCloud<PointType>::Ptr 
 MathMorph::dilate2 (pcl::PointCloud<PointType>::Ptr cloud_ptr) 
 {
-    pcl::NormalEstimation<PointType, pcl::Normal> normal_estimation;
-    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
     pcl::search::KdTree<PointType>::Ptr tree (new pcl::search::KdTree<PointType> ());
     pcl::PointCloud<PointType>::Ptr cloud_out (new pcl::PointCloud<PointType>);
     PointType point;
-    float mx=0.0, my=0.0, mz=0.0;
+    
 
-#if KINECT_MODE != 1
-    // Calculate centroid
-    for (int i=0; i<cloud_ptr->size(); i++) {
-        mx += cloud_ptr->points[i].x;
-        my += cloud_ptr->points[i].y;
-        mz += cloud_ptr->points[i].z;
-    }
-    mx /=cloud_ptr->size();
-    my /=cloud_ptr->size();
-    mz /=cloud_ptr->size();
-#endif
-    // Compute normals
-    normal_estimation.setViewPoint(mx, my, mz);
-    normal_estimation.setInputCloud(cloud_ptr);
-    normal_estimation.setSearchMethod(tree);
-    normal_estimation.setRadiusSearch(NORMAL_RADIUS_SEARCH);
-    normal_estimation.compute(*cloud_normals);
-
-
+    computeNormals(cloud_ptr);
     // Dilate the figure
     for (int i=0; i<cloud_ptr->size(); i++) {
         PointType point;
@@ -57,39 +38,18 @@ MathMorph::isInRange (PointType point, PointType searchPoint) {
 pcl::PointCloud<PointType>::Ptr 
 MathMorph::dilate (pcl::PointCloud<PointType>::Ptr cloud_ptr) 
 {
-    pcl::NormalEstimation<PointType, pcl::Normal> normal_estimation;
-    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
     pcl::PointCloud<PointType>::Ptr cloud_out (new pcl::PointCloud<PointType>);
-    
-    pcl::search::KdTree<PointType>::Ptr tree (new pcl::search::KdTree<PointType> ());
     pcl::KdTreeFLANN<PointType> kdtree;
     PointType point, minPt, maxPt, searchPoint;
-    double mx=0.0, my=0.0, mz=0.0, cosine;
+    double cosine;
     int xRange, yRange, zRange, cont=0, cont2=0;
     bool found;
     std::vector<int> pointIdxRadiusSearch;
     std::vector<float> pointRadiusSquaredDistance;
     Eigen::Vector4f p, q;
 
-#if KINECT_MODE != 1
-    // Calculate centroid. This is made because normals must be calculated from inside the object. With 
-    // a RGBD camera, it is not necessary
-    // TODO: with pcl methods
-    for (int i=0; i<cloud_ptr->size(); i++) {
-        mx += cloud_ptr->points[i].x;
-        my += cloud_ptr->points[i].y;
-        mz += cloud_ptr->points[i].z;
-    }
-    mx /=cloud_ptr->size();
-    my /=cloud_ptr->size();
-    mz /=cloud_ptr->size();
-#endif
-    // Compute normals
-    normal_estimation.setViewPoint (mx, my, mz);
-    normal_estimation.setInputCloud (cloud_ptr);
-    normal_estimation.setSearchMethod (tree);
-    normal_estimation.setRadiusSearch (NORMAL_RADIUS_SEARCH);
-    normal_estimation.compute (*cloud_normals);
+    // Compute normals to dilate
+    computeNormals(cloud_ptr);
 
     // Calculate the bounding box (the size of the structured element is added)
     pcl::getMinMax3D (*cloud_ptr, minPt, maxPt);
@@ -144,6 +104,38 @@ MathMorph::dilate (pcl::PointCloud<PointType>::Ptr cloud_ptr)
 }
 
 
+void
+MathMorph::computeNormals(pcl::PointCloud<PointType>::Ptr cloud_ptr) 
+{
+    pcl::search::KdTree<PointType>::Ptr tree(new pcl::search::KdTree<PointType> ());
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
+    pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimation;
+    double centroid_x=0.0, centroid_y=0.0, centroid_z=0.0;
+    // Compute normals
+    
+#if CAMERA_MODE != 1
+    // Calculate centroid. This is made because normals must be calculated from inside the object. With 
+    // a RGBD camera, it is not necessary
+    // TODO: with pcl methods
+    for (int i=0; i<cloud_ptr->size(); i++) {
+        centroid_x += cloud_ptr->points[i].x;
+        centroid_y += cloud_ptr->points[i].y;
+        centroid_z += cloud_ptr->points[i].z;
+    }
+    centroid_x /= cloud_ptr->size();
+    centroid_y /= cloud_ptr->size();
+    centroid_z /= cloud_ptr->size();
+#endif
+    // Compute normals
+    normal_estimation.setViewPoint(centroid_x, centroid_y, centroid_z);
+    normal_estimation.setInputCloud (cloud_ptr);
+    normal_estimation.setSearchMethod (tree);
+    normal_estimation.setRadiusSearch (NORMAL_RADIUS_SEARCH);
+    normal_estimation.compute(*cloud_normals);
+    this->cloud_normals = cloud_normals;
+}
+
+/*
 pcl::PointCloud<pcl::Normal>::Ptr
 MathMorph::findNormals (pcl::PointCloud<PointType>::Ptr cloud_ptr) 
 {
@@ -159,7 +151,7 @@ MathMorph::findNormals (pcl::PointCloud<PointType>::Ptr cloud_ptr)
     return cloud_normals;
 }
 
-/*
+
 pcl::PointCloud<PointType>::Ptr 
 MathMorph::dilateRGB (pcl::PointCloud<PointType>::Ptr cloud_ptr) {
     pcl::NormalEstimation<PointType, pcl::Normal> ne;

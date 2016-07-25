@@ -60,7 +60,7 @@ int main (int argc, char **argv)
     if (argc==4)
    	{
 	    pcl::PointCloud<PointType> cloud;
-	    pcl::PointCloud<PointType>::Ptr cloud_ptr, dilate;
+	    pcl::PointCloud<PointType>::Ptr cloud_ptr, dilate, dilate2;
 	    pcl::PointCloud<pcl::Normal>::Ptr normals;
 	    double size, leafSize;
 
@@ -78,14 +78,16 @@ int main (int argc, char **argv)
 
 	    MathMorph mm(size, leafSize);
 
-	    dilate=mm.dilate(cloud_ptr);
-	    normals=mm.findNormals(cloud_ptr);
+	    dilate = mm.dilate(cloud_ptr);
+	    dilate2 = mm.dilate2(cloud_ptr);
+	    normals = mm.getNormals();
 
-		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu0= visualizePC(cloud_ptr, "pointcloud");
-		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu1= visualizePC(dilate, "dilate");
-		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu3= visualizePC(dilate, "dilate2");
-		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu2= visualizeNormal(cloud_ptr, normals, "mathmorph");
-		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu4= visualizeNormal(cloud_ptr, normals, "mathmorph2");
+		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu0 = visualizePC(cloud_ptr, "pointcloud");
+		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu1 = visualizePC(dilate, "dilate");
+		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu3 = visualizePC(dilate2, "dilate2");
+		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu5 = visualizePC(dilate2, "dilate2");
+		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu2 = visualizeNormal(cloud_ptr, normals, "mathmorph");
+		boost::shared_ptr<pcl::visualization::PCLVisualizer> visu4 = visualizeNormal(cloud_ptr, normals, "mathmorph2");
 		waitForViewer(visu0);
 	}
 	else 
