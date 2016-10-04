@@ -1,0 +1,17 @@
+-I/usr/include/vtk-5.8
+-I/usr/include/pcl-1.7
+-I/usr/include/eigen3
+-I/usr/include
+-I/usr/include/ni
+-I/usr/include/vtk-5.8
+-I/home/gacel/TFGacel/qt_camera_visualizer/include
+-I/home/gacel/TFGacel/qt_camera_visualizer/lib
+-I/home/gacel/TFGacel/qt_camera_visualizer/src
+-I/home/gacel/TFGacel/qt_camera_visualizer/forms
+-DEIGEN_USE_NEW_STDVECTOR
+-DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET
+-DFLANN_STATIC
+-Dqh_QHpointer
+-o
+/home/gacel/TFGacel/qt_camera_visualizer/build/include/moc_common.cxx
+/home/gacel/TFGacel/qt_camera_visualizer/include/common.h
