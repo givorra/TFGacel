@@ -1,0 +1,297 @@
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp: In member function ‘void KinectViewer::processFrameAndUpdateGUI()’:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:101:48: error: no matching function for call to ‘pcl::visualization::PCLVisualizer::addPointCloud(pcl::PointCloud<pcl::PointXYZRGBA>&, const char [6])’
+       viewer->addPointCloud(cameraCloud,"cloud");
+                                                ^
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:101:48: note: candidates are:
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:575:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:575:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:101:48: note:   couldn't deduce template parameter ‘PointT’
+       viewer->addPointCloud(cameraCloud,"cloud");
+                                                ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:616:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const pcl::visualization::PointCloudGeometryHandler<PointT>&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:616:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:101:48: note:   mismatched types ‘const pcl::visualization::PointCloudGeometryHandler<PointT>’ and ‘const char [6]’
+       viewer->addPointCloud(cameraCloud,"cloud");
+                                                ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:633:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const GeometryHandlerConstPtr&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:633:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:101:48: note:   cannot convert ‘"cloud"’ (type ‘const char [6]’) to type ‘const GeometryHandlerConstPtr& {aka const boost::shared_ptr<const pcl::visualization::PointCloudGeometryHandler<pcl::PCLPointCloud2> >&}’
+       viewer->addPointCloud(cameraCloud,"cloud");
+                                                ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:644:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const pcl::visualization::PointCloudColorHandler<PointT>&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:644:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:101:48: note:   mismatched types ‘const pcl::visualization::PointCloudColorHandler<PointT>’ and ‘const char [6]’
+       viewer->addPointCloud(cameraCloud,"cloud");
+                                                ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:661:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const ColorHandlerConstPtr&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:661:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:101:48: note:   cannot convert ‘"cloud"’ (type ‘const char [6]’) to type ‘const ColorHandlerConstPtr& {aka const boost::shared_ptr<const pcl::visualization::PointCloudColorHandler<pcl::PCLPointCloud2> >&}’
+       viewer->addPointCloud(cameraCloud,"cloud");
+                                                ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:679:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const GeometryHandlerConstPtr&, const ColorHandlerConstPtr&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:679:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:101:48: note:   cannot convert ‘"cloud"’ (type ‘const char [6]’) to type ‘const GeometryHandlerConstPtr& {aka const boost::shared_ptr<const pcl::visualization::PointCloudGeometryHandler<pcl::PCLPointCloud2> >&}’
+       viewer->addPointCloud(cameraCloud,"cloud");
+                                                ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:700:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const GeometryHandlerConstPtr&, const ColorHandlerConstPtr&, const Vector4f&, const Eigen::Quaternion<float>&, const string&, int)
+         addPointCloud (const pcl::PCLPointCloud2::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:700:9: note:   candidate expects 7 arguments, 2 provided
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:722:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const GeometryHandlerConstPtr&, const Vector4f&, const Eigen::Quaternion<float>&, const string&, int)
+         addPointCloud (const pcl::PCLPointCloud2::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:722:9: note:   candidate expects 6 arguments, 2 provided
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:743:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const ColorHandlerConstPtr&, const Vector4f&, const Eigen::Quaternion<float>&, const string&, int)
+         addPointCloud (const pcl::PCLPointCloud2::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:743:9: note:   candidate expects 6 arguments, 2 provided
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:757:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const pcl::visualization::PointCloudColorHandler<PointT>&, const pcl::visualization::PointCloudGeometryHandler<PointT>&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:757:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:101:48: note:   mismatched types ‘const pcl::visualization::PointCloudColorHandler<PointT>’ and ‘const char [6]’
+       viewer->addPointCloud(cameraCloud,"cloud");
+                                                ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:768:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const string&, int)
+         addPointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:768:9: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘const ConstPtr& {aka const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&}’
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:781:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const string&, int)
+         addPointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:781:9: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘const ConstPtr& {aka const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&}’
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:794:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const string&, int)
+         addPointCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:794:9: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘const ConstPtr& {aka const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&}’
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:105:50: error: no matching function for call to ‘pcl::visualization::PCLVisualizer::addPointCloud(pcl::PointCloud<pcl::PointXYZRGBA>&, const char [6])’
+       viewer_2->addPointCloud(cameraCloud,"cloud");
+                                                  ^
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:105:50: note: candidates are:
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:575:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:575:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:105:50: note:   couldn't deduce template parameter ‘PointT’
+       viewer_2->addPointCloud(cameraCloud,"cloud");
+                                                  ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:616:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const pcl::visualization::PointCloudGeometryHandler<PointT>&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:616:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:105:50: note:   mismatched types ‘const pcl::visualization::PointCloudGeometryHandler<PointT>’ and ‘const char [6]’
+       viewer_2->addPointCloud(cameraCloud,"cloud");
+                                                  ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:633:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const GeometryHandlerConstPtr&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:633:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:105:50: note:   cannot convert ‘"cloud"’ (type ‘const char [6]’) to type ‘const GeometryHandlerConstPtr& {aka const boost::shared_ptr<const pcl::visualization::PointCloudGeometryHandler<pcl::PCLPointCloud2> >&}’
+       viewer_2->addPointCloud(cameraCloud,"cloud");
+                                                  ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:644:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const pcl::visualization::PointCloudColorHandler<PointT>&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:644:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:105:50: note:   mismatched types ‘const pcl::visualization::PointCloudColorHandler<PointT>’ and ‘const char [6]’
+       viewer_2->addPointCloud(cameraCloud,"cloud");
+                                                  ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:661:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const ColorHandlerConstPtr&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:661:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:105:50: note:   cannot convert ‘"cloud"’ (type ‘const char [6]’) to type ‘const ColorHandlerConstPtr& {aka const boost::shared_ptr<const pcl::visualization::PointCloudColorHandler<pcl::PCLPointCloud2> >&}’
+       viewer_2->addPointCloud(cameraCloud,"cloud");
+                                                  ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:679:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const GeometryHandlerConstPtr&, const ColorHandlerConstPtr&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:679:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:105:50: note:   cannot convert ‘"cloud"’ (type ‘const char [6]’) to type ‘const GeometryHandlerConstPtr& {aka const boost::shared_ptr<const pcl::visualization::PointCloudGeometryHandler<pcl::PCLPointCloud2> >&}’
+       viewer_2->addPointCloud(cameraCloud,"cloud");
+                                                  ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:700:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const GeometryHandlerConstPtr&, const ColorHandlerConstPtr&, const Vector4f&, const Eigen::Quaternion<float>&, const string&, int)
+         addPointCloud (const pcl::PCLPointCloud2::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:700:9: note:   candidate expects 7 arguments, 2 provided
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:722:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const GeometryHandlerConstPtr&, const Vector4f&, const Eigen::Quaternion<float>&, const string&, int)
+         addPointCloud (const pcl::PCLPointCloud2::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:722:9: note:   candidate expects 6 arguments, 2 provided
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:743:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const ColorHandlerConstPtr&, const Vector4f&, const Eigen::Quaternion<float>&, const string&, int)
+         addPointCloud (const pcl::PCLPointCloud2::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:743:9: note:   candidate expects 6 arguments, 2 provided
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:757:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::addPointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const pcl::visualization::PointCloudColorHandler<PointT>&, const pcl::visualization::PointCloudGeometryHandler<PointT>&, const string&, int)
+         addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:757:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:105:50: note:   mismatched types ‘const pcl::visualization::PointCloudColorHandler<PointT>’ and ‘const char [6]’
+       viewer_2->addPointCloud(cameraCloud,"cloud");
+                                                  ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:768:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const string&, int)
+         addPointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:768:9: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘const ConstPtr& {aka const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&}’
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:781:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const string&, int)
+         addPointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:781:9: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘const ConstPtr& {aka const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&}’
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:794:9: note: bool pcl::visualization::PCLVisualizer::addPointCloud(const ConstPtr&, const string&, int)
+         addPointCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:794:9: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘const ConstPtr& {aka const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&}’
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:111:38: error: no matching function for call to ‘KinectViewer::processCurrentCloud(pcl::PointCloud<pcl::PointXYZRGBA>&)’
+       processCurrentCloud(cameraCloud);
+                                      ^
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:111:38: note: candidate is:
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:0:
+/home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:77:7: note: void KinectViewer::processCurrentCloud(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr)
+  void processCurrentCloud(myPointCloud::Ptr currentPointCloud);
+       ^
+/home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:77:7: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘pcl::PointCloud<pcl::PointXYZRGBA>::Ptr {aka boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGBA> >}’
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:116:52: error: no matching function for call to ‘pcl::visualization::PCLVisualizer::updatePointCloud(pcl::PointCloud<pcl::PointXYZRGBA>&, const char [6])’
+       viewer->updatePointCloud (cameraCloud,"cloud");
+                                                    ^
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:116:52: note: candidates are:
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:584:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::updatePointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const string&)
+         updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:584:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:116:52: note:   couldn't deduce template parameter ‘PointT’
+       viewer->updatePointCloud (cameraCloud,"cloud");
+                                                    ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:594:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::updatePointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const pcl::visualization::PointCloudGeometryHandler<PointT>&, const string&)
+         updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:594:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:116:52: note:   mismatched types ‘const pcl::visualization::PointCloudGeometryHandler<PointT>’ and ‘const char [6]’
+       viewer->updatePointCloud (cameraCloud,"cloud");
+                                                    ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:605:9: note: template<class PointT> bool pcl::visualization::PCLVisualizer::updatePointCloud(const typename pcl::PointCloud<PointT>::ConstPtr&, const pcl::visualization::PointCloudColorHandler<PointT>&, const string&)
+         updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:605:9: note:   template argument deduction/substitution failed:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:116:52: note:   mismatched types ‘const pcl::visualization::PointCloudColorHandler<PointT>’ and ‘const char [6]’
+       viewer->updatePointCloud (cameraCloud,"cloud");
+                                                    ^
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/include/common.h:6:0,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/MathMorph.h:3,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:5,
+                 from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:807:9: note: bool pcl::visualization::PCLVisualizer::updatePointCloud(const ConstPtr&, const string&)
+         updatePointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:807:9: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘const ConstPtr& {aka const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&}’
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:819:9: note: bool pcl::visualization::PCLVisualizer::updatePointCloud(const ConstPtr&, const string&)
+         updatePointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:819:9: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘const ConstPtr& {aka const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&}’
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:832:9: note: bool pcl::visualization::PCLVisualizer::updatePointCloud(const ConstPtr&, const string&)
+         updatePointCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud,
+         ^
+/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h:832:9: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘const ConstPtr& {aka const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&}’
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:118:38: error: no matching function for call to ‘KinectViewer::processCurrentCloud(pcl::PointCloud<pcl::PointXYZRGBA>&)’
+       processCurrentCloud(cameraCloud);
+                                      ^
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:118:38: note: candidate is:
+In file included from /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:1:0:
+/home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:77:7: note: void KinectViewer::processCurrentCloud(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr)
+  void processCurrentCloud(myPointCloud::Ptr currentPointCloud);
+       ^
+/home/gacel/TFGacel/qt_camera_visualizer/include/pclKinect.h:77:7: note:   no known conversion for argument 1 from ‘pcl::PointCloud<pcl::PointXYZRGBA>’ to ‘pcl::PointCloud<pcl::PointXYZRGBA>::Ptr {aka boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGBA> >}’
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp: At global scope:
+/home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp:121:1: error: expected declaration before ‘}’ token
+ }
+ ^
+make[2]: *** [CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o] Error 1
+make[1]: *** [CMakeFiles/pcl_visualizer.dir/all] Error 2
+make: *** [all] Error 2
