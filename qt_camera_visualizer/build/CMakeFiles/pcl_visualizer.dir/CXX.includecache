@@ -45,6 +45,8 @@ MathMorph.h
 ../include/MathMorph.h
 common.h
 ../include/common.h
+boost/thread.hpp
+-
 QPushButton
 -
 QDoubleSpinBox
@@ -89,10 +91,6 @@ QtGui/QWidget
 -
 QVTKWidget.h
 /home/gacel/TFGacel/qt_camera_visualizer/build/QVTKWidget.h
-
-/home/gacel/TFGacel/qt_camera_visualizer/lib/MathMorph.cpp
-MathMorph.h
-/home/gacel/TFGacel/qt_camera_visualizer/lib/MathMorph.h
 
 /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp
 pclKinect.h
