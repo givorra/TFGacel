@@ -62,6 +62,8 @@ public:
     QPushButton *btnResetCameraViewer2;
     QPushButton *btnViewer1to2;
     QPushButton *btnViewer2to1;
+    QDoubleSpinBox *dilateSizeValue;
+    QLabel *labelSize;
 
     void setupUi(QMainWindow *KinectViewer)
     {
@@ -194,6 +196,20 @@ public:
         btnViewer2to1 = new QPushButton(centralwidget);
         btnViewer2to1->setObjectName(QString::fromUtf8("btnViewer2to1"));
         btnViewer2to1->setGeometry(QRect(480, 70, 40, 30));
+        dilateSizeValue = new QDoubleSpinBox(centralwidget);
+        dilateSizeValue->setObjectName(QString::fromUtf8("dilateSizeValue"));
+        dilateSizeValue->setGeometry(QRect(280, 560, 66, 24));
+        dilateSizeValue->setDecimals(4);
+        dilateSizeValue->setMaximum(20);
+        dilateSizeValue->setSingleStep(0.01);
+        dilateSizeValue->setValue(0.1);
+        labelSize = new QLabel(centralwidget);
+        labelSize->setObjectName(QString::fromUtf8("labelSize"));
+        labelSize->setGeometry(QRect(200, 560, 71, 20));
+        QFont font1;
+        font1.setBold(false);
+        font1.setWeight(50);
+        labelSize->setFont(font1);
         KinectViewer->setCentralWidget(centralwidget);
 
         retranslateUi(KinectViewer);
@@ -225,6 +241,7 @@ public:
         btnResetCameraViewer2->setText(QApplication::translate("KinectViewer", "Set parameters", 0, QApplication::UnicodeUTF8));
         btnViewer1to2->setText(QApplication::translate("KinectViewer", "=>", 0, QApplication::UnicodeUTF8));
         btnViewer2to1->setText(QApplication::translate("KinectViewer", "<=", 0, QApplication::UnicodeUTF8));
+        labelSize->setText(QApplication::translate("KinectViewer", "Dilate size:", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
