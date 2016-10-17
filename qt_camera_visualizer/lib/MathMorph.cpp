@@ -1,23 +1,19 @@
 #include "MathMorph.h"
 
-MathMorph::MathMorph(double sizei, double leafSizei)
-{
-    size=sizei;
-    leafSize=leafSizei;
-    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
-}
+MathMorph::MathMorph()
+{}
 
 MY_POINT_CLOUD::Ptr 
-MathMorph::dilate2 (MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
+MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
 {
     //pcl::search::KdTree<MY_POINT_TYPE>::Ptr tree (new pcl::search::KdTree<MY_POINT_TYPE> ());
     MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD(*cloud_ptr));
    // MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD(*currentPointCloud));
-    MY_POINT_TYPE point;
+    //MY_POINT_TYPE point;
     
 
     //cout << "Dilate size: " << size << "\n";
-    computeNormals(cloud_ptr);
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals = computeNormals(cloud_out);
     // Dilate the figure
     //if(false)
     for (int i=0; i<cloud_ptr->size(); i++) {
@@ -44,6 +40,20 @@ MathMorph::dilate2 (MY_POINT_CLOUD::Ptr cloud_ptr, double size)
     return cloud_out;
 }
 
+MY_POINT_CLOUD::Ptr 
+MathMorph::camera_erode(MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
+{
+    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD(*cloud_ptr));
+    
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals = computeNormals(cloud_out);
+    for (int i=0; i<cloud_ptr->size(); i++) {
+        cloud_out->points[i].x = cloud_out->points[i].x - size*cloud_normals->points[i].normal[0];
+        cloud_out->points[i].y = cloud_out->points[i].y - size*cloud_normals->points[i].normal[1];
+        cloud_out->points[i].z = cloud_out->points[i].z - size*cloud_normals->points[i].normal[2];
+    }
+    return cloud_out;
+}
+
 bool
 MathMorph::isInRange (MY_POINT_TYPE point, MY_POINT_TYPE searchPoint) {
     return (fabs(point.x-searchPoint.x)<=leafSize/2 && fabs(point.y-searchPoint.y)<=leafSize/2 && fabs(point.z-searchPoint.z)<=leafSize/2);
@@ -64,7 +74,7 @@ MathMorph::dilate (MY_POINT_CLOUD::Ptr cloud_ptr)
     Eigen::Vector4f p, q;
 
     // Compute normals to dilate
-    computeNormals(cloud_ptr);
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals = computeNormals(cloud_ptr);
 
     // Calculate the bounding box (the size of the structured element is added)
     pcl::getMinMax3D (*cloud_ptr, minPt, maxPt);
@@ -119,7 +129,7 @@ MathMorph::dilate (MY_POINT_CLOUD::Ptr cloud_ptr)
 }
 
 
-void
+pcl::PointCloud<pcl::Normal>::Ptr
 MathMorph::computeNormals(MY_POINT_CLOUD::Ptr cloud_ptr) 
 {
     pcl::search::KdTree<MY_POINT_TYPE>::Ptr tree(new pcl::search::KdTree<MY_POINT_TYPE> ());
@@ -147,7 +157,7 @@ MathMorph::computeNormals(MY_POINT_CLOUD::Ptr cloud_ptr)
     normal_estimation.setSearchMethod (tree);
     normal_estimation.setRadiusSearch (NORMAL_RADIUS_SEARCH);
     normal_estimation.compute(*cloud_normals);
-    this->cloud_normals = cloud_normals;
+    return cloud_normals;
 }
 
 /*

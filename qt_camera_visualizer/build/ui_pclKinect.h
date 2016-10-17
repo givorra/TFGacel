@@ -28,7 +28,7 @@ class Ui_KinectViewer
 public:
     QWidget *centralwidget;
     QVTKWidget *qvtkWidget;
-    QPushButton *btnStopStream;
+    QPushButton *btnRunCamera;
     QVTKWidget *qvtkWidget_2;
     QPushButton *btnResetCameraViewer1;
     QLabel *labelViewer1;
@@ -64,6 +64,12 @@ public:
     QPushButton *btnViewer2to1;
     QDoubleSpinBox *dilateSizeValue;
     QLabel *labelSize;
+    QPushButton *btnCaptureCloud;
+    QPushButton *btnDilateCloud;
+    QPushButton *btnErodeCloud;
+    QDoubleSpinBox *erodeSizeValue;
+    QLabel *labelSize_2;
+    QPushButton *btnInitVisualizers;
 
     void setupUi(QMainWindow *KinectViewer)
     {
@@ -77,10 +83,10 @@ public:
         qvtkWidget = new QVTKWidget(centralwidget);
         qvtkWidget->setObjectName(QString::fromUtf8("qvtkWidget"));
         qvtkWidget->setGeometry(QRect(40, 120, 400, 400));
-        btnStopStream = new QPushButton(centralwidget);
-        btnStopStream->setObjectName(QString::fromUtf8("btnStopStream"));
-        btnStopStream->setGeometry(QRect(40, 560, 110, 50));
-        btnStopStream->setCheckable(true);
+        btnRunCamera = new QPushButton(centralwidget);
+        btnRunCamera->setObjectName(QString::fromUtf8("btnRunCamera"));
+        btnRunCamera->setGeometry(QRect(40, 560, 110, 50));
+        btnRunCamera->setCheckable(true);
         qvtkWidget_2 = new QVTKWidget(centralwidget);
         qvtkWidget_2->setObjectName(QString::fromUtf8("qvtkWidget_2"));
         qvtkWidget_2->setGeometry(QRect(570, 120, 400, 400));
@@ -198,18 +204,45 @@ public:
         btnViewer2to1->setGeometry(QRect(480, 70, 40, 30));
         dilateSizeValue = new QDoubleSpinBox(centralwidget);
         dilateSizeValue->setObjectName(QString::fromUtf8("dilateSizeValue"));
-        dilateSizeValue->setGeometry(QRect(280, 560, 66, 24));
+        dilateSizeValue->setGeometry(QRect(780, 560, 66, 24));
         dilateSizeValue->setDecimals(4);
         dilateSizeValue->setMaximum(20);
         dilateSizeValue->setSingleStep(0.01);
-        dilateSizeValue->setValue(0.1);
+        dilateSizeValue->setValue(0.01);
         labelSize = new QLabel(centralwidget);
         labelSize->setObjectName(QString::fromUtf8("labelSize"));
-        labelSize->setGeometry(QRect(200, 560, 71, 20));
+        labelSize->setGeometry(QRect(700, 560, 71, 20));
         QFont font1;
         font1.setBold(false);
         font1.setWeight(50);
         labelSize->setFont(font1);
+        btnCaptureCloud = new QPushButton(centralwidget);
+        btnCaptureCloud->setObjectName(QString::fromUtf8("btnCaptureCloud"));
+        btnCaptureCloud->setGeometry(QRect(170, 560, 110, 50));
+        btnCaptureCloud->setCheckable(false);
+        btnDilateCloud = new QPushButton(centralwidget);
+        btnDilateCloud->setObjectName(QString::fromUtf8("btnDilateCloud"));
+        btnDilateCloud->setGeometry(QRect(570, 560, 110, 50));
+        btnDilateCloud->setCheckable(true);
+        btnErodeCloud = new QPushButton(centralwidget);
+        btnErodeCloud->setObjectName(QString::fromUtf8("btnErodeCloud"));
+        btnErodeCloud->setGeometry(QRect(570, 630, 110, 50));
+        btnErodeCloud->setCheckable(true);
+        erodeSizeValue = new QDoubleSpinBox(centralwidget);
+        erodeSizeValue->setObjectName(QString::fromUtf8("erodeSizeValue"));
+        erodeSizeValue->setGeometry(QRect(780, 630, 66, 24));
+        erodeSizeValue->setDecimals(4);
+        erodeSizeValue->setMaximum(20);
+        erodeSizeValue->setSingleStep(0.01);
+        erodeSizeValue->setValue(0.01);
+        labelSize_2 = new QLabel(centralwidget);
+        labelSize_2->setObjectName(QString::fromUtf8("labelSize_2"));
+        labelSize_2->setGeometry(QRect(700, 630, 71, 20));
+        labelSize_2->setFont(font1);
+        btnInitVisualizers = new QPushButton(centralwidget);
+        btnInitVisualizers->setObjectName(QString::fromUtf8("btnInitVisualizers"));
+        btnInitVisualizers->setGeometry(QRect(40, 630, 110, 50));
+        btnInitVisualizers->setCheckable(false);
         KinectViewer->setCentralWidget(centralwidget);
 
         retranslateUi(KinectViewer);
@@ -220,7 +253,7 @@ public:
     void retranslateUi(QMainWindow *KinectViewer)
     {
         KinectViewer->setWindowTitle(QApplication::translate("KinectViewer", "KinectViewer", 0, QApplication::UnicodeUTF8));
-        btnStopStream->setText(QApplication::translate("KinectViewer", "Stream running", 0, QApplication::UnicodeUTF8));
+        btnRunCamera->setText(QApplication::translate("KinectViewer", "Run Camera", 0, QApplication::UnicodeUTF8));
         btnResetCameraViewer1->setText(QApplication::translate("KinectViewer", "Set parameters", 0, QApplication::UnicodeUTF8));
         labelViewer1->setText(QApplication::translate("KinectViewer", "Viewer 1", 0, QApplication::UnicodeUTF8));
         labelViewer2->setText(QApplication::translate("KinectViewer", "Viewer 2", 0, QApplication::UnicodeUTF8));
@@ -242,6 +275,11 @@ public:
         btnViewer1to2->setText(QApplication::translate("KinectViewer", "=>", 0, QApplication::UnicodeUTF8));
         btnViewer2to1->setText(QApplication::translate("KinectViewer", "<=", 0, QApplication::UnicodeUTF8));
         labelSize->setText(QApplication::translate("KinectViewer", "Dilate size:", 0, QApplication::UnicodeUTF8));
+        btnCaptureCloud->setText(QApplication::translate("KinectViewer", "Capture Cloud", 0, QApplication::UnicodeUTF8));
+        btnDilateCloud->setText(QApplication::translate("KinectViewer", "Dilate Cloud", 0, QApplication::UnicodeUTF8));
+        btnErodeCloud->setText(QApplication::translate("KinectViewer", "Erode Cloud", 0, QApplication::UnicodeUTF8));
+        labelSize_2->setText(QApplication::translate("KinectViewer", "Erode size:", 0, QApplication::UnicodeUTF8));
+        btnInitVisualizers->setText(QApplication::translate("KinectViewer", "Init visualizers", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

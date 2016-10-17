@@ -48,10 +48,11 @@ public:
 	bool bCopying;   
 	// Error
 	int er;
-	bool procesing;
+	bool processing;
 	//
 	bool firstCall;
-  	bool StopStream;
+	bool firstCapture;
+  	bool runCamera;
 
 	// Point cloud callback
 	void cloud_cb_ (const MY_POINT_CLOUD::ConstPtr &cloud);	
@@ -69,22 +70,27 @@ private:
   	// MathMorph object 
   	MathMorph* mathMorph;
   	// Current cloud
-  	MY_POINT_CLOUD::Ptr cameraCloud;
+  	MY_POINT_CLOUD::Ptr cloudViewer_1, cloudViewer_2;
 	// XYZ point vector
-	std::vector<float> cloudX, cloudY, cloudZ;
+	//std::vector<float> cloudX, cloudY, cloudZ;
 	// RGB vector
-	std::vector<unsigned long> cloudRGB;
+	//std::vector<unsigned long> cloudRGB;
 	// Size of cloud
-	int cloudWidth;
-	int cloudHeight;
+	//int cloudWidth;
+	//int cloudHeight;
 
 	void processCurrentCloud(MY_POINT_CLOUD::Ptr currentPointCloud);
 	void setCameraViewer1Parameters();
+	void initVisualizers();
 protected:
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;  
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_2;  
 private slots:
-  	void on_btnStopStream_toggled(bool checked);
+  	void on_btnRunCamera_toggled(bool checked);
+  	void on_btnDilateCloud_toggled(bool checked);
+	void on_btnErodeCloud_toggled(bool checked);
+  	void on_btnCaptureCloud_clicked();
+	void on_btnInitVisualizers_clicked();
 	void on_btnResetCameraViewer1_clicked();
 	void on_btnResetCameraViewer2_clicked();
 	void on_btnGetParametersCameraViewer1_clicked();
