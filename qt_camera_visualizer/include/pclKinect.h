@@ -4,9 +4,12 @@
 #include <vector>
 #include "MathMorph.h"
 #include "common.h"
+#include <boost/thread.hpp>
 
 // Qt
-#include <QMainWindow>
+//#include <QMainWindow>
+#include <QPushButton>
+#include <QDoubleSpinBox>
 #include <QTimer>
 
 // Point Cloud Library
@@ -20,7 +23,7 @@
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
 
-#define SIZEI 0.01
+#define SIZEI 0.5
 #define LEAFSIZEI 0.001
 
 namespace Ui
@@ -45,12 +48,13 @@ public:
 	bool bCopying;   
 	// Error
 	int er;
+	bool procesing;
 	//
 	bool firstCall;
   	bool StopStream;
 
 	// Point cloud callback
-	void cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud);	
+	void cloud_cb_ (const MY_POINT_CLOUD::ConstPtr &cloud);	
 	// Run Kinect
 	int run();
 	// Stop Kinect
@@ -64,6 +68,8 @@ private:
 
   	// MathMorph object 
   	MathMorph* mathMorph;
+  	// Current cloud
+  	MY_POINT_CLOUD::Ptr cameraCloud;
 	// XYZ point vector
 	std::vector<float> cloudX, cloudY, cloudZ;
 	// RGB vector
@@ -72,13 +78,17 @@ private:
 	int cloudWidth;
 	int cloudHeight;
 
-	void processCurrentCloud(myPointCloud::Ptr currentPointCloud);
-
+	void processCurrentCloud(MY_POINT_CLOUD::Ptr currentPointCloud);
+	void setCameraViewer1Parameters();
 protected:
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;  
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_2;  
 private slots:
   	void on_btnStopStream_toggled(bool checked);
-
+	void on_btnResetCameraViewer1_clicked();
+	void on_btnResetCameraViewer2_clicked();
+	void on_btnGetParametersCameraViewer1_clicked();
+	void on_btnGetParametersCameraViewer2_clicked();
+	void on_btnViewer1to2_clicked();
+	void on_btnViewer2to1_clicked();
 };
-

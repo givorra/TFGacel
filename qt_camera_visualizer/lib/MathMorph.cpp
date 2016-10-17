@@ -7,38 +7,55 @@ MathMorph::MathMorph(double sizei, double leafSizei)
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
 }
 
-pcl::PointCloud<myPointType>::Ptr 
-MathMorph::dilate2 (pcl::PointCloud<myPointType>::Ptr cloud_ptr) 
+MY_POINT_CLOUD::Ptr 
+MathMorph::dilate2 (MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
 {
-    pcl::search::KdTree<myPointType>::Ptr tree (new pcl::search::KdTree<myPointType> ());
-    pcl::PointCloud<myPointType>::Ptr cloud_out (new pcl::PointCloud<myPointType>);
-    myPointType point;
+    //pcl::search::KdTree<MY_POINT_TYPE>::Ptr tree (new pcl::search::KdTree<MY_POINT_TYPE> ());
+    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD(*cloud_ptr));
+   // MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD(*currentPointCloud));
+    MY_POINT_TYPE point;
     
 
+    //cout << "Dilate size: " << size << "\n";
     computeNormals(cloud_ptr);
     // Dilate the figure
+    //if(false)
     for (int i=0; i<cloud_ptr->size(); i++) {
-        myPointType point;
+        cloud_out->points[i].x = cloud_out->points[i].x + size*cloud_normals->points[i].normal[0];
+        cloud_out->points[i].y = cloud_out->points[i].y + size*cloud_normals->points[i].normal[1];
+        cloud_out->points[i].z = cloud_out->points[i].z + size*cloud_normals->points[i].normal[2];
+        /*
+        MY_POINT_TYPE point;
         point.x=cloud_ptr->points[i].x - size*cloud_normals->points[i].normal[0];
         point.y=cloud_ptr->points[i].y - size*cloud_normals->points[i].normal[1];
         point.z=cloud_ptr->points[i].z - size*cloud_normals->points[i].normal[2];
-        cloud_out->points.push_back(point);
+        //point.rgba = cloud_ptr->points[i].rgba;
+        
+        point.x = cloud_ptr->points[i].x;
+        point.y = cloud_ptr->points[i].y;
+        point.z = cloud_ptr->points[i].z;
+        point.r=cloud_ptr->points[i].r;
+        point.g=cloud_ptr->points[i].g;
+        point.b=cloud_ptr->points[i].b;
+        point.a=cloud_ptr->points[i].a;
+        cloud_out->points.push_back(point);*/
     }
+    //cout << "Tamaño nube salida: " << cloud_out->size() << "\n";
     return cloud_out;
 }
 
 bool
-MathMorph::isInRange (myPointType point, myPointType searchPoint) {
+MathMorph::isInRange (MY_POINT_TYPE point, MY_POINT_TYPE searchPoint) {
     return (fabs(point.x-searchPoint.x)<=leafSize/2 && fabs(point.y-searchPoint.y)<=leafSize/2 && fabs(point.z-searchPoint.z)<=leafSize/2);
 }
 
 
-pcl::PointCloud<myPointType>::Ptr 
-MathMorph::dilate (pcl::PointCloud<myPointType>::Ptr cloud_ptr) 
+MY_POINT_CLOUD::Ptr 
+MathMorph::dilate (MY_POINT_CLOUD::Ptr cloud_ptr) 
 {
-    pcl::PointCloud<myPointType>::Ptr cloud_out (new pcl::PointCloud<myPointType>);
-    pcl::KdTreeFLANN<myPointType> kdtree;
-    myPointType point, minPt, maxPt, searchPoint;
+    MY_POINT_CLOUD::Ptr cloud_out (new MY_POINT_CLOUD);
+    pcl::KdTreeFLANN<MY_POINT_TYPE> kdtree;
+    MY_POINT_TYPE point, minPt, maxPt, searchPoint;
     double cosine;
     int xRange, yRange, zRange, cont=0, cont2=0;
     bool found;
@@ -66,7 +83,7 @@ MathMorph::dilate (pcl::PointCloud<myPointType>::Ptr cloud_ptr)
                 searchPoint.z=z*leafSize+(minPt.z-size)+leafSize/2; 
                 if (kdtree.radiusSearch (searchPoint, size+2*leafSize, pointIdxRadiusSearch, pointRadiusSquaredDistance) > 0) {
                     for (int i = 0; i < pointIdxRadiusSearch.size(); i++) {
-                        myPointType point;
+                        MY_POINT_TYPE point;
                         point.x=cloud_ptr->points[pointIdxRadiusSearch[i]].x - size*cloud_normals->points[pointIdxRadiusSearch[i]].normal[0];
                         point.y=cloud_ptr->points[pointIdxRadiusSearch[i]].y - size*cloud_normals->points[pointIdxRadiusSearch[i]].normal[1];
                         point.z=cloud_ptr->points[pointIdxRadiusSearch[i]].z - size*cloud_normals->points[pointIdxRadiusSearch[i]].normal[2];
@@ -103,11 +120,11 @@ MathMorph::dilate (pcl::PointCloud<myPointType>::Ptr cloud_ptr)
 
 
 void
-MathMorph::computeNormals(pcl::PointCloud<myPointType>::Ptr cloud_ptr) 
+MathMorph::computeNormals(MY_POINT_CLOUD::Ptr cloud_ptr) 
 {
-    pcl::search::KdTree<myPointType>::Ptr tree(new pcl::search::KdTree<myPointType> ());
+    pcl::search::KdTree<MY_POINT_TYPE>::Ptr tree(new pcl::search::KdTree<MY_POINT_TYPE> ());
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
-    pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimation;
+    pcl::NormalEstimation<MY_POINT_TYPE, pcl::Normal> normal_estimation;
     double centroid_x=0.0, centroid_y=0.0, centroid_z=0.0;
     // Compute normals
     
@@ -123,9 +140,9 @@ MathMorph::computeNormals(pcl::PointCloud<myPointType>::Ptr cloud_ptr)
     centroid_x /= cloud_ptr->size();
     centroid_y /= cloud_ptr->size();
     centroid_z /= cloud_ptr->size();
+    normal_estimation.setViewPoint(centroid_x, centroid_y, centroid_z);
 #endif
     // Compute normals
-    normal_estimation.setViewPoint(centroid_x, centroid_y, centroid_z);
     normal_estimation.setInputCloud (cloud_ptr);
     normal_estimation.setSearchMethod (tree);
     normal_estimation.setRadiusSearch (NORMAL_RADIUS_SEARCH);
@@ -135,11 +152,11 @@ MathMorph::computeNormals(pcl::PointCloud<myPointType>::Ptr cloud_ptr)
 
 /*
 pcl::PointCloud<pcl::Normal>::Ptr
-MathMorph::findNormals (pcl::PointCloud<myPointType>::Ptr cloud_ptr) 
+MathMorph::findNormals (MY_POINT_CLOUD::Ptr cloud_ptr) 
 {
-    pcl::NormalEstimation<myPointType, pcl::Normal> normal_estimation;
+    pcl::NormalEstimation<MY_POINT_TYPE, pcl::Normal> normal_estimation;
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
-    pcl::search::KdTree<myPointType>::Ptr tree (new pcl::search::KdTree<myPointType> ());
+    pcl::search::KdTree<MY_POINT_TYPE>::Ptr tree (new pcl::search::KdTree<MY_POINT_TYPE> ());
 
     // Compute normals
     normal_estimation.setInputCloud(cloud_ptr);
@@ -150,11 +167,11 @@ MathMorph::findNormals (pcl::PointCloud<myPointType>::Ptr cloud_ptr)
 }
 
 
-pcl::PointCloud<myPointType>::Ptr 
-MathMorph::dilateRGB (pcl::PointCloud<myPointType>::Ptr cloud_ptr) {
-    pcl::NormalEstimation<myPointType, pcl::Normal> ne;
+MY_POINT_CLOUD::Ptr 
+MathMorph::dilateRGB (MY_POINT_CLOUD::Ptr cloud_ptr) {
+    pcl::NormalEstimation<MY_POINT_TYPE, pcl::Normal> ne;
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
-    pcl::PointCloud<myPointType>::Ptr cloud_out (new pcl::PointCloud<myPointType>);
+    MY_POINT_CLOUD::Ptr cloud_out (new MY_POINT_CLOUD);
     
     // normals Compute
     normal_estimation.useSensorOriginAsViewPoint ();

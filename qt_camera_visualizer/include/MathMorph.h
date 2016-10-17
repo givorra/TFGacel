@@ -4,10 +4,10 @@
 
 using namespace std;
 
-//#define myPointType pcl::PointXYZ
+//#define MY_POINT_TYPE pcl::PointXYZ
 
 // Normal parameters
-#define CAMERA_MODE 0
+#define CAMERA_MODE 1
 #define NORMAL_RADIUS_SEARCH 0.005
 
 class MathMorph {
@@ -16,13 +16,17 @@ class MathMorph {
         double leafSize;
         pcl::PointCloud<pcl::Normal>::Ptr cloud_normals;
 
-        void computeNormals(pcl::PointCloud<myPointType>::Ptr cloud_ptr);
+        void computeNormals(MY_POINT_CLOUD::Ptr cloud_ptr);
 	public:
 	MathMorph(double sizei, double leafSizei);
-        pcl::PointCloud<myPointType>::Ptr dilate (pcl::PointCloud<myPointType>::Ptr cloud_ptr);
-        pcl::PointCloud<myPointType>::Ptr dilate2 (pcl::PointCloud<myPointType>::Ptr cloud_ptr);
-        //pcl::PointCloud<pcl::Normal>::Ptr findNormals (pcl::PointCloud<myPointType>::Ptr cloud_ptr);
-        bool isInRange(myPointType point, myPointType searchPoint);
+        MY_POINT_CLOUD::Ptr dilate (MY_POINT_CLOUD::Ptr cloud_ptr);
+        MY_POINT_CLOUD::Ptr dilate2 (MY_POINT_CLOUD::Ptr cloud_ptr, double size);
+        //pcl::PointCloud<pcl::Normal>::Ptr findNormals (MY_POINT_CLOUD::Ptr cloud_ptr);
+        bool isInRange(MY_POINT_TYPE point, MY_POINT_TYPE searchPoint);
         pcl::PointCloud<pcl::Normal>::Ptr getNormals() {return cloud_normals;};
 };
 
+/*
+        Generar nube de puntos de un plano
+        Replicar la imagen con color, replicar 
+*/

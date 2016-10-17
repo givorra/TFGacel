@@ -1,4 +1,4 @@
-﻿#include "pclKinect.h"
+#include "pclKinect.h"
 #include "../build/ui_pclKinect.h"
 
 KinectViewer::KinectViewer (QWidget *parent) :
@@ -11,10 +11,10 @@ KinectViewer::KinectViewer (QWidget *parent) :
   // Timer for 3D/UI update
   tmrTimer = new QTimer(this);
   connect(tmrTimer,SIGNAL(timeout()),this,SLOT(processFrameAndUpdateGUI()));
-  tmrTimer->start(20); // msec
+  tmrTimer->start(1); // msec
 
   // Setup Kinect
-  bCopying = bRun = false;
+  procesing = bRun = false;
   interface = NULL;  
 
   // Run Kinect grabber
@@ -37,59 +37,78 @@ KinectViewer::KinectViewer (QWidget *parent) :
 
   // Show stream
   StopStream = false;
+  mathMorph = new MathMorph(SIZEI, LEAFSIZEI);
+  MY_POINT_CLOUD::Ptr cameraCloud(new MY_POINT_CLOUD());
 }
 
 void KinectViewer::processFrameAndUpdateGUI() 
 {
-    if(bCopying == false && StopStream == false) 
+  if(StopStream && !procesing)
+  {
+    procesing = true;
+    // Add point cloud on first call
+    if(firstCall == true) 
     {
-  		// Setup cloud
-  		pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudKinect (new pcl::PointCloud<pcl::PointXYZRGBA>);
-  		cloudKinect->width = cloudWidth;
-  		cloudKinect->height = cloudHeight;
-  		cloudKinect->points.resize(cloudWidth*cloudHeight);
-  		cloudKinect->is_dense = false;
-  		// Fill cloud
-  		float *pX = &cloudX[0];
-  		float *pY = &cloudY[0];
-  		float *pZ = &cloudZ[0];
-  		unsigned long *pRGB = &cloudRGB[0];
-  		for(int i=0;i<cloudKinect->points.size();i++,pX++,pY++,pZ++,pRGB++) {
-  			cloudKinect->points[i].x = (*pX);
-  			cloudKinect->points[i].y = (*pY);
-  			cloudKinect->points[i].z = (*pZ);
-  			cloudKinect->points[i].rgba = (*pRGB);
-		}
-		// Add point cloud on first call
-		if(firstCall == true) 
-    {
+        cout << "Hola 1\n";
       // Init viewer 1
-      viewer->addPointCloud(cloudKinect,"cloud");
+      viewer->addPointCloud(cameraCloud,"cloud");
       viewer->resetCamera();
       ui->qvtkWidget->update();
+        cout << "Hola 2\n";
       // Init viewer 2
-      viewer_2->addPointCloud(cloudKinect,"cloud");
+      viewer_2->addPointCloud(cameraCloud,"cloud");
       viewer_2->resetCamera();
-      ui->qvtkWidget->update();
+      ui->qvtkWidget_2->update();
+        cout << "Hola 3\n";
 
-			firstCall = false;
+      firstCall = false;
       // Procesar nube actual
-      processCurrentCloud(cloudKinect);
-		}
-		// Update point cloud
-		else 
+      processCurrentCloud(cameraCloud);
+        cout << "Hola 4\n";
+    }
+    // Update point cloud
+    else 
     {
-			viewer->updatePointCloud (cloudKinect,"cloud");
-			ui->qvtkWidget->update ();
-      processCurrentCloud(cloudKinect);
-		}
-	}
+      viewer->updatePointCloud(cameraCloud,"cloud");
+      ui->qvtkWidget->update();
+      processCurrentCloud(cameraCloud);
+    }
+    procesing = false;
+  }
+  
 }
 
-void KinectViewer::processCurrentCloud(myPointCloud::Ptr currentPointCloud)
-{
 
-  viewer_2->updatePointCloud (currentPointCloud,"cloud");
+void KinectViewer::cloud_cb_(const MY_POINT_CLOUD::ConstPtr &cloud)
+{
+  if (bRun && !procesing) 
+  {
+    //while(bCopying) 
+      //sleep(0);
+    //cameraCloud->points= std::vector<pcl::PointXYZRGBA, Eigen::aligned_allocator<pcl::PointXYZRGBA> >(cloud->points);
+    //pcl::PointCloud<pcl::PointXYZRGBA>::Ptr tmp = boost::const_pointer_cast< pcl::PointCloud<  pcl::PointXYZRGBA>  >  (cloud); 
+    MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloud));
+    cameraCloud = tmp;
+    //thread t1 = thread(processFrameAndUpdateGUI);
+    //t1.join();
+    /*if(!procesing)
+    {
+      processFrameAndUpdateGUI();
+      procesing = false;
+    }*/
+    cout << "Camera cloud size: " << cameraCloud->size() << "\n";
+  }
+  
+}
+
+void KinectViewer::processCurrentCloud(MY_POINT_CLOUD::Ptr currentPointCloud)
+{
+  // Crear una variable booleana que se ponga a true con un boton para dilatar
+  //if(dilate)
+  MY_POINT_CLOUD::Ptr cloud = mathMorph->dilate2(currentPointCloud, ui->dilateSizeValue->value());
+  //MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD(*currentPointCloud));
+  //viewer_2->updatePointCloud (currentPointCloud,"cloud");
+  viewer_2->updatePointCloud (cloud,"cloud");
   ui->qvtkWidget_2->update ();
 }
 
@@ -112,41 +131,6 @@ void KinectViewer::on_btnStopStream_toggled(bool checked)
 }
 
 
-void KinectViewer::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud)
-  {
-    if (bRun) {
-      while(bCopying) 
-        sleep(0);
-      bCopying=true;
-      // Size of cloud
-      cloudWidth = cloud->width;
-      cloudHeight = cloud->height;
-      // Resize the XYZ and RGB point vector
-      cloudX.resize(cloud->height*cloud->width);
-      cloudY.resize(cloud->height*cloud->width);
-      cloudZ.resize(cloud->height*cloud->width);
-      cloudRGB.resize(cloud->height*cloud->width);
-      // Assign pointers to copy data
-      float *pX = &cloudX[0];
-      float *pY = &cloudY[0];
-      float *pZ = &cloudZ[0];
-      unsigned long *pRGB = &cloudRGB[0];
-
-      // Copy data (using pcl::copyPointCloud, the color stream jitters!!! Why?)
-      for (int j = 0;j<cloud->height;j++){
-          for (int i = 0;i<cloud->width;i++,pX++,pY++,pZ++,pRGB++) {
-              pcl::PointXYZRGBA P = cloud->at(i,j);
-              (*pX) = P.x;
-              (*pY) = P.y;
-              (*pZ) = P.z;
-              (*pRGB) = P.rgba;
-          }
-      }
-      // Data copied      
-      bCopying = false;     
-    }
-  }
-
   int KinectViewer::run() 
   {
     if(bRun == true)
@@ -154,7 +138,7 @@ void KinectViewer::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr
     
     interface = new pcl::OpenNIGrabber();
     
-    boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f = boost::bind (&KinectViewer::cloud_cb_, this, _1);   
+    boost::function<void (const MY_POINT_CLOUD::ConstPtr&)> f = boost::bind (&KinectViewer::cloud_cb_, this, _1);   
     
     interface->registerCallback(f);
     
@@ -175,3 +159,69 @@ void KinectViewer::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr
     interface->stop(); 
     return 0;
   } 
+
+void KinectViewer::on_btnResetCameraViewer1_clicked()
+{
+    //viewer->resetCamera();
+    //setCameraVewer1Parameters();
+    viewer->setCameraPosition(ui->valuePosXViewer1->value(), 
+                                ui->valuePosYViewer1->value(),
+                                ui->valuePosZViewer1->value(), 
+                                ui->valueViewXViewer1->value(), 
+                                ui->valueViewYViewer1->value(),
+                                ui->valueViewZViewer1->value());
+    ui->qvtkWidget->update();
+}
+
+
+void KinectViewer::on_btnResetCameraViewer2_clicked()
+{
+    //viewer_2->resetCameraViewpoint();
+    viewer_2->setCameraPosition(ui->valuePosXViewer2->value(), 
+                                ui->valuePosYViewer2->value(),
+                                ui->valuePosZViewer2->value(), 
+                                ui->valueViewXViewer2->value(), 
+                                ui->valueViewYViewer2->value(),
+                                ui->valueViewZViewer2->value());
+    ui->qvtkWidget_2->update();
+}
+
+void KinectViewer::on_btnGetParametersCameraViewer1_clicked()
+{
+  std::vector<pcl::visualization::Camera> camera;
+  viewer->getCameras(camera);
+  ui->valuePosXViewer1->setValue(camera[0].pos[0]);
+  ui->valuePosYViewer1->setValue(camera[0].pos[1]);
+  ui->valuePosZViewer1->setValue(camera[0].pos[2]);
+  ui->valueViewXViewer1->setValue(camera[0].view[0]);
+  ui->valueViewYViewer1->setValue(camera[0].view[1]);
+  ui->valueViewZViewer1->setValue(camera[0].view[2]);
+}
+
+void KinectViewer::on_btnGetParametersCameraViewer2_clicked()
+{
+  std::vector<pcl::visualization::Camera> camera;
+  viewer_2->getCameras(camera);
+  ui->valuePosXViewer2->setValue(camera[0].pos[0]);
+  ui->valuePosYViewer2->setValue(camera[0].pos[1]);
+  ui->valuePosZViewer2->setValue(camera[0].pos[2]);
+  ui->valueViewXViewer2->setValue(camera[0].view[0]);
+  ui->valueViewYViewer2->setValue(camera[0].view[1]);
+  ui->valueViewZViewer2->setValue(camera[0].view[2]);
+}
+
+void KinectViewer::on_btnViewer1to2_clicked()
+{
+  std::vector<pcl::visualization::Camera> camera;
+  viewer->getCameras(camera);
+  viewer_2->setCameraParameters(camera[0]);
+  ui->qvtkWidget_2->update();
+}
+
+void KinectViewer::on_btnViewer2to1_clicked()
+{
+  std::vector<pcl::visualization::Camera> camera;
+  viewer_2->getCameras(camera);
+  viewer->setCameraParameters(camera[0]);
+  ui->qvtkWidget->update();
+}

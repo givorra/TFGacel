@@ -9,6 +9,8 @@
 #include <pcl/point_types.h>
 #include <limits>
 #include <vector>
+#include <QMainWindow>
 
-#define myPointType pcl::PointXYZ
-#define myPointCloud pcl::PointCloud<myPointType>
+#define MY_POINT_TYPE pcl::PointXYZRGBA
+#define MY_POINT_CLOUD pcl::PointCloud<MY_POINT_TYPE>
+#define DEBUG_MODE 0
