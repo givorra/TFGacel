@@ -70,12 +70,17 @@ public:
     QDoubleSpinBox *erodeSizeValue;
     QLabel *labelSize_2;
     QPushButton *btnInitVisualizers;
+    QPushButton *btnTriangulateCloud;
+    QDoubleSpinBox *triRadiusSearch;
+    QLabel *labelRadiusSearch;
+    QDoubleSpinBox *triMaxNeighbors;
+    QLabel *labelMaxNeighbors;
 
     void setupUi(QMainWindow *KinectViewer)
     {
         if (KinectViewer->objectName().isEmpty())
             KinectViewer->setObjectName(QString::fromUtf8("KinectViewer"));
-        KinectViewer->resize(1000, 700);
+        KinectViewer->resize(1314, 778);
         KinectViewer->setMinimumSize(QSize(0, 0));
         KinectViewer->setMaximumSize(QSize(5000, 5000));
         centralwidget = new QWidget(KinectViewer);
@@ -243,6 +248,32 @@ public:
         btnInitVisualizers->setObjectName(QString::fromUtf8("btnInitVisualizers"));
         btnInitVisualizers->setGeometry(QRect(40, 630, 110, 50));
         btnInitVisualizers->setCheckable(false);
+        btnTriangulateCloud = new QPushButton(centralwidget);
+        btnTriangulateCloud->setObjectName(QString::fromUtf8("btnTriangulateCloud"));
+        btnTriangulateCloud->setGeometry(QRect(890, 560, 110, 50));
+        btnTriangulateCloud->setCheckable(true);
+        triRadiusSearch = new QDoubleSpinBox(centralwidget);
+        triRadiusSearch->setObjectName(QString::fromUtf8("triRadiusSearch"));
+        triRadiusSearch->setGeometry(QRect(1140, 560, 66, 24));
+        triRadiusSearch->setDecimals(4);
+        triRadiusSearch->setMaximum(20);
+        triRadiusSearch->setSingleStep(0.001);
+        triRadiusSearch->setValue(0.025);
+        labelRadiusSearch = new QLabel(centralwidget);
+        labelRadiusSearch->setObjectName(QString::fromUtf8("labelRadiusSearch"));
+        labelRadiusSearch->setGeometry(QRect(1040, 560, 91, 20));
+        labelRadiusSearch->setFont(font1);
+        triMaxNeighbors = new QDoubleSpinBox(centralwidget);
+        triMaxNeighbors->setObjectName(QString::fromUtf8("triMaxNeighbors"));
+        triMaxNeighbors->setGeometry(QRect(1140, 590, 66, 24));
+        triMaxNeighbors->setDecimals(0);
+        triMaxNeighbors->setMaximum(10000);
+        triMaxNeighbors->setSingleStep(10);
+        triMaxNeighbors->setValue(100);
+        labelMaxNeighbors = new QLabel(centralwidget);
+        labelMaxNeighbors->setObjectName(QString::fromUtf8("labelMaxNeighbors"));
+        labelMaxNeighbors->setGeometry(QRect(1040, 590, 91, 20));
+        labelMaxNeighbors->setFont(font1);
         KinectViewer->setCentralWidget(centralwidget);
 
         retranslateUi(KinectViewer);
@@ -280,6 +311,9 @@ public:
         btnErodeCloud->setText(QApplication::translate("KinectViewer", "Erode Cloud", 0, QApplication::UnicodeUTF8));
         labelSize_2->setText(QApplication::translate("KinectViewer", "Erode size:", 0, QApplication::UnicodeUTF8));
         btnInitVisualizers->setText(QApplication::translate("KinectViewer", "Init visualizers", 0, QApplication::UnicodeUTF8));
+        btnTriangulateCloud->setText(QApplication::translate("KinectViewer", "Triangulate Cloud", 0, QApplication::UnicodeUTF8));
+        labelRadiusSearch->setText(QApplication::translate("KinectViewer", "Radius search:", 0, QApplication::UnicodeUTF8));
+        labelMaxNeighbors->setText(QApplication::translate("KinectViewer", "Max neighbors:", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

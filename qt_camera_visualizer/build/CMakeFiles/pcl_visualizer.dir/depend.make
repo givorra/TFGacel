@@ -295,6 +295,8 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/eigen.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/file_io.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/grabber.h
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/impl/pcd_io.hpp
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/lzf.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_depth_image.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_device.h
@@ -305,6 +307,7 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_image_bayer_grbg.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_ir_image.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/openni_grabber.h
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/pcd_io.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/ply/byte_order.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/ply/io_operators.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/io/ply/ply.h
@@ -339,6 +342,11 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/search/organized.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/search/pcl_search.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/search/search.h
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/surface/boost.h
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/surface/gp3.h
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/surface/impl/gp3.hpp
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/surface/impl/reconstruction.hpp
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/surface/reconstruction.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/visualization/area_picking_event.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/visualization/boost.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/pcl-1.7/pcl/visualization/cloud_viewer.h
@@ -1400,6 +1408,8 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/b
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/eigen.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/file_io.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/grabber.h
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/impl/pcd_io.hpp
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/lzf.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_depth_image.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_device.h
@@ -1410,6 +1420,7 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/o
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_image_bayer_grbg.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_ir_image.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_grabber.h
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/pcd_io.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/byte_order.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/io_operators.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/ply.h
@@ -1444,6 +1455,11 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/sear
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/search/organized.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/search/pcl_search.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/search/search.h
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/surface/boost.h
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/surface/gp3.h
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/surface/impl/gp3.hpp
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/surface/impl/reconstruction.hpp
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/surface/reconstruction.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/visualization/area_picking_event.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/visualization/boost.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/pcl-1.7/pcl/visualization/cloud_viewer.h
@@ -2020,6 +2036,8 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/boost.
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/eigen.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/file_io.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/grabber.h
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/impl/pcd_io.hpp
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/lzf.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_depth_image.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_device.h
@@ -2030,6 +2048,7 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/openni
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_image_bayer_grbg.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_camera/openni_ir_image.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/openni_grabber.h
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/pcd_io.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/byte_order.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/io_operators.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/ply.h
@@ -2064,6 +2083,11 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/search/oc
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/search/organized.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/search/pcl_search.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/search/search.h
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/surface/boost.h
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/surface/gp3.h
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/surface/impl/gp3.hpp
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/surface/impl/reconstruction.hpp
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/surface/reconstruction.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/visualization/area_picking_event.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/visualization/boost.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/pcl-1.7/pcl/visualization/cloud_viewer.h

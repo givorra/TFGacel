@@ -11,7 +11,13 @@
 #include <vector>
 #include <QMainWindow>
 
-#define MY_POINT_TYPE pcl::PointXYZRGBA
+#define MY_POINT_TYPE pcl::PointXYZ
 #define MY_POINT_CLOUD pcl::PointCloud<MY_POINT_TYPE>
 #define DEBUG_MODE 0
 #define CAMERA_MODE 1
+
+/*
+	Tipo dato PoligonMesh
+	Visualizador MeshLab
+	Visualizar Poligonos en visualizador
+*/

@@ -26,27 +26,33 @@ KinectViewer::KinectViewer (QWidget *parent) :
   mathMorph = new MathMorph();
   //MY_POINT_CLOUD::Ptr cloudViewer_1(new MY_POINT_CLOUD());
   ui->btnRunCamera->setText("Start Camera");
+  // Run camera, no cambiar, puede fallar boton en primer clic
+  ui->btnRunCamera->setChecked(true); 
 }
 
 void KinectViewer::initVisualizers()
 {
-  // Stop camera
-  ui->btnRunCamera->setChecked(false); 
+  initViewer1();
+  initViewer2();
+}
 
+void KinectViewer::initViewer1()
+{
   // Set up the QVTK window (viewer)
   viewer.reset (new pcl::visualization::PCLVisualizer ("Viewer", false));
   ui->qvtkWidget->SetRenderWindow (viewer->getRenderWindow ());
   viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
-  ui->qvtkWidget->update ();
+  ui->qvtkWidget->update ();  
+  firstCall = true;
+}
 
+void KinectViewer::initViewer2()
+{
   // Set up the QVTK window (viewer_2)
   viewer_2.reset (new pcl::visualization::PCLVisualizer ("Viewer 2", false));
   ui->qvtkWidget_2->SetRenderWindow (viewer_2->getRenderWindow ());
   viewer_2->setupInteractor (ui->qvtkWidget_2->GetInteractor (), ui->qvtkWidget_2->GetRenderWindow ());
   ui->qvtkWidget_2->update ();  
-
-  // First call
-  firstCall = true;
   firstCapture = true;
 }
 
@@ -62,21 +68,13 @@ void KinectViewer::processFrameAndUpdateGUI()
       viewer->addPointCloud(cloudViewer_1,"cloudViewer_1");
       viewer->resetCamera();
       ui->qvtkWidget->update();
-      // Init viewer 2
-      //viewer_2->addPointCloud(cloudViewer_1,"cloud");
-      //viewer_2->resetCamera();
-      //ui->qvtkWidget_2->update();
-
       firstCall = false;
-      // Procesar nube actual
-      //processCurrentCloud(cloudViewer_1);
     }
     // Update point cloud
     else 
     {
       viewer->updatePointCloud(cloudViewer_1,"cloudViewer_1");
       ui->qvtkWidget->update();
-      //processCurrentCloud(cloudViewer_1);
     }
     processing = false;
   }
@@ -88,20 +86,8 @@ void KinectViewer::cloud_cb_(const MY_POINT_CLOUD::ConstPtr &cloud)
 {
   if (bRun && runCamera && !processing) 
   {
-    //while(bCopying) 
-      //sleep(0);
-    //cloudViewer_1->points= std::vector<pcl::PointXYZRGBA, Eigen::aligned_allocator<pcl::PointXYZRGBA> >(cloud->points);
-    //pcl::PointCloud<pcl::PointXYZRGBA>::Ptr tmp = boost::const_pointer_cast< pcl::PointCloud<  pcl::PointXYZRGBA>  >  (cloud); 
     MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloud));
     cloudViewer_1 = tmp;
-    //thread t1 = thread(processFrameAndUpdateGUI);
-    //t1.join();
-    /*if(!processing)
-    {
-      processFrameAndUpdateGUI();
-      processing = false;
-    }*/
-    //cout << "Camera cloud size: " << cloudViewer_1->size() << "\n";
   }
   
 }
@@ -158,6 +144,66 @@ int KinectViewer::stop()
 void KinectViewer::on_btnInitVisualizers_clicked()
 {
   initVisualizers();
+}
+  
+void KinectViewer::on_btnTriangulateCloud_clicked()
+{
+  // Load input file into a PointCloud<T> with an appropriate type
+  MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD(*cloudViewer_2));
+  //pcl::PCLPointCloud2 cloud_blob;
+  //pcl::io::loadPCDFile ("bun0.pcd", cloud_blob);
+  //pcl::fromPCLPointCloud2 (cloud_blob, *cloud);
+  //* the data should be available in cloud
+
+  // Normal estimation*
+  pcl::NormalEstimation<MY_POINT_TYPE, pcl::Normal> n;
+  pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
+  pcl::search::KdTree<MY_POINT_TYPE>::Ptr tree (new pcl::search::KdTree<MY_POINT_TYPE>);
+  tree->setInputCloud (cloud);
+  n.setInputCloud (cloud);
+  n.setSearchMethod (tree);
+  n.setKSearch (20);
+  n.compute (*normals);
+  //* normals should not contain the point normals + surface curvatures
+
+  // Concatenate the XYZ and normal fields*
+  pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
+  pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
+  //* cloud_with_normals = cloud + normals
+
+  // Create search tree*
+  pcl::search::KdTree<pcl::PointNormal>::Ptr tree2 (new pcl::search::KdTree<pcl::PointNormal>);
+  tree2->setInputCloud (cloud_with_normals);
+
+  // Initialize objects
+  pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;
+  pcl::PolygonMesh triangles;
+
+  // Set the maximum distance between connected points (maximum edge length)
+  gp3.setSearchRadius (ui->triRadiusSearch->value());
+
+  // Set typical values for the parameters
+  gp3.setMu(2.5);
+  gp3.setMaximumNearestNeighbors(ui->triMaxNeighbors->value());
+  gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
+  gp3.setMinimumAngle(M_PI/18); // 10 degrees
+  gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
+  gp3.setNormalConsistency(false);
+
+  // Get result
+  gp3.setInputCloud (cloud_with_normals);
+  gp3.setSearchMethod (tree2);
+  gp3.reconstruct (triangles);
+
+  initViewer2();
+  viewer_2->addPolygonMesh(triangles,"meshes",0);
+  viewer_2->resetCamera();
+  firstCapture = true;
+
+  // Additional vertex information
+  std::vector<int> parts = gp3.getPartIDs();
+  std::vector<int> states = gp3.getPointStates();
+  ui->btnTriangulateCloud->setChecked(false);
 }
 
 void KinectViewer::on_btnRunCamera_toggled(bool checked)
@@ -262,28 +308,25 @@ void KinectViewer::on_btnCaptureCloud_clicked()
 
 void KinectViewer::on_btnResetCameraViewer1_clicked()
 {
-    //viewer->resetCamera();
-    //setCameraVewer1Parameters();
-    viewer->setCameraPosition(ui->valuePosXViewer1->value(), 
-                                ui->valuePosYViewer1->value(),
-                                ui->valuePosZViewer1->value(), 
-                                ui->valueViewXViewer1->value(), 
-                                ui->valueViewYViewer1->value(),
-                                ui->valueViewZViewer1->value());
-    ui->qvtkWidget->update();
+  viewer->setCameraPosition(ui->valuePosXViewer1->value(), 
+                              ui->valuePosYViewer1->value(),
+                              ui->valuePosZViewer1->value(), 
+                              ui->valueViewXViewer1->value(), 
+                              ui->valueViewYViewer1->value(),
+                              ui->valueViewZViewer1->value());
+  ui->qvtkWidget->update();
 }
 
 
 void KinectViewer::on_btnResetCameraViewer2_clicked()
 {
-    //viewer_2->resetCameraViewpoint();
-    viewer_2->setCameraPosition(ui->valuePosXViewer2->value(), 
-                                ui->valuePosYViewer2->value(),
-                                ui->valuePosZViewer2->value(), 
-                                ui->valueViewXViewer2->value(), 
-                                ui->valueViewYViewer2->value(),
-                                ui->valueViewZViewer2->value());
-    ui->qvtkWidget_2->update();
+  viewer_2->setCameraPosition(ui->valuePosXViewer2->value(), 
+                              ui->valuePosYViewer2->value(),
+                              ui->valuePosZViewer2->value(), 
+                              ui->valueViewXViewer2->value(), 
+                              ui->valueViewYViewer2->value(),
+                              ui->valueViewZViewer2->value());
+  ui->qvtkWidget_2->update();
 }
 
 void KinectViewer::on_btnGetParametersCameraViewer1_clicked()
