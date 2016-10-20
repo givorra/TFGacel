@@ -311,22 +311,22 @@ void KinectViewer::on_btnErodeCloud_toggled(bool checked)
 void KinectViewer::on_btnCaptureCloud_clicked()
 {
     MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloudViewer_1));
-    cloudViewer_2 = tmp;
 
-    cout << "Tamaño nube 2 = " << cloudViewer_2->size() << "\n";
+    cout << "Tamaño nube 2 = " << tmp->size() << "\n";
 
     // Load cloudViewer_2 in viewer_2
     if(firstCapture)
     {
-      viewer_2->addPointCloud(cloudViewer_2,"cloudViewer_2");
+      viewer_2->addPointCloud(tmp,"cloudViewer_2");
       viewer_2->resetCamera();
       firstCapture = false;
     }
     else
     {
-      //cloudViewer_2->clear();
-      viewer_2->updatePointCloud(cloudViewer_2,"cloudViewer_2");
+      cloudViewer_2->clear();
+      viewer_2->updatePointCloud(tmp,"cloudViewer_2");
     }
+    cloudViewer_2 = tmp;
     // Update visualizer
     ui->qvtkWidget_2->update();
     ui->btnRunCamera->setChecked(false); 
