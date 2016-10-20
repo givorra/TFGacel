@@ -75,6 +75,7 @@ public:
     QLabel *labelRadiusSearch;
     QDoubleSpinBox *triMaxNeighbors;
     QLabel *labelMaxNeighbors;
+    QPushButton *btnLoadPointCloud;
 
     void setupUi(QMainWindow *KinectViewer)
     {
@@ -274,6 +275,10 @@ public:
         labelMaxNeighbors->setObjectName(QString::fromUtf8("labelMaxNeighbors"));
         labelMaxNeighbors->setGeometry(QRect(1040, 590, 91, 20));
         labelMaxNeighbors->setFont(font1);
+        btnLoadPointCloud = new QPushButton(centralwidget);
+        btnLoadPointCloud->setObjectName(QString::fromUtf8("btnLoadPointCloud"));
+        btnLoadPointCloud->setGeometry(QRect(170, 630, 110, 50));
+        btnLoadPointCloud->setCheckable(false);
         KinectViewer->setCentralWidget(centralwidget);
 
         retranslateUi(KinectViewer);
@@ -314,6 +319,7 @@ public:
         btnTriangulateCloud->setText(QApplication::translate("KinectViewer", "Triangulate Cloud", 0, QApplication::UnicodeUTF8));
         labelRadiusSearch->setText(QApplication::translate("KinectViewer", "Radius search:", 0, QApplication::UnicodeUTF8));
         labelMaxNeighbors->setText(QApplication::translate("KinectViewer", "Max neighbors:", 0, QApplication::UnicodeUTF8));
+        btnLoadPointCloud->setText(QApplication::translate("KinectViewer", "Load Point Cloud", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

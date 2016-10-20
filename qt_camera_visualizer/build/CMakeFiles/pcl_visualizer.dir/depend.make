@@ -410,8 +410,10 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCo
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qconfig.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qcoreevent.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qdatastream.h
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qdir.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qfeatures.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qfile.h
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qfileinfo.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qglobal.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qhash.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qiodevice.h
@@ -445,6 +447,7 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCo
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qvariant.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtCore/qvector.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/QDoubleSpinBox
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/QFileDialog
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/QMainWindow
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/QPlatformWindow
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/QPushButton
@@ -453,8 +456,10 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGu
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qbrush.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qcolor.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qcursor.h
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qdialog.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qdrag.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qevent.h
+CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qfiledialog.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qfont.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qfontinfo.h
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: /usr/include/qt4/QtGui/qfontmetrics.h
@@ -1528,9 +1533,11 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qconf
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qcoreapplication.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qcoreevent.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qdatastream.h
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qdir.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qeventloop.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qfeatures.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qfile.h
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qfileinfo.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qglobal.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qhash.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtCore/qiodevice.h
@@ -1568,6 +1575,7 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/QActio
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/QApplication
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/QButtonGroup
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/QDoubleSpinBox
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/QFileDialog
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/QHeaderView
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/QLabel
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/QMainWindow
@@ -1588,8 +1596,10 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qbutto
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qcolor.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qcursor.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qdesktopwidget.h
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qdialog.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qdrag.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qevent.h
+CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qfiledialog.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qfont.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qfontinfo.h
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: /usr/include/qt4/QtGui/qfontmetrics.h
@@ -2153,9 +2163,11 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qconfig.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qcoreapplication.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qcoreevent.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qdatastream.h
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qdir.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qeventloop.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qfeatures.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qfile.h
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qfileinfo.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qglobal.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qhash.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qiodevice.h
@@ -2191,6 +2203,7 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qvariant.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtCore/qvector.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/QApplication
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/QDoubleSpinBox
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/QFileDialog
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/QMainWindow
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/QPlatformWindow
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/QPushButton
@@ -2201,8 +2214,10 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qbrush.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qcolor.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qcursor.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qdesktopwidget.h
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qdialog.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qdrag.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qevent.h
+CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qfiledialog.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qfont.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qfontinfo.h
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: /usr/include/qt4/QtGui/qfontmetrics.h

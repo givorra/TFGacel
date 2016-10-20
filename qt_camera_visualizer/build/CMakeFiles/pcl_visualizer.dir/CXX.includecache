@@ -53,6 +53,8 @@ QDoubleSpinBox
 -
 QTimer
 -
+QFileDialog
+-
 pcl/point_cloud.h
 -
 pcl/point_types.h
@@ -3006,6 +3008,16 @@ QtCore/qiodevice.h
 QtCore/qglobal.h
 -
 
+/usr/include/qt4/QtCore/qdir.h
+QtCore/qstring.h
+-
+QtCore/qfileinfo.h
+-
+QtCore/qstringlist.h
+-
+QtCore/qshareddata.h
+-
+
 /usr/include/qt4/QtCore/qeventloop.h
 QtCore/qobject.h
 -
@@ -3020,6 +3032,14 @@ QtCore/qstring.h
 stdio.h
 -
 f32file.h
+-
+
+/usr/include/qt4/QtCore/qfileinfo.h
+QtCore/qfile.h
+-
+QtCore/qlist.h
+-
+QtCore/qshareddata.h
 -
 
 /usr/include/qt4/QtCore/qglobal.h
@@ -3332,6 +3352,10 @@ qbuttongroup.h
 qspinbox.h
 /usr/include/qt4/QtGui/qspinbox.h
 
+/usr/include/qt4/QtGui/QFileDialog
+qfiledialog.h
+/usr/include/qt4/QtGui/qfiledialog.h
+
 /usr/include/qt4/QtGui/QHeaderView
 qheaderview.h
 /usr/include/qt4/QtGui/qheaderview.h
@@ -3476,6 +3500,10 @@ QtGui/qwindowdefs.h
 QtGui/qwidget.h
 -
 
+/usr/include/qt4/QtGui/qdialog.h
+QtGui/qwidget.h
+-
+
 /usr/include/qt4/QtGui/qdrag.h
 QtCore/qobject.h
 -
@@ -3506,6 +3534,14 @@ QtCore/qmap.h
 QtCore/qset.h
 -
 QtCore/qfile.h
+-
+
+/usr/include/qt4/QtGui/qfiledialog.h
+QtCore/qdir.h
+-
+QtCore/qstring.h
+-
+QtGui/qdialog.h
 -
 
 /usr/include/qt4/QtGui/qfont.h

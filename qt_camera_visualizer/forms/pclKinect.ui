@@ -732,6 +732,22 @@
      <string>Max neighbors:</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="btnLoadPointCloud">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>630</y>
+      <width>110</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load Point Cloud</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>

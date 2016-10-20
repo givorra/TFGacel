@@ -11,23 +11,21 @@ KinectViewer::KinectViewer (QWidget *parent) :
   // Timer for 3D/UI update
   tmrTimer = new QTimer(this);
   connect(tmrTimer,SIGNAL(timeout()),this,SLOT(processFrameAndUpdateGUI()));
-  tmrTimer->start(1); // msec
+  tmrTimer->start(10); // msec
 
   // Setup Kinect
-  processing = bRun = false;
+  processing = false;
+  runCamera = false;
+  bCopying = true;
   interface = NULL;  
 
   // Run Kinect grabber
   er = run(); 
   initVisualizers();
-
-  // Show stream
-  runCamera = true;
   mathMorph = new MathMorph();
-  //MY_POINT_CLOUD::Ptr cloudViewer_1(new MY_POINT_CLOUD());
   ui->btnRunCamera->setText("Start Camera");
   // Run camera, no cambiar, puede fallar boton en primer clic
-  ui->btnRunCamera->setChecked(true); 
+  //ui->btnRunCamera->setChecked(true); 
 }
 
 void KinectViewer::initVisualizers()
@@ -58,7 +56,7 @@ void KinectViewer::initViewer2()
 
 void KinectViewer::processFrameAndUpdateGUI() 
 {
-  if(runCamera && !processing)
+  if(runCamera && !processing && !bCopying)
   {
     processing = true;
     // Add point cloud on first call
@@ -84,10 +82,20 @@ void KinectViewer::processFrameAndUpdateGUI()
 
 void KinectViewer::cloud_cb_(const MY_POINT_CLOUD::ConstPtr &cloud)
 {
-  if (bRun && runCamera && !processing) 
+  if (runCamera)
   {
+    while(bCopying && !firstCall) 
+      sleep(0);
+    bCopying = true;
+
+    if(!firstCall)
+      cloudViewer_1->clear();
+
     MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloud));
     cloudViewer_1 = tmp;
+    //processFrameAndUpdateGUI();
+
+    bCopying = false;
   }
   
 }
@@ -111,7 +119,7 @@ KinectViewer::~KinectViewer ()
 
 int KinectViewer::run() 
 {
-  if(bRun == true)
+  if(runCamera == true)
     return -1;
   
   interface = new pcl::OpenNIGrabber();
@@ -121,18 +129,19 @@ int KinectViewer::run()
   interface->registerCallback(f);
   
   // Start interface
-  interface->start(); 
+  //interface->start();
+  //interface->stop(); 
   // Running
-  bRun = true;
+  //bRun = true;
   return 0;
 }
 
 int KinectViewer::stop() 
 {
-  if(bRun == false)
-    return -1;
+  if(runCamera == false)
+    return 0;
   // Not running
-  bRun = false; 
+  runCamera = false; 
   // Stop interface
   interface->stop(); 
   return 0;
@@ -144,6 +153,16 @@ int KinectViewer::stop()
 void KinectViewer::on_btnInitVisualizers_clicked()
 {
   initVisualizers();
+}
+
+void KinectViewer::on_btnLoadPointCloud_clicked()
+{
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Point Cloud"), tr("/home/gacel/"), tr("Point Cloud (*.ply);; Poligon Mesh (*.off)"));
+  cout << qPrintable(fileName) << "\n";
+  string s = qPrintable(fileName);
+  cout << "s: " << s << "\n";
+  //qInfo() << filename.toLatin1() << "\n";
+  //QString fileName = QFileDialog::getOpenFileName(this, tr("Open Text file"), "", tr("Text Files (*.txt)"));
 }
   
 void KinectViewer::on_btnTriangulateCloud_clicked()
@@ -210,11 +229,18 @@ void KinectViewer::on_btnRunCamera_toggled(bool checked)
 {
   if(checked)
   {
+
+    // Start interface
+    interface->start(); 
     runCamera = true;
     ui->btnRunCamera->setText("Stop Camera");
   }
   else 
   {
+
+    // Start interface
+    interface->stop(); 
+    // Running
     runCamera = false;
     ui->btnRunCamera->setText("Start Camera");
   }
@@ -298,6 +324,7 @@ void KinectViewer::on_btnCaptureCloud_clicked()
     }
     else
     {
+      //cloudViewer_2->clear();
       viewer_2->updatePointCloud(cloudViewer_2,"cloudViewer_2");
     }
     // Update visualizer

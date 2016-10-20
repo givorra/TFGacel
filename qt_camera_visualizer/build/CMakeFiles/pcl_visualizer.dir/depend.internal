@@ -411,8 +411,10 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o
  /usr/include/qt4/QtCore/qconfig.h
  /usr/include/qt4/QtCore/qcoreevent.h
  /usr/include/qt4/QtCore/qdatastream.h
+ /usr/include/qt4/QtCore/qdir.h
  /usr/include/qt4/QtCore/qfeatures.h
  /usr/include/qt4/QtCore/qfile.h
+ /usr/include/qt4/QtCore/qfileinfo.h
  /usr/include/qt4/QtCore/qglobal.h
  /usr/include/qt4/QtCore/qhash.h
  /usr/include/qt4/QtCore/qiodevice.h
@@ -446,6 +448,7 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o
  /usr/include/qt4/QtCore/qvariant.h
  /usr/include/qt4/QtCore/qvector.h
  /usr/include/qt4/QtGui/QDoubleSpinBox
+ /usr/include/qt4/QtGui/QFileDialog
  /usr/include/qt4/QtGui/QMainWindow
  /usr/include/qt4/QtGui/QPlatformWindow
  /usr/include/qt4/QtGui/QPushButton
@@ -454,8 +457,10 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o
  /usr/include/qt4/QtGui/qbrush.h
  /usr/include/qt4/QtGui/qcolor.h
  /usr/include/qt4/QtGui/qcursor.h
+ /usr/include/qt4/QtGui/qdialog.h
  /usr/include/qt4/QtGui/qdrag.h
  /usr/include/qt4/QtGui/qevent.h
+ /usr/include/qt4/QtGui/qfiledialog.h
  /usr/include/qt4/QtGui/qfont.h
  /usr/include/qt4/QtGui/qfontinfo.h
  /usr/include/qt4/QtGui/qfontmetrics.h
@@ -1529,9 +1534,11 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o
  /usr/include/qt4/QtCore/qcoreapplication.h
  /usr/include/qt4/QtCore/qcoreevent.h
  /usr/include/qt4/QtCore/qdatastream.h
+ /usr/include/qt4/QtCore/qdir.h
  /usr/include/qt4/QtCore/qeventloop.h
  /usr/include/qt4/QtCore/qfeatures.h
  /usr/include/qt4/QtCore/qfile.h
+ /usr/include/qt4/QtCore/qfileinfo.h
  /usr/include/qt4/QtCore/qglobal.h
  /usr/include/qt4/QtCore/qhash.h
  /usr/include/qt4/QtCore/qiodevice.h
@@ -1569,6 +1576,7 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o
  /usr/include/qt4/QtGui/QApplication
  /usr/include/qt4/QtGui/QButtonGroup
  /usr/include/qt4/QtGui/QDoubleSpinBox
+ /usr/include/qt4/QtGui/QFileDialog
  /usr/include/qt4/QtGui/QHeaderView
  /usr/include/qt4/QtGui/QLabel
  /usr/include/qt4/QtGui/QMainWindow
@@ -1589,8 +1597,10 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o
  /usr/include/qt4/QtGui/qcolor.h
  /usr/include/qt4/QtGui/qcursor.h
  /usr/include/qt4/QtGui/qdesktopwidget.h
+ /usr/include/qt4/QtGui/qdialog.h
  /usr/include/qt4/QtGui/qdrag.h
  /usr/include/qt4/QtGui/qevent.h
+ /usr/include/qt4/QtGui/qfiledialog.h
  /usr/include/qt4/QtGui/qfont.h
  /usr/include/qt4/QtGui/qfontinfo.h
  /usr/include/qt4/QtGui/qfontmetrics.h
@@ -2154,9 +2164,11 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o
  /usr/include/qt4/QtCore/qcoreapplication.h
  /usr/include/qt4/QtCore/qcoreevent.h
  /usr/include/qt4/QtCore/qdatastream.h
+ /usr/include/qt4/QtCore/qdir.h
  /usr/include/qt4/QtCore/qeventloop.h
  /usr/include/qt4/QtCore/qfeatures.h
  /usr/include/qt4/QtCore/qfile.h
+ /usr/include/qt4/QtCore/qfileinfo.h
  /usr/include/qt4/QtCore/qglobal.h
  /usr/include/qt4/QtCore/qhash.h
  /usr/include/qt4/QtCore/qiodevice.h
@@ -2192,6 +2204,7 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o
  /usr/include/qt4/QtCore/qvector.h
  /usr/include/qt4/QtGui/QApplication
  /usr/include/qt4/QtGui/QDoubleSpinBox
+ /usr/include/qt4/QtGui/QFileDialog
  /usr/include/qt4/QtGui/QMainWindow
  /usr/include/qt4/QtGui/QPlatformWindow
  /usr/include/qt4/QtGui/QPushButton
@@ -2202,8 +2215,10 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o
  /usr/include/qt4/QtGui/qcolor.h
  /usr/include/qt4/QtGui/qcursor.h
  /usr/include/qt4/QtGui/qdesktopwidget.h
+ /usr/include/qt4/QtGui/qdialog.h
  /usr/include/qt4/QtGui/qdrag.h
  /usr/include/qt4/QtGui/qevent.h
+ /usr/include/qt4/QtGui/qfiledialog.h
  /usr/include/qt4/QtGui/qfont.h
  /usr/include/qt4/QtGui/qfontinfo.h
  /usr/include/qt4/QtGui/qfontmetrics.h

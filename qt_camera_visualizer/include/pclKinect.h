@@ -11,6 +11,7 @@
 #include <QPushButton>
 #include <QDoubleSpinBox>
 #include <QTimer>
+#include <QFileDialog>
 
 // Point Cloud Library
 #include <pcl/point_cloud.h>
@@ -24,6 +25,7 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/gp3.h>
+
 
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
@@ -50,7 +52,7 @@ public:
 	// Running
 	bool bRun; 
 	// Copying
-	//bool bCopying;   
+	bool bCopying;   
 	// Error
 	int er;
 	bool processing;
@@ -76,13 +78,6 @@ private:
   	MathMorph* mathMorph;
   	// Current cloud
   	MY_POINT_CLOUD::Ptr cloudViewer_1, cloudViewer_2;
-	// XYZ point vector
-	//std::vector<float> cloudX, cloudY, cloudZ;
-	// RGB vector
-	//std::vector<unsigned long> cloudRGB;
-	// Size of cloud
-	//int cloudWidth;
-	//int cloudHeight;
 
 	void processCurrentCloud(MY_POINT_CLOUD::Ptr currentPointCloud);
 	void setCameraViewer1Parameters();
@@ -97,6 +92,7 @@ private slots:
   	void on_btnDilateCloud_toggled(bool checked);
 	void on_btnErodeCloud_toggled(bool checked);
   	void on_btnTriangulateCloud_clicked();
+  	void on_btnLoadPointCloud_clicked();
   	void on_btnCaptureCloud_clicked();
 	void on_btnInitVisualizers_clicked();
 	void on_btnResetCameraViewer1_clicked();
