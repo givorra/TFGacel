@@ -10,6 +10,7 @@
 #include <limits>
 #include <vector>
 #include <QMainWindow>
+#include <exception>
 
 #define MY_POINT_TYPE pcl::PointXYZ
 #define MY_POINT_CLOUD pcl::PointCloud<MY_POINT_TYPE>

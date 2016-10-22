@@ -33,6 +33,8 @@
 #define SIZEI 0.5
 #define LEAFSIZEI 0.001
 
+enum ObjectType {none, pointcloud, polygonmesh};
+
 namespace Ui
 {
   class KinectViewer;
@@ -46,7 +48,15 @@ public:
   explicit KinectViewer (QWidget *parent = 0);
   ~KinectViewer ();
 
-public:
+	// Point cloud callback
+	void cloud_cb_(const MY_POINT_CLOUD::ConstPtr &cloud);	
+	// Run Kinect
+	int run();
+	// Stop Kinect
+	int stop();
+
+
+private:
 	// Grabber
 	pcl::Grabber* interface;    
 	// Running
@@ -60,17 +70,9 @@ public:
 	bool firstCall;
 	bool firstCapture;
   	bool runCamera;
+  	// Esta variable dice que tipo de objeto está cargado en el navegador
+  	ObjectType objectType;
 
-	// Point cloud callback
-	void cloud_cb_(const MY_POINT_CLOUD::ConstPtr &cloud);	
-	// Run Kinect
-	int run();
-	// Stop Kinect
-	int stop();
-
-public slots:
-  void processFrameAndUpdateGUI();
-private:
   	QTimer *tmrTimer;
   	Ui::KinectViewer *ui; 
 
@@ -88,6 +90,10 @@ private:
 protected:
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;  
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_2;  
+
+public slots:
+  void processFrameAndUpdateGUI();
+
 private slots:
   	void on_btnRunCamera_toggled(bool checked);
   	void on_btnDilateCloud_toggled(bool checked);

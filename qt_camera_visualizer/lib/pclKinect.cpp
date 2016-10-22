@@ -18,6 +18,7 @@ KinectViewer::KinectViewer (QWidget *parent) :
   runCamera = false;
   bCopying = true;
   interface = NULL;  
+  objectType = none;
 
   // Run Kinect grabber
   er = run(); 
@@ -128,11 +129,11 @@ int KinectViewer::run()
   if(runCamera == true)
     return -1;
   
-  interface = new pcl::OpenNIGrabber();
+  //interface = new pcl::OpenNIGrabber();
   
-  boost::function<void (const MY_POINT_CLOUD::ConstPtr&)> f = boost::bind (&KinectViewer::cloud_cb_, this, _1);   
+  //boost::function<void (const MY_POINT_CLOUD::ConstPtr&)> f = boost::bind (&KinectViewer::cloud_cb_, this, _1);   
   
-  interface->registerCallback(f);
+  //interface->registerCallback(f);
   
   // Start interface
   //interface->start();
@@ -164,29 +165,50 @@ void KinectViewer::on_btnInitVisualizers_clicked()
 void KinectViewer::on_btnLoadPointCloud_clicked()
 {
   QString fileName = QFileDialog::getOpenFileName(this, tr("Open Point Cloud"), tr("/home/gacel/"), tr("Point Cloud (*.ply);; Poligon Mesh (*.off)"));
-  //cout << qPrintable(fileName) << "\n";
   string path = qPrintable(fileName);
-  //cout << "s: " << s << "\n";
 
   if(qPrintable(fileName) != "")
   {
-    pcl::PLYReader ply_reader; 
-    cout << qPrintable(fileName) << "\n";
-    MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD());
-    //MY_POINT_CLOUD tmp;
+    string::size_type posExtension = path.find_last_of(".");
 
-   // cloudViewer_1->clear(); 
-    if(ply_reader.read(path.c_str(), *cloud) < 0) 
+    if(posExtension != string::npos)
     {
-       cerr << "Error while reading the .ply file" << std::endl; 
-       //return (0);
+      posExtension;
+      string extension = path.substr(posExtension, path.size()-posExtension);
+      cout << "Extension: " << extension << "\n";
+
+      if(extension == ".ply")
+      {
+        cout << "Extension: .ply\n";
+
+        pcl::PLYReader ply_reader; 
+        MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD());
+
+        if(ply_reader.read(path.c_str(), *tmp) < 0) 
+        {
+           cerr << "Error while reading the .ply file" << std::endl; 
+           return;
+        }
+        else
+        {
+          objectType = pointcloud;
+          cloudViewer_1 = tmp;
+          showPointCloudViewer1();
+        }
+      }
+      else if (extension == ".off")
+      {
+        cout << "Extension: .off\n";
+
+        //objectType = polygonmesh;
+        //initViewer1();
+        //viewer_1->addPolygonMesh(triangles,"meshes",0);
+        //viewer_1->resetCamera();
+        //firstCapture = true;
+      }
     }
-    else
-    {
-      cloudViewer_1 = cloud;
-      showPointCloudViewer1();
-    }
-    cout << qPrintable(fileName) << "1\n";
+
+    
 
   }
 
@@ -249,8 +271,8 @@ void KinectViewer::on_btnTriangulateCloud_clicked()
   firstCapture = true;
 
   // Additional vertex information
-  std::vector<int> parts = gp3.getPartIDs();
-  std::vector<int> states = gp3.getPointStates();
+  //std::vector<int> parts = gp3.getPartIDs();
+  //std::vector<int> states = gp3.getPointStates();
   ui->btnTriangulateCloud->setChecked(false);
 }
 
@@ -258,7 +280,21 @@ void KinectViewer::on_btnRunCamera_toggled(bool checked)
 {
   if(checked)
   {
-
+    if(interface == NULL)
+    {
+      try
+      {
+        interface = new pcl::OpenNIGrabber();  
+        boost::function<void (const MY_POINT_CLOUD::ConstPtr&)> f = boost::bind (&KinectViewer::cloud_cb_, this, _1);       
+        interface->registerCallback(f);
+      }
+      catch(exception e)
+      {
+        cerr << "ERROR: No se ha encontrado dispositivo compatible\n";
+        ui->btnRunCamera->setChecked(false);
+        return;
+      }
+    }
     // Start interface
     interface->start(); 
     runCamera = true;
@@ -266,7 +302,8 @@ void KinectViewer::on_btnRunCamera_toggled(bool checked)
   }
   else 
   {
-
+    if(interface == NULL)
+      return;
     // Start interface
     interface->stop(); 
     // Running
@@ -274,40 +311,6 @@ void KinectViewer::on_btnRunCamera_toggled(bool checked)
     ui->btnRunCamera->setText("Start Camera");
   }
 }
-/*
-  Al pulsar el boton btnCaptureCloud se hace una copia de la cloudViewer_1 a la cloudViewer_2 y se actualiza viewer_2
-*/
-  /*
-void KinectViewer::on_btnCaptureCloud_toggled(bool checked)
-{
-  if(checked)
-  {
-    MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloudViewer_1));
-    cloudViewer_2 = tmp;
-
-    cout << "Tamaño nube 2 = " << cloudViewer_2->size() << "\n";
-
-    // Load cloudViewer_2 in viewer_2
-    if(firstCapture)
-    {
-      viewer_2->addPointCloud(cloudViewer_2,"cloudViewer_2");
-      viewer_2->resetCamera();
-      firstCapture = false;
-    }
-    else
-    {
-      viewer_2->updatePointCloud(cloudViewer_2,"cloudViewer_2");
-    }
-    // Update visualizer
-    ui->qvtkWidget_2->update();
-
-    // Stop camera
-    //on_btnRunCamera_toggled(false);
-    ui->btnRunCamera->setChecked(false); 
-    ui->btnCaptureCloud->setChecked(false);
-  }
-}
-*/
 
 void KinectViewer::on_btnDilateCloud_toggled(bool checked)
 {
