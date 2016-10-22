@@ -59,7 +59,15 @@ void KinectViewer::processFrameAndUpdateGUI()
   if(runCamera && !processing && !bCopying)
   {
     processing = true;
-    // Add point cloud on first call
+    showPointCloudViewer1();
+    processing = false;
+  }
+  
+}
+
+void KinectViewer::showPointCloudViewer1()
+{
+// Add point cloud on first call
     if(firstCall == true) 
     {
       // Init viewer 1
@@ -74,9 +82,7 @@ void KinectViewer::processFrameAndUpdateGUI()
       viewer->updatePointCloud(cloudViewer_1,"cloudViewer_1");
       ui->qvtkWidget->update();
     }
-    processing = false;
-  }
-  
+
 }
 
 
@@ -158,9 +164,32 @@ void KinectViewer::on_btnInitVisualizers_clicked()
 void KinectViewer::on_btnLoadPointCloud_clicked()
 {
   QString fileName = QFileDialog::getOpenFileName(this, tr("Open Point Cloud"), tr("/home/gacel/"), tr("Point Cloud (*.ply);; Poligon Mesh (*.off)"));
-  cout << qPrintable(fileName) << "\n";
-  string s = qPrintable(fileName);
-  cout << "s: " << s << "\n";
+  //cout << qPrintable(fileName) << "\n";
+  string path = qPrintable(fileName);
+  //cout << "s: " << s << "\n";
+
+  if(qPrintable(fileName) != "")
+  {
+    pcl::PLYReader ply_reader; 
+    cout << qPrintable(fileName) << "\n";
+    MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD());
+    //MY_POINT_CLOUD tmp;
+
+   // cloudViewer_1->clear(); 
+    if(ply_reader.read(path.c_str(), *cloud) < 0) 
+    {
+       cerr << "Error while reading the .ply file" << std::endl; 
+       //return (0);
+    }
+    else
+    {
+      cloudViewer_1 = cloud;
+      showPointCloudViewer1();
+    }
+    cout << qPrintable(fileName) << "1\n";
+
+  }
+
   //qInfo() << filename.toLatin1() << "\n";
   //QString fileName = QFileDialog::getOpenFileName(this, tr("Open Text file"), "", tr("Text Files (*.txt)"));
 }

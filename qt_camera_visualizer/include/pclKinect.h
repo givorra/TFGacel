@@ -84,6 +84,7 @@ private:
 	void initVisualizers();
 	void initViewer1();
 	void initViewer2();
+	void showPointCloudViewer1();
 protected:
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;  
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_2;  
