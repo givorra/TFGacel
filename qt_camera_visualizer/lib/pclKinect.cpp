@@ -14,11 +14,12 @@ KinectViewer::KinectViewer (QWidget *parent) :
   tmrTimer->start(10); // msec
 
   // Setup Kinect
-  processing = false;
-  runCamera = false;
-  bCopying = true;
+  processing = runCamera = false;
+
+  bCopying = firstCapture = firstCall = true;
   interface = NULL;  
   objectType = none;
+
 
   // Run Kinect grabber
   er = run(); 
@@ -37,6 +38,10 @@ void KinectViewer::initVisualizers()
 
 void KinectViewer::initViewer1()
 {
+  if(!firstCall)
+    cloudViewer_1->clear();
+  // Stop camera grabber if is running
+  //on_btnRunCamera_toggled(false);
   // Set up the QVTK window (viewer)
   viewer.reset (new pcl::visualization::PCLVisualizer ("Viewer", false));
   ui->qvtkWidget->SetRenderWindow (viewer->getRenderWindow ());
@@ -47,6 +52,8 @@ void KinectViewer::initViewer1()
 
 void KinectViewer::initViewer2()
 {
+  if(!firstCapture)
+    cloudViewer_2->clear();
   // Set up the QVTK window (viewer_2)
   viewer_2.reset (new pcl::visualization::PCLVisualizer ("Viewer 2", false));
   ui->qvtkWidget_2->SetRenderWindow (viewer_2->getRenderWindow ());
@@ -217,67 +224,74 @@ void KinectViewer::on_btnLoadPointCloud_clicked()
   //qInfo() << filename.toLatin1() << "\n";
   //QString fileName = QFileDialog::getOpenFileName(this, tr("Open Text file"), "", tr("Text Files (*.txt)"));
 }
-  /*
-void KinectViewer::on_btnTriangulateCloud_clicked()
+  
+void KinectViewer::on_btnTriangulateCloud_toggled(bool checked)
 {
-  // Load input file into a PointCloud<T> with an appropriate type
-  MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD(*cloudViewer_2));
-  //pcl::PCLPointCloud2 cloud_blob;
-  //pcl::io::loadPCDFile ("bun0.pcd", cloud_blob);
-  //pcl::fromPCLPointCloud2 (cloud_blob, *cloud);
-  //* the data should be available in cloud
+  if(checked)
+  {/*
+    if(cloudViewer_2 != NULL)
+    {
+      // Load input file into a PointCloud<T> with an appropriate type
+      MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD(*cloudViewer_2));
+      //pcl::PCLPointCloud2 cloud_blob;
+      //pcl::io::loadPCDFile ("bun0.pcd", cloud_blob);
+      //pcl::fromPCLPointCloud2 (cloud_blob, *cloud);
+      //* the data should be available in cloud
 
-  // Normal estimation*
-  pcl::NormalEstimation<MY_POINT_TYPE, pcl::Normal> n;
-  pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
-  pcl::search::KdTree<MY_POINT_TYPE>::Ptr tree (new pcl::search::KdTree<MY_POINT_TYPE>);
-  tree->setInputCloud (cloud);
-  n.setInputCloud (cloud);
-  n.setSearchMethod (tree);
-  n.setKSearch (20);
-  n.compute (*normals);
-  //* normals should not contain the point normals + surface curvatures
+      // Normal estimation*
+      pcl::NormalEstimation<MY_POINT_TYPE, pcl::Normal> n;
+      pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
+      pcl::search::KdTree<MY_POINT_TYPE>::Ptr tree (new pcl::search::KdTree<MY_POINT_TYPE>);
+      tree->setInputCloud (cloud);
+      n.setInputCloud (cloud);
+      n.setSearchMethod (tree);
+      n.setKSearch (20);
+      n.compute (*normals);
+      //* normals should not contain the point normals + surface curvatures
+      // Concatenate the XYZ and normal fields*
+      pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+      pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
+      //* cloud_with_normals = cloud + normals
 
-  // Concatenate the XYZ and normal fields*
-  pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
-  pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
-  //* cloud_with_normals = cloud + normals
+      // Create search tree*
+      pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree2 (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
+      tree2->setInputCloud (cloud_with_normals);
 
-  // Create search tree*
-  pcl::search::KdTree<pcl::PointNormal>::Ptr tree2 (new pcl::search::KdTree<pcl::PointNormal>);
-  tree2->setInputCloud (cloud_with_normals);
 
-  // Initialize objects
-  pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;
-  pcl::PolygonMesh triangles;
+      // Initialize objects
+      pcl::GreedyProjectionTriangulation<pcl::PointXYZRGBNormal> gp3;
+      pcl::PolygonMesh triangles;
 
-  // Set the maximum distance between connected points (maximum edge length)
-  gp3.setSearchRadius (ui->triRadiusSearch->value());
+      // Set the maximum distance between connected points (maximum edge length)
+      gp3.setSearchRadius (ui->triRadiusSearch->value());
 
-  // Set typical values for the parameters
-  gp3.setMu(2.5);
-  gp3.setMaximumNearestNeighbors(ui->triMaxNeighbors->value());
-  gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
-  gp3.setMinimumAngle(M_PI/18); // 10 degrees
-  gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
-  gp3.setNormalConsistency(false);
+      // Set typical values for the parameters
+      gp3.setMu(2.5);
+      gp3.setMaximumNearestNeighbors(ui->triMaxNeighbors->value());
+      gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
+      gp3.setMinimumAngle(M_PI/18); // 10 degrees
+      gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
+      gp3.setNormalConsistency(false);
 
-  // Get result
-  gp3.setInputCloud (cloud_with_normals);
-  gp3.setSearchMethod (tree2);
-  gp3.reconstruct (triangles);
+      // Get result
+      gp3.setInputCloud (cloud_with_normals);
+      gp3.setSearchMethod (tree2);
+      gp3.reconstruct (triangles);
 
-  initViewer2();
-  viewer_2->addPolygonMesh(triangles,"meshes",0);
-  viewer_2->resetCamera();
-  firstCapture = true;
+      initViewer2();
+      viewer_2->addPolygonMesh(triangles,"meshes",0);
+      viewer_2->resetCamera();
+      firstCapture = true;
 
-  // Additional vertex information
-  //std::vector<int> parts = gp3.getPartIDs();
-  //std::vector<int> states = gp3.getPointStates();
-  ui->btnTriangulateCloud->setChecked(false);
+      // Additional vertex information
+      //std::vector<int> parts = gp3.getPartIDs();
+      //std::vector<int> states = gp3.getPointStates();
+    }*/
+    ui->btnTriangulateCloud->setChecked(false);
+  }
+  
 }
-*/
+
 void KinectViewer::on_btnRunCamera_toggled(bool checked)
 {
   if(checked)
@@ -289,6 +303,7 @@ void KinectViewer::on_btnRunCamera_toggled(bool checked)
         interface = new pcl::OpenNIGrabber();  
         boost::function<void (const MY_POINT_CLOUD::ConstPtr&)> f = boost::bind (&KinectViewer::cloud_cb_, this, _1);       
         interface->registerCallback(f);
+        cout << "hola1\n";
       }
       catch(exception e)
       {
@@ -298,16 +313,21 @@ void KinectViewer::on_btnRunCamera_toggled(bool checked)
       }
     }
     // Start interface
-    interface->start(); 
+   // if(!interface->isRunning())
+      interface->start(); 
+        cout << "hola2\n";
     runCamera = true;
+        cout << "hola3\n";
     ui->btnRunCamera->setText("Stop Camera");
+        cout << "hola4\n";
   }
   else 
   {
     if(interface == NULL)
       return;
     // Start interface
-    interface->stop(); 
+    //if(interface->isRunning())
+      interface->stop(); 
     // Running
     runCamera = false;
     ui->btnRunCamera->setText("Start Camera");

@@ -99,7 +99,7 @@ private slots:
   	void on_btnRunCamera_toggled(bool checked);
   	void on_btnDilateCloud_toggled(bool checked);
 	void on_btnErodeCloud_toggled(bool checked);
-  	//void on_btnTriangulateCloud_clicked();
+  	void on_btnTriangulateCloud_toggled(bool checked);
   	void on_btnLoadPointCloud_clicked();
   	void on_btnCaptureCloud_clicked();
 	void on_btnInitVisualizers_clicked();

@@ -22,7 +22,7 @@ static const uint qt_meta_data_KinectViewer[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -34,15 +34,16 @@ static const uint qt_meta_data_KinectViewer[] = {
       49,   41,   13,   13, 0x08,
       79,   41,   13,   13, 0x08,
      111,   41,   13,   13, 0x08,
-     142,   13,   13,   13, 0x08,
-     173,   13,   13,   13, 0x08,
-     202,   13,   13,   13, 0x08,
-     234,   13,   13,   13, 0x08,
-     269,   13,   13,   13, 0x08,
-     304,   13,   13,   13, 0x08,
-     347,   13,   13,   13, 0x08,
-     390,   13,   13,   13, 0x08,
-     417,   13,   13,   13, 0x08,
+     142,   41,   13,   13, 0x08,
+     179,   13,   13,   13, 0x08,
+     210,   13,   13,   13, 0x08,
+     239,   13,   13,   13, 0x08,
+     271,   13,   13,   13, 0x08,
+     306,   13,   13,   13, 0x08,
+     341,   13,   13,   13, 0x08,
+     384,   13,   13,   13, 0x08,
+     427,   13,   13,   13, 0x08,
+     454,   13,   13,   13, 0x08,
 
        0        // eod
 };
@@ -52,6 +53,7 @@ static const char qt_meta_stringdata_KinectViewer[] = {
     "checked\0on_btnRunCamera_toggled(bool)\0"
     "on_btnDilateCloud_toggled(bool)\0"
     "on_btnErodeCloud_toggled(bool)\0"
+    "on_btnTriangulateCloud_toggled(bool)\0"
     "on_btnLoadPointCloud_clicked()\0"
     "on_btnCaptureCloud_clicked()\0"
     "on_btnInitVisualizers_clicked()\0"
@@ -73,15 +75,16 @@ void KinectViewer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 1: _t->on_btnRunCamera_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 2: _t->on_btnDilateCloud_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->on_btnErodeCloud_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 4: _t->on_btnLoadPointCloud_clicked(); break;
-        case 5: _t->on_btnCaptureCloud_clicked(); break;
-        case 6: _t->on_btnInitVisualizers_clicked(); break;
-        case 7: _t->on_btnResetCameraViewer1_clicked(); break;
-        case 8: _t->on_btnResetCameraViewer2_clicked(); break;
-        case 9: _t->on_btnGetParametersCameraViewer1_clicked(); break;
-        case 10: _t->on_btnGetParametersCameraViewer2_clicked(); break;
-        case 11: _t->on_btnViewer1to2_clicked(); break;
-        case 12: _t->on_btnViewer2to1_clicked(); break;
+        case 4: _t->on_btnTriangulateCloud_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 5: _t->on_btnLoadPointCloud_clicked(); break;
+        case 6: _t->on_btnCaptureCloud_clicked(); break;
+        case 7: _t->on_btnInitVisualizers_clicked(); break;
+        case 8: _t->on_btnResetCameraViewer1_clicked(); break;
+        case 9: _t->on_btnResetCameraViewer2_clicked(); break;
+        case 10: _t->on_btnGetParametersCameraViewer1_clicked(); break;
+        case 11: _t->on_btnGetParametersCameraViewer2_clicked(); break;
+        case 12: _t->on_btnViewer1to2_clicked(); break;
+        case 13: _t->on_btnViewer2to1_clicked(); break;
         default: ;
         }
     }
@@ -119,9 +122,9 @@ int KinectViewer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }
