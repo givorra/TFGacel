@@ -12,7 +12,7 @@
 #include <QMainWindow>
 #include <exception>
 
-#define MY_POINT_TYPE pcl::PointXYZ
+#define MY_POINT_TYPE pcl::PointXYZRGBA
 #define MY_POINT_CLOUD pcl::PointCloud<MY_POINT_TYPE>
 #define DEBUG_MODE 0
 #define CAMERA_MODE 1

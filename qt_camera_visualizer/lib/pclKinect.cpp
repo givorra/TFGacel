@@ -199,7 +199,9 @@ void KinectViewer::on_btnLoadPointCloud_clicked()
       else if (extension == ".off")
       {
         cout << "Extension: .off\n";
-
+        OFFReader off_reader;
+        pcl::PolygonMesh mesh;
+        off_reader.read(path, mesh);
         //objectType = polygonmesh;
         //initViewer1();
         //viewer_1->addPolygonMesh(triangles,"meshes",0);
@@ -215,7 +217,7 @@ void KinectViewer::on_btnLoadPointCloud_clicked()
   //qInfo() << filename.toLatin1() << "\n";
   //QString fileName = QFileDialog::getOpenFileName(this, tr("Open Text file"), "", tr("Text Files (*.txt)"));
 }
-  
+  /*
 void KinectViewer::on_btnTriangulateCloud_clicked()
 {
   // Load input file into a PointCloud<T> with an appropriate type
@@ -275,7 +277,7 @@ void KinectViewer::on_btnTriangulateCloud_clicked()
   //std::vector<int> states = gp3.getPointStates();
   ui->btnTriangulateCloud->setChecked(false);
 }
-
+*/
 void KinectViewer::on_btnRunCamera_toggled(bool checked)
 {
   if(checked)
@@ -316,12 +318,14 @@ void KinectViewer::on_btnDilateCloud_toggled(bool checked)
 {
   if(checked)
   {
-    if(CAMERA_MODE == 1)
-      cloudViewer_2 = mathMorph->camera_dilate(cloudViewer_2, ui->dilateSizeValue->value());
+    if(cloudViewer_2 != NULL)
+    {
+      if(CAMERA_MODE == 1)
+        cloudViewer_2 = mathMorph->camera_dilate(cloudViewer_2, ui->dilateSizeValue->value());
 
-    viewer_2->updatePointCloud(cloudViewer_2,"cloudViewer_2");
-    ui->qvtkWidget_2->update();
-
+      viewer_2->updatePointCloud(cloudViewer_2,"cloudViewer_2");
+      ui->qvtkWidget_2->update();
+    }
     ui->btnDilateCloud->setChecked(false);
   }
 }
@@ -330,18 +334,22 @@ void KinectViewer::on_btnErodeCloud_toggled(bool checked)
 {
   if(checked)
   {
-    if(CAMERA_MODE == 1)
-      cloudViewer_2 = mathMorph->camera_erode(cloudViewer_2, ui->erodeSizeValue->value());
+    if(cloudViewer_2 != NULL)
+    {
+      if(CAMERA_MODE == 1)
+        cloudViewer_2 = mathMorph->camera_erode(cloudViewer_2, ui->erodeSizeValue->value());
 
-    viewer_2->updatePointCloud(cloudViewer_2,"cloudViewer_2");
-    ui->qvtkWidget_2->update();
-
+      viewer_2->updatePointCloud(cloudViewer_2,"cloudViewer_2");
+      ui->qvtkWidget_2->update();
+    }
     ui->btnErodeCloud->setChecked(false);
   }
 }
 
 void KinectViewer::on_btnCaptureCloud_clicked()
 {
+  if(cloudViewer_1 != NULL)
+  {
     MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloudViewer_1));
 
     cout << "Tamaño nube 2 = " << tmp->size() << "\n";
@@ -362,7 +370,7 @@ void KinectViewer::on_btnCaptureCloud_clicked()
     // Update visualizer
     ui->qvtkWidget_2->update();
     ui->btnRunCamera->setChecked(false); 
-  
+  }
 }
 
 void KinectViewer::on_btnResetCameraViewer1_clicked()

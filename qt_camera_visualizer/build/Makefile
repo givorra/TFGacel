@@ -135,6 +135,30 @@ include/moc_MathMorph.cxx.s:
 	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.s
 .PHONY : include/moc_MathMorph.cxx.s
 
+include/moc_OFFReader.o: include/moc_OFFReader.cxx.o
+.PHONY : include/moc_OFFReader.o
+
+# target to build an object file
+include/moc_OFFReader.cxx.o:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o
+.PHONY : include/moc_OFFReader.cxx.o
+
+include/moc_OFFReader.i: include/moc_OFFReader.cxx.i
+.PHONY : include/moc_OFFReader.i
+
+# target to preprocess a source file
+include/moc_OFFReader.cxx.i:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.i
+.PHONY : include/moc_OFFReader.cxx.i
+
+include/moc_OFFReader.s: include/moc_OFFReader.cxx.s
+.PHONY : include/moc_OFFReader.s
+
+# target to generate assembly for a file
+include/moc_OFFReader.cxx.s:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.s
+.PHONY : include/moc_OFFReader.cxx.s
+
 include/moc_common.o: include/moc_common.cxx.o
 .PHONY : include/moc_common.o
 
@@ -207,6 +231,30 @@ lib/MathMorph.cpp.s:
 	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.s
 .PHONY : lib/MathMorph.cpp.s
 
+lib/OFFReader.o: lib/OFFReader.cpp.o
+.PHONY : lib/OFFReader.o
+
+# target to build an object file
+lib/OFFReader.cpp.o:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o
+.PHONY : lib/OFFReader.cpp.o
+
+lib/OFFReader.i: lib/OFFReader.cpp.i
+.PHONY : lib/OFFReader.i
+
+# target to preprocess a source file
+lib/OFFReader.cpp.i:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.i
+.PHONY : lib/OFFReader.cpp.i
+
+lib/OFFReader.s: lib/OFFReader.cpp.s
+.PHONY : lib/OFFReader.s
+
+# target to generate assembly for a file
+lib/OFFReader.cpp.s:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.s
+.PHONY : lib/OFFReader.cpp.s
+
 lib/pclKinect.o: lib/pclKinect.cpp.o
 .PHONY : lib/pclKinect.o
 
@@ -267,6 +315,9 @@ help:
 	@echo "... include/moc_MathMorph.o"
 	@echo "... include/moc_MathMorph.i"
 	@echo "... include/moc_MathMorph.s"
+	@echo "... include/moc_OFFReader.o"
+	@echo "... include/moc_OFFReader.i"
+	@echo "... include/moc_OFFReader.s"
 	@echo "... include/moc_common.o"
 	@echo "... include/moc_common.i"
 	@echo "... include/moc_common.s"
@@ -276,6 +327,9 @@ help:
 	@echo "... lib/MathMorph.o"
 	@echo "... lib/MathMorph.i"
 	@echo "... lib/MathMorph.s"
+	@echo "... lib/OFFReader.o"
+	@echo "... lib/OFFReader.i"
+	@echo "... lib/OFFReader.s"
 	@echo "... lib/pclKinect.o"
 	@echo "... lib/pclKinect.i"
 	@echo "... lib/pclKinect.s"

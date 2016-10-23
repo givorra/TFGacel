@@ -1,5 +1,6 @@
 # Hashes of file build rules.
 5f2dc478983222f376e586487aca5ede include/moc_MathMorph.cxx
+adf78ee82e51c6c2708da19a5f5cf792 include/moc_OFFReader.cxx
 efdd5b1cffa8bdd8b136ea86bd1b54a4 include/moc_common.cxx
 dd8ac2dd36ada83fd60202fab6fbf9ca include/moc_pclKinect.cxx
 2049043078e65ba6d649ebbb68c1ab6d ui_pclKinect.h

@@ -14,8 +14,8 @@ include_directories(lib)
 include_directories(src)
 include_directories(forms)
 
-set  (project_SOURCES src/main.cpp lib/pclKinect.cpp lib/MathMorph.cpp)
-set  (project_HEADERS include/pclKinect.h include/common.h include/MathMorph.h)
+set  (project_SOURCES src/main.cpp lib/pclKinect.cpp lib/MathMorph.cpp lib/OFFReader.cpp)
+set  (project_HEADERS include/pclKinect.h include/common.h include/MathMorph.h include/OFFReader.h)
 set  (project_FORMS   forms/pclKinect.ui)
 set  (VTK_LIBRARIES   vtkRendering vtkGraphics vtkHybrid QVTK)
 

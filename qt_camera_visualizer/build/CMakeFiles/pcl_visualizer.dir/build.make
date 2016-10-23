@@ -69,9 +69,14 @@ include/moc_MathMorph.cxx: ../include/MathMorph.h
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating include/moc_MathMorph.cxx"
 	cd /home/gacel/TFGacel/qt_camera_visualizer/build/include && /usr/lib/x86_64-linux-gnu/qt4/bin/moc @/home/gacel/TFGacel/qt_camera_visualizer/build/include/moc_MathMorph.cxx_parameters
 
+include/moc_OFFReader.cxx: ../include/OFFReader.h
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_5)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating include/moc_OFFReader.cxx"
+	cd /home/gacel/TFGacel/qt_camera_visualizer/build/include && /usr/lib/x86_64-linux-gnu/qt4/bin/moc @/home/gacel/TFGacel/qt_camera_visualizer/build/include/moc_OFFReader.cxx_parameters
+
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: CMakeFiles/pcl_visualizer.dir/flags.make
 CMakeFiles/pcl_visualizer.dir/src/main.cpp.o: ../src/main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/pcl_visualizer.dir/src/main.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/src/main.cpp.o -c /home/gacel/TFGacel/qt_camera_visualizer/src/main.cpp
 
@@ -94,7 +99,7 @@ CMakeFiles/pcl_visualizer.dir/src/main.cpp.o.provides.build: CMakeFiles/pcl_visu
 
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: CMakeFiles/pcl_visualizer.dir/flags.make
 CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o: ../lib/pclKinect.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o -c /home/gacel/TFGacel/qt_camera_visualizer/lib/pclKinect.cpp
 
@@ -117,7 +122,7 @@ CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o.provides.build: CMakeFiles/pcl
 
 CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o: CMakeFiles/pcl_visualizer.dir/flags.make
 CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o: ../lib/MathMorph.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o -c /home/gacel/TFGacel/qt_camera_visualizer/lib/MathMorph.cpp
 
@@ -138,9 +143,32 @@ CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o.provides: CMakeFiles/pcl_visua
 
 CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o.provides.build: CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o
 
+CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o: CMakeFiles/pcl_visualizer.dir/flags.make
+CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o: ../lib/OFFReader.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o -c /home/gacel/TFGacel/qt_camera_visualizer/lib/OFFReader.cpp
+
+CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/gacel/TFGacel/qt_camera_visualizer/lib/OFFReader.cpp > CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.i
+
+CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/gacel/TFGacel/qt_camera_visualizer/lib/OFFReader.cpp -o CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.s
+
+CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o.requires:
+.PHONY : CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o.requires
+
+CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o.provides: CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o.requires
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o.provides.build
+.PHONY : CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o.provides
+
+CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o.provides.build: CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o
+
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: CMakeFiles/pcl_visualizer.dir/flags.make
 CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o: include/moc_pclKinect.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o -c /home/gacel/TFGacel/qt_camera_visualizer/build/include/moc_pclKinect.cxx
 
@@ -163,7 +191,7 @@ CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o.provides.build: CMakeF
 
 CMakeFiles/pcl_visualizer.dir/include/moc_common.cxx.o: CMakeFiles/pcl_visualizer.dir/flags.make
 CMakeFiles/pcl_visualizer.dir/include/moc_common.cxx.o: include/moc_common.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/pcl_visualizer.dir/include/moc_common.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/include/moc_common.cxx.o -c /home/gacel/TFGacel/qt_camera_visualizer/build/include/moc_common.cxx
 
@@ -186,7 +214,7 @@ CMakeFiles/pcl_visualizer.dir/include/moc_common.cxx.o.provides.build: CMakeFile
 
 CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o: CMakeFiles/pcl_visualizer.dir/flags.make
 CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o: include/moc_MathMorph.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_12)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o -c /home/gacel/TFGacel/qt_camera_visualizer/build/include/moc_MathMorph.cxx
 
@@ -207,14 +235,39 @@ CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o.provides: CMakeFiles/p
 
 CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o.provides.build: CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o
 
+CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o: CMakeFiles/pcl_visualizer.dir/flags.make
+CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o: include/moc_OFFReader.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles $(CMAKE_PROGRESS_13)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o -c /home/gacel/TFGacel/qt_camera_visualizer/build/include/moc_OFFReader.cxx
+
+CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/gacel/TFGacel/qt_camera_visualizer/build/include/moc_OFFReader.cxx > CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.i
+
+CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/gacel/TFGacel/qt_camera_visualizer/build/include/moc_OFFReader.cxx -o CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.s
+
+CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o.requires:
+.PHONY : CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o.requires
+
+CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o.provides: CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o.requires
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o.provides.build
+.PHONY : CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o.provides
+
+CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o.provides.build: CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o
+
 # Object files for target pcl_visualizer
 pcl_visualizer_OBJECTS = \
 "CMakeFiles/pcl_visualizer.dir/src/main.cpp.o" \
 "CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o" \
 "CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o" \
+"CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o" \
 "CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o" \
 "CMakeFiles/pcl_visualizer.dir/include/moc_common.cxx.o" \
-"CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o"
+"CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o" \
+"CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o"
 
 # External object files for target pcl_visualizer
 pcl_visualizer_EXTERNAL_OBJECTS =
@@ -222,9 +275,11 @@ pcl_visualizer_EXTERNAL_OBJECTS =
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/src/main.cpp.o
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o
+pcl_visualizer: CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/include/moc_common.cxx.o
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o
+pcl_visualizer: CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/build.make
 pcl_visualizer: /usr/lib/x86_64-linux-gnu/libQtGui.so
 pcl_visualizer: /usr/lib/x86_64-linux-gnu/libQtCore.so
@@ -321,9 +376,11 @@ CMakeFiles/pcl_visualizer.dir/build: pcl_visualizer
 CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/src/main.cpp.o.requires
 CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o.requires
 CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o.requires
+CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o.requires
 CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o.requires
 CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/include/moc_common.cxx.o.requires
 CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o.requires
+CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/include/moc_OFFReader.cxx.o.requires
 .PHONY : CMakeFiles/pcl_visualizer.dir/requires
 
 CMakeFiles/pcl_visualizer.dir/clean:
@@ -334,6 +391,7 @@ CMakeFiles/pcl_visualizer.dir/depend: ui_pclKinect.h
 CMakeFiles/pcl_visualizer.dir/depend: include/moc_pclKinect.cxx
 CMakeFiles/pcl_visualizer.dir/depend: include/moc_common.cxx
 CMakeFiles/pcl_visualizer.dir/depend: include/moc_MathMorph.cxx
+CMakeFiles/pcl_visualizer.dir/depend: include/moc_OFFReader.cxx
 	cd /home/gacel/TFGacel/qt_camera_visualizer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/gacel/TFGacel/qt_camera_visualizer /home/gacel/TFGacel/qt_camera_visualizer /home/gacel/TFGacel/qt_camera_visualizer/build /home/gacel/TFGacel/qt_camera_visualizer/build /home/gacel/TFGacel/qt_camera_visualizer/build/CMakeFiles/pcl_visualizer.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/pcl_visualizer.dir/depend
 
