@@ -26,6 +26,10 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/gp3.h>
+#include <pcl/surface/poisson.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/surface/mls.h>
+#include <pcl/features/normal_3d_omp.h>
 
 
 // Visualization Toolkit (VTK)
@@ -88,6 +92,9 @@ private:
 	void initViewer1();
 	void initViewer2();
 	void showPointCloudViewer1();
+	void greedyReconstruction();
+	void poissonReconstruction();
+
 protected:
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;  
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_2;  

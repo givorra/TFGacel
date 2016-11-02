@@ -160,77 +160,27 @@ int KinectViewer::stop()
   return 0;
 } 
 
+pcl::PointCloud<MY_POINT_TYPE>::Ptr
+hardCopy (pcl::PointCloud<MY_POINT_TYPE> cloud_ptr) {
+    pcl::PointCloud<MY_POINT_TYPE>::Ptr cloud_out (new pcl::PointCloud<MY_POINT_TYPE>);
+    MY_POINT_TYPE point;
 
-// ------------------------------------------------ SLOTS ------------------------------------------------------//
-
-void KinectViewer::on_btnInitVisualizers_clicked()
-{
-  initVisualizers();
-}
-
-void KinectViewer::on_btnLoadPointCloud_clicked()
-{
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Point Cloud"), tr("/home/gacel/"), tr("Point Cloud (*.ply);; Poligon Mesh (*.off)"));
-  string path = qPrintable(fileName);
-
-  if(qPrintable(fileName) != "")
-  {
-    string::size_type posExtension = path.find_last_of(".");
-
-    if(posExtension != string::npos)
-    {
-      posExtension;
-      string extension = path.substr(posExtension, path.size()-posExtension);
-      cout << "Extension: " << extension << "\n";
-
-      if(extension == ".ply")
-      {
-        cout << "Extension: .ply\n";
-
-        pcl::PLYReader ply_reader; 
-        MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD());
-
-        if(ply_reader.read(path.c_str(), *tmp) < 0) 
-        {
-           cerr << "Error while reading the .ply file" << std::endl; 
-           return;
-        }
-        else
-        {
-          ui->btnRunCamera->setChecked(false);
-          objectType = pointcloud;
-          cloudViewer_1 = tmp;
-          showPointCloudViewer1();
-        }
-      }
-      else if (extension == ".off")
-      {
-        cout << "Extension: .off\n";
-        OFFReader off_reader;
-        pcl::PolygonMesh mesh;
-        off_reader.read(path, mesh);
-        //objectType = polygonmesh;
-        //initViewer1();
-        //viewer_1->addPolygonMesh(triangles,"meshes",0);
-        //viewer_1->resetCamera();
-        //firstCapture = true;
-      }
+    for (int i=0; i<cloud_ptr.size(); i++) {
+        MY_POINT_TYPE point;
+        point.x=cloud_ptr.points[i].x;
+        point.y=cloud_ptr.points[i].y;
+        point.z=cloud_ptr.points[i].z;
+        point.r=cloud_ptr.points[i].r;
+        point.g=cloud_ptr.points[i].g;
+        point.b=cloud_ptr.points[i].b;
+        cloud_out->points.push_back(point);
     }
-
-    
-
-  }
-
-  //qInfo() << filename.toLatin1() << "\n";
-  //QString fileName = QFileDialog::getOpenFileName(this, tr("Open Text file"), "", tr("Text Files (*.txt)"));
+    return cloud_out;
 }
-  
-void KinectViewer::on_btnTriangulateCloud_toggled(bool checked)
+
+void KinectViewer::greedyReconstruction()
 {
-  if(checked)
-  {
-    if(cloudViewer_2 != NULL)
-    {
+
       // Load input file into a PointCloud<T> with an appropriate type
       MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD(*cloudViewer_2));
       //pcl::PCLPointCloud2 cloud_blob;
@@ -286,6 +236,133 @@ void KinectViewer::on_btnTriangulateCloud_toggled(bool checked)
       // Additional vertex information
       //std::vector<int> parts = gp3.getPartIDs();
       //std::vector<int> states = gp3.getPointStates();
+}
+
+void KinectViewer::poissonReconstruction()
+{
+  cout << "begin passthrough filter" << endl;
+      MY_POINT_CLOUD::Ptr filtered(new MY_POINT_CLOUD());
+      MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD(*cloudViewer_2));
+      pcl::PassThrough<MY_POINT_TYPE> filter;
+      filter.setInputCloud(cloud);
+      filter.filter(*filtered);
+      cout << "passthrough filter complete" << endl;
+
+
+      cout << "begin normal estimation" << endl;
+      pcl::NormalEstimationOMP<MY_POINT_TYPE, pcl::Normal> ne;
+      ne.setNumberOfThreads(8);
+      ne.setInputCloud(filtered);
+      ne.setRadiusSearch(0.01);
+      Eigen::Vector4f centroid;
+      compute3DCentroid(*filtered, centroid);
+      ne.setViewPoint(centroid[0], centroid[1], centroid[2]);
+
+      pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>());
+      ne.compute(*cloud_normals);
+      cout << "normal estimation complete" << endl;
+      cout << "reverse normals' direction" << endl;
+
+      for(size_t i = 0; i < cloud_normals->size(); ++i){
+        cloud_normals->points[i].normal_x *= -1;
+        cloud_normals->points[i].normal_y *= -1;
+        cloud_normals->points[i].normal_z *= -1;
+      }
+
+      cout << "combine points and normals" << endl;
+      pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_smoothed_normals(new pcl::PointCloud<pcl::PointXYZRGBNormal>());
+      concatenateFields(*filtered, *cloud_normals, *cloud_smoothed_normals);
+
+      cout << "begin poisson reconstruction" << endl;
+      pcl::Poisson<pcl::PointXYZRGBNormal> poisson;
+      poisson.setDepth(9);
+      poisson.setInputCloud(cloud_smoothed_normals);
+      pcl::PolygonMesh mesh;
+      poisson.reconstruct(mesh);
+
+      initViewer2();
+      viewer_2->addPolygonMesh(mesh,"meshes",0);
+      viewer_2->resetCamera();
+      firstCapture = true;
+}
+  
+// ------------------------------------------------ SLOTS ------------------------------------------------------//
+
+void KinectViewer::on_btnInitVisualizers_clicked()
+{
+  initVisualizers();
+}
+
+void KinectViewer::on_btnLoadPointCloud_clicked()
+{
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Point Cloud"), tr("/home/gacel/"), tr("Point Cloud (*.ply);; Poligon Mesh (*.off)"));
+  string path = qPrintable(fileName);
+
+  if(qPrintable(fileName) != "")
+  {
+    string::size_type posExtension = path.find_last_of(".");
+
+    if(posExtension != string::npos)
+    {
+      posExtension;
+      string extension = path.substr(posExtension, path.size()-posExtension);
+      cout << "Extension: " << extension << "\n";
+
+      if(extension == ".ply")
+      {
+        cout << "Extension: .ply\n";
+
+        pcl::PLYReader ply_reader; 
+        MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD());
+
+        if(ply_reader.read(path.c_str(), *tmp) < 0) 
+        {
+           cerr << "Error while reading the .ply file" << std::endl; 
+           return;
+        }
+        else
+        {
+          ui->btnRunCamera->setChecked(false);
+          objectType = pointcloud;
+          //MY_POINT_CLOUD::Ptr tmp2(new MY_POINT_CLOUD(*tmp));
+          cloudViewer_1 = hardCopy(*tmp);
+          showPointCloudViewer1();
+          //cout << "Sensor origin cloudViewer_1" << cloudViewer_1->sensor_origin_ << endl;
+          //cout << "Sensor orientation cloudViewer_1" << cloudViewer_1->sensor_orientation_ << endl;
+          //cout << "Sensor origin tmp" << tmp->sensor_origin_ << endl;
+          //cout << "Sensor orientation tmp" << tmp->sensor_orientation_ << endl;
+        }
+      }
+      else if (extension == ".off")
+      {
+        cout << "Extension: .off\n";
+        OFFReader off_reader;
+        pcl::PolygonMesh mesh;
+        off_reader.read(path, mesh);
+        //objectType = polygonmesh;
+        //initViewer1();
+        //viewer_1->addPolygonMesh(triangles,"meshes",0);
+        //viewer_1->resetCamera();
+        //firstCapture = true;
+      }
+    }
+
+    
+
+  }
+
+  //qInfo() << filename.toLatin1() << "\n";
+  //QString fileName = QFileDialog::getOpenFileName(this, tr("Open Text file"), "", tr("Text Files (*.txt)"));
+}
+
+void KinectViewer::on_btnTriangulateCloud_toggled(bool checked)
+{
+  if(checked)
+  {
+    if(cloudViewer_2 != NULL)
+    {
+      //greedyReconstruction();
+      poissonReconstruction();
     }
     ui->btnTriangulateCloud->setChecked(false);
   }
