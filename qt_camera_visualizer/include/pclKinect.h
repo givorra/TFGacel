@@ -74,6 +74,7 @@ private:
 	//
 	bool firstCall;
 	bool firstCapture;
+	bool firstMesh;
   	bool runCamera;
   	// Esta variable dice que tipo de objeto está cargado en el navegador
   	ObjectType objectType;
@@ -85,13 +86,15 @@ private:
   	MathMorph* mathMorph;
   	// Current cloud
   	MY_POINT_CLOUD::Ptr cloudViewer_1, cloudViewer_2;
+  	pcl::PolygonMesh meshViewer_1, meshViewer_2;
 
 	void processCurrentCloud(MY_POINT_CLOUD::Ptr currentPointCloud);
 	void setCameraViewer1Parameters();
 	void initVisualizers();
 	void initViewer1();
 	void initViewer2();
-	void showPointCloudViewer1();
+	void showPointCloudViewer1(MY_POINT_CLOUD::Ptr cloud);
+	void showMeshViewer2();
 	void greedyReconstruction();
 	void poissonReconstruction();
 
@@ -110,10 +113,12 @@ private slots:
   	void on_btnLoadPointCloud_clicked();
   	void on_btnCaptureCloud_clicked();
 	void on_btnInitVisualizers_clicked();
+	/*
 	void on_btnResetCameraViewer1_clicked();
 	void on_btnResetCameraViewer2_clicked();
 	void on_btnGetParametersCameraViewer1_clicked();
 	void on_btnGetParametersCameraViewer2_clicked();
+	*/
 	void on_btnViewer1to2_clicked();
 	void on_btnViewer2to1_clicked();
 };

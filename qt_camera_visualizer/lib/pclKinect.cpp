@@ -52,14 +52,15 @@ void KinectViewer::initViewer1()
 
 void KinectViewer::initViewer2()
 {
-  if(!firstCapture)
-    cloudViewer_2->clear();
+  //if(!firstCapture)
+    //cloudViewer_2->clear();
   // Set up the QVTK window (viewer_2)
   viewer_2.reset (new pcl::visualization::PCLVisualizer ("Viewer 2", false));
   ui->qvtkWidget_2->SetRenderWindow (viewer_2->getRenderWindow ());
   viewer_2->setupInteractor (ui->qvtkWidget_2->GetInteractor (), ui->qvtkWidget_2->GetRenderWindow ());
   ui->qvtkWidget_2->update ();  
   firstCapture = true;
+  firstMesh = true;
 }
 
 void KinectViewer::processFrameAndUpdateGUI() 
@@ -67,31 +68,67 @@ void KinectViewer::processFrameAndUpdateGUI()
   if(runCamera && !processing && !bCopying)
   {
     processing = true;
-    showPointCloudViewer1();
+    showPointCloudViewer1(cloudViewer_1);
     processing = false;
   }
   
 }
 
+void KinectViewer::showPointCloudViewer1(MY_POINT_CLOUD::Ptr cloud)
+{
+// Add point cloud on first call
+  if(firstCall == true) 
+  {
+    // Init viewer 1
+    viewer->addPointCloud(cloud,"cloudViewer_1");
+    viewer->resetCamera();
+    ui->qvtkWidget->update();
+    firstCall = false;
+  }
+  // Update point cloud
+  else 
+  {
+    viewer->updatePointCloud(cloud,"cloudViewer_1");
+    ui->qvtkWidget->update();
+  }
+  cloudViewer_1 = cloud;
+}
+
+void KinectViewer::showMeshViewer2()
+{
+  if(firstMesh)
+  {
+    initViewer2();
+    viewer_2->addPolygonMesh(meshViewer_2,"mesh");
+    viewer_2->resetCamera();
+  }
+  else
+  {
+    viewer_2->updatePolygonMesh(meshViewer_2,"mesh");
+    ui->qvtkWidget->update();
+  }
+}
+
+/*
 void KinectViewer::showPointCloudViewer1()
 {
 // Add point cloud on first call
-    if(firstCall == true) 
-    {
-      // Init viewer 1
-      viewer->addPointCloud(cloudViewer_1,"cloudViewer_1");
-      viewer->resetCamera();
-      ui->qvtkWidget->update();
-      firstCall = false;
-    }
-    // Update point cloud
-    else 
-    {
-      viewer->updatePointCloud(cloudViewer_1,"cloudViewer_1");
-      ui->qvtkWidget->update();
-    }
-
-}
+  if(firstCall == true) 
+  {
+    initViewer1();
+    // Init viewer 1
+    viewer->addPointCloud(cloudViewer_1,"cloudViewer_1");
+    viewer->resetCamera();
+    ui->qvtkWidget->update();
+    firstCall = false;
+  }
+  // Update point cloud
+  else 
+  {
+    viewer->updatePointCloud(cloudViewer_1,"cloudViewer_1");
+    ui->qvtkWidget->update();
+  }
+}*/
 
 
 void KinectViewer::cloud_cb_(const MY_POINT_CLOUD::ConstPtr &cloud)
@@ -277,13 +314,13 @@ void KinectViewer::poissonReconstruction()
       pcl::Poisson<pcl::PointXYZRGBNormal> poisson;
       poisson.setDepth(9);
       poisson.setInputCloud(cloud_smoothed_normals);
-      pcl::PolygonMesh mesh;
-      poisson.reconstruct(mesh);
+      //pcl::PolygonMesh mesh;
+      poisson.reconstruct(meshViewer_2);
 
-      initViewer2();
-      viewer_2->addPolygonMesh(mesh,"meshes",0);
-      viewer_2->resetCamera();
-      firstCapture = true;
+      //initViewer2();
+      //viewer_2->addPolygonMesh(meshViewer_2,"meshes",0);
+      //viewer_2->resetCamera();
+      showMeshViewer2();
 }
   
 // ------------------------------------------------ SLOTS ------------------------------------------------------//
@@ -323,10 +360,11 @@ void KinectViewer::on_btnLoadPointCloud_clicked()
         else
         {
           ui->btnRunCamera->setChecked(false);
-          objectType = pointcloud;
+          //objectType = pointcloud;
           //MY_POINT_CLOUD::Ptr tmp2(new MY_POINT_CLOUD(*tmp));
+          initViewer1();
           cloudViewer_1 = hardCopy(*tmp);
-          showPointCloudViewer1();
+          showPointCloudViewer1(cloudViewer_1);
           //cout << "Sensor origin cloudViewer_1" << cloudViewer_1->sensor_origin_ << endl;
           //cout << "Sensor orientation cloudViewer_1" << cloudViewer_1->sensor_orientation_ << endl;
           //cout << "Sensor origin tmp" << tmp->sensor_origin_ << endl;
@@ -443,15 +481,18 @@ void KinectViewer::on_btnCaptureCloud_clicked()
 {
   if(cloudViewer_1 != NULL)
   {
+    ui->btnRunCamera->setChecked(false); 
     MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloudViewer_1));
-
-    cout << "Tamaño nube 2 = " << tmp->size() << "\n";
+    initViewer2();
+    // Set de same camera parameters
+    on_btnViewer1to2_clicked();
+    //cout << "Tamaño nube 2 = " << tmp->size() << "\n";
 
     // Load cloudViewer_2 in viewer_2
     if(firstCapture)
     {
       viewer_2->addPointCloud(tmp,"cloudViewer_2");
-      viewer_2->resetCamera();
+      //viewer_2->resetCamera();
       firstCapture = false;
     }
     else
@@ -462,10 +503,9 @@ void KinectViewer::on_btnCaptureCloud_clicked()
     cloudViewer_2 = tmp;
     // Update visualizer
     ui->qvtkWidget_2->update();
-    ui->btnRunCamera->setChecked(false); 
   }
 }
-
+/*
 void KinectViewer::on_btnResetCameraViewer1_clicked()
 {
   viewer->setCameraPosition(ui->valuePosXViewer1->value(), 
@@ -511,8 +551,7 @@ void KinectViewer::on_btnGetParametersCameraViewer2_clicked()
   ui->valueViewXViewer2->setValue(camera[0].view[0]);
   ui->valueViewYViewer2->setValue(camera[0].view[1]);
   ui->valueViewZViewer2->setValue(camera[0].view[2]);
-}
-
+}*/
 void KinectViewer::on_btnViewer1to2_clicked()
 {
   std::vector<pcl::visualization::Camera> camera;

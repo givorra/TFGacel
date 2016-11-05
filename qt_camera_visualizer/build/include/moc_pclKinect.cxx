@@ -22,7 +22,7 @@ static const uint qt_meta_data_KinectViewer[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,11 +39,7 @@ static const uint qt_meta_data_KinectViewer[] = {
      210,   13,   13,   13, 0x08,
      239,   13,   13,   13, 0x08,
      271,   13,   13,   13, 0x08,
-     306,   13,   13,   13, 0x08,
-     341,   13,   13,   13, 0x08,
-     384,   13,   13,   13, 0x08,
-     427,   13,   13,   13, 0x08,
-     454,   13,   13,   13, 0x08,
+     298,   13,   13,   13, 0x08,
 
        0        // eod
 };
@@ -57,10 +53,6 @@ static const char qt_meta_stringdata_KinectViewer[] = {
     "on_btnLoadPointCloud_clicked()\0"
     "on_btnCaptureCloud_clicked()\0"
     "on_btnInitVisualizers_clicked()\0"
-    "on_btnResetCameraViewer1_clicked()\0"
-    "on_btnResetCameraViewer2_clicked()\0"
-    "on_btnGetParametersCameraViewer1_clicked()\0"
-    "on_btnGetParametersCameraViewer2_clicked()\0"
     "on_btnViewer1to2_clicked()\0"
     "on_btnViewer2to1_clicked()\0"
 };
@@ -79,12 +71,8 @@ void KinectViewer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 5: _t->on_btnLoadPointCloud_clicked(); break;
         case 6: _t->on_btnCaptureCloud_clicked(); break;
         case 7: _t->on_btnInitVisualizers_clicked(); break;
-        case 8: _t->on_btnResetCameraViewer1_clicked(); break;
-        case 9: _t->on_btnResetCameraViewer2_clicked(); break;
-        case 10: _t->on_btnGetParametersCameraViewer1_clicked(); break;
-        case 11: _t->on_btnGetParametersCameraViewer2_clicked(); break;
-        case 12: _t->on_btnViewer1to2_clicked(); break;
-        case 13: _t->on_btnViewer2to1_clicked(); break;
+        case 8: _t->on_btnViewer1to2_clicked(); break;
+        case 9: _t->on_btnViewer2to1_clicked(); break;
         default: ;
         }
     }
@@ -122,9 +110,9 @@ int KinectViewer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 14)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        _id -= 10;
     }
     return _id;
 }

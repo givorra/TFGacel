@@ -24,4 +24,5 @@
 	Visualizador MeshLab
 	Visualizar Poligonos en visualizador
 	Poisson
+	borrar inicializacion de visualizadores hasta que no se vallan a usar
 */
