@@ -143,6 +143,8 @@ void KinectViewer::cloud_cb_(const MY_POINT_CLOUD::ConstPtr &cloud)
       cloudViewer_1->clear();
 
     MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloud));
+    std::vector<int> indices;
+    pcl::removeNaNFromPointCloud(*cloud, *tmp, indices);
     cloudViewer_1 = tmp;
 
     bCopying = false;

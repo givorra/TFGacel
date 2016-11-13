@@ -2,12 +2,13 @@
 
 MathMorph::MathMorph()
 {}
-
+/*
 MY_POINT_CLOUD::Ptr 
 MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
 {
     //pcl::search::KdTree<MY_POINT_TYPE>::Ptr tree (new pcl::search::KdTree<MY_POINT_TYPE> ());
     MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD(*cloud_ptr));
+    MY_POINT_CLOUD::Ptr cloud_out2(new MY_POINT_CLOUD());
    // MY_POINT_CLOUD::Ptr cloud(new MY_POINT_CLOUD(*currentPointCloud));
     //MY_POINT_TYPE point;
     
@@ -16,29 +17,124 @@ MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size)
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals = computeNormals(cloud_out);
     // Dilate the figure
     //if(false)
-    for (int i=0; i<cloud_ptr->size(); i++) {
+    for (int i=0; i<cloud_ptr->size(); i++) 
+    {
+        cout << "Punto original: x=" << cloud_out->points[i].x << ", y=" << cloud_out->points[i].y << ", z=" << cloud_out->points[i].z << endl;
+        cout << "Normal: x=" << cloud_normals->points[i].normal[0] << ", y=" << cloud_normals->points[i].normal[1] << ", z=" << cloud_normals->points[i].normal[2] << endl;
         cloud_out->points[i].x = cloud_out->points[i].x + size*cloud_normals->points[i].normal[0];
         cloud_out->points[i].y = cloud_out->points[i].y + size*cloud_normals->points[i].normal[1];
         cloud_out->points[i].z = cloud_out->points[i].z + size*cloud_normals->points[i].normal[2];
-        /*
-        MY_POINT_TYPE point;
-        point.x=cloud_ptr->points[i].x - size*cloud_normals->points[i].normal[0];
-        point.y=cloud_ptr->points[i].y - size*cloud_normals->points[i].normal[1];
-        point.z=cloud_ptr->points[i].z - size*cloud_normals->points[i].normal[2];
-        //point.rgba = cloud_ptr->points[i].rgba;
-        
-        point.x = cloud_ptr->points[i].x;
-        point.y = cloud_ptr->points[i].y;
-        point.z = cloud_ptr->points[i].z;
-        point.r=cloud_ptr->points[i].r;
-        point.g=cloud_ptr->points[i].g;
-        point.b=cloud_ptr->points[i].b;
-        point.a=cloud_ptr->points[i].a;
-        cloud_out->points.push_back(point);*/
+        //cout << "A punto x=" << cloud_out->points[i].x << ", y="<<cloud_out->points[i].y<<", z="<<cloud_out->points[i].z<<endl;
     }
-    //cout << "Tamaño nube salida: " << cloud_out->size() << "\n";
+    //cloud_out = removeNan(cloud_out);
+
+    pcl::KdTreeFLANN<MY_POINT_TYPE> kdtree;
+    kdtree.setInputCloud(cloud_ptr);
+    int removedPoints = 0;
+    MY_POINT_CLOUD::iterator itCloud;
+    cout << "Revisando puntos sobrantes de la dilatacion...\n";
+    //for(int i = 0; i < cloud_out->points.size(); i++)
+    for(itCloud = cloud_out->points.begin(); itCloud != cloud_out->points.end(); ++itCloud)
+    {
+        int K = 1;  // Dont modify, the function only contemplated K=1
+        std::vector<int> pointIdxNKNSearch(1);
+        std::vector<float> pointNKNSquaredDistance(1);
+
+        //cout << "punto x=" << cloud_out->points[i].x << ", y="<<cloud_out->points[i].y<<", z="<<cloud_out->points[i].z<<endl;
+        //cout << "punto x=" << itCloud->x << ", y="<<itCloud->y<<", z="<<itCloud->z<<endl;
+        double maxDistance = 0;
+        if (//itCloud->x == std::numeric_limits<float>::quiet_NaN()
+            //|| itCloud->y == std::numeric_limits<float>::quiet_NaN()
+            //|| itCloud->z == std::numeric_limits<float>::quiet_NaN()
+            //pcl_isfinite(itCloud->x)
+            //|| pcl_isfinite(itCloud->y)
+            //|| pcl_isfinite(itCloud->z)
+            itCloud->x == itCloud->x
+            && itCloud->y == itCloud->y
+            && itCloud->z == itCloud->z)
+            //&& kdtree.nearestKSearch(*itCloud, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0 && pointNKNSquaredDistance[0] >= size)
+        {
+            if(kdtree.nearestKSearch(*itCloud, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
+            {
+                if(pointNKNSquaredDistance[0] > maxDistance)
+                    maxDistance = pointNKNSquaredDistance[0];
+                cout << "Distancia minima a figura original: " << pointNKNSquaredDistance[0] << endl;
+                cout << "Punto origen: x=" << itCloud->x << ", y=" << itCloud->y << ", z=" << itCloud->z << endl;
+                cout << "Punto vecino: x=" << cloud_ptr->points[pointIdxNKNSearch[0]].x << ", y=" << cloud_ptr->points[pointIdxNKNSearch[0]].y << ", z=" << cloud_ptr->points[pointIdxNKNSearch[0]].z << endl;
+            }
+            cout << "Max distance: " << maxDistance << endl;
+            MY_POINT_TYPE point(*itCloud);
+            /*point.x=itCloud->x;
+            point.y=itCloud->y;
+            point.z=itCloud->z;
+            point.r=itCloud->r;
+            point.g=itCloud->g;
+            point.b=itCloud->b;
+            cloud_out2->points.push_back(point);
+            //cloud_out->erase(itCloud);
+        }
+            //cout << "vecino1\n";
+    }
+    cout << "Puntos cloud_out: " << cloud_out->size() << "\n";
+    cout << "Puntos cloud_out2: " << cloud_out2->size() << "\n";
+    return cloud_out2;
+}
+*/
+MY_POINT_CLOUD::Ptr 
+MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
+{
+    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD());    
+    float epsilon = 0.05;  // Error de desplazamiento
+
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals = computeNormals(cloud_ptr);
+
+    pcl::KdTreeFLANN<MY_POINT_TYPE> kdtree;
+    kdtree.setInputCloud(cloud_ptr);
+    int K = 1;  // Dont modify, the function only contemplated K=1
+    // Dilate the figure
+    for (int i=0; i<cloud_ptr->size(); i++) 
+    {
+        MY_POINT_TYPE dilatedPoint(cloud_ptr->points[i]);
+        std::vector<int> pointIdxNKNSearch(1);
+        std::vector<float> pointNKNSquaredDistance(1);
+        //cout << "Punto original: x=" << cloud_out->points[i].x << ", y=" << cloud_out->points[i].y << ", z=" << cloud_out->points[i].z << endl;
+        //cout << "Normal: x=" << cloud_normals->points[i].normal[0] << ", y=" << cloud_normals->points[i].normal[1] << ", z=" << cloud_normals->points[i].normal[2] << endl;
+        dilatedPoint.x += size*cloud_normals->points[i].normal[0];
+        dilatedPoint.y += size*cloud_normals->points[i].normal[1];
+        dilatedPoint.z += size*cloud_normals->points[i].normal[2];
+        if (dilatedPoint.x == dilatedPoint.x
+            && dilatedPoint.y == dilatedPoint.y
+            && dilatedPoint.z == dilatedPoint.z)
+        {
+            if(kdtree.nearestKSearch(dilatedPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
+            {
+                float euclideanDilatedDistance = sqrt(pow(dilatedPoint.x - cloud_ptr->points[i].x, 2) + pow(dilatedPoint.y - cloud_ptr->points[i].y, 2) + pow(dilatedPoint.z - cloud_ptr->points[i].z, 2));
+                if(euclideanDilatedDistance > (pointNKNSquaredDistance[0] - epsilon * euclideanDilatedDistance))
+                    cloud_out->points.push_back(dilatedPoint);
+                //cout << "Distancia minima a figura original: " << pointNKNSquaredDistance[0] << endl;
+                //cout << "Punto origen: x=" << itCloud->x << ", y=" << itCloud->y << ", z=" << itCloud->z << endl;
+                //cout << "Punto vecino: x=" << cloud_ptr->points[pointIdxNKNSearch[0]].x << ", y=" << cloud_ptr->points[pointIdxNKNSearch[0]].y << ", z=" << cloud_ptr->points[pointIdxNKNSearch[0]].z << endl;
+            }
+        }
+
+    }
+    cout << "Puntos cloud_ptr: " << cloud_ptr->size() << "\n";
+    cout << "Puntos cloud_out: " << cloud_out->size() << "\n";
     return cloud_out;
 }
+
+MY_POINT_CLOUD::Ptr 
+MathMorph::removeNan(MY_POINT_CLOUD::Ptr cloud)
+{
+    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD(*cloud));
+    std::vector<int> indices;
+    pcl::removeNaNFromPointCloud(*cloud, *cloud_out, indices);
+    cout << "Puntos cloud: " << cloud->size() << "\n";
+    cout << "Puntos cloud_out: " << cloud_out->size() << "\n";
+
+    return cloud_out;
+}
+
 
 MY_POINT_CLOUD::Ptr 
 MathMorph::camera_erode(MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
@@ -46,7 +142,8 @@ MathMorph::camera_erode(MY_POINT_CLOUD::Ptr cloud_ptr, double size)
     MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD(*cloud_ptr));
     
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals = computeNormals(cloud_out);
-    for (int i=0; i<cloud_ptr->size(); i++) {
+    for (int i=0; i<cloud_ptr->size(); i++) 
+    {
         cloud_out->points[i].x = cloud_out->points[i].x - size*cloud_normals->points[i].normal[0];
         cloud_out->points[i].y = cloud_out->points[i].y - size*cloud_normals->points[i].normal[1];
         cloud_out->points[i].z = cloud_out->points[i].z - size*cloud_normals->points[i].normal[2];

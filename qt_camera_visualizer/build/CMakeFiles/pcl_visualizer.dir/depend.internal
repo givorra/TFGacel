@@ -860,6 +860,9 @@ CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o
  /usr/include/pcl-1.7/pcl/features/impl/feature.hpp
  /usr/include/pcl-1.7/pcl/features/impl/normal_3d.hpp
  /usr/include/pcl-1.7/pcl/features/normal_3d.h
+ /usr/include/pcl-1.7/pcl/filters/boost.h
+ /usr/include/pcl-1.7/pcl/filters/filter.h
+ /usr/include/pcl-1.7/pcl/filters/impl/filter.hpp
  /usr/include/pcl-1.7/pcl/for_each_type.h
  /usr/include/pcl-1.7/pcl/geometry/planar_polygon.h
  /usr/include/pcl-1.7/pcl/impl/cloud_iterator.hpp
@@ -1382,6 +1385,9 @@ CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o
  /usr/include/pcl-1.7/pcl/features/impl/feature.hpp
  /usr/include/pcl-1.7/pcl/features/impl/normal_3d.hpp
  /usr/include/pcl-1.7/pcl/features/normal_3d.h
+ /usr/include/pcl-1.7/pcl/filters/boost.h
+ /usr/include/pcl-1.7/pcl/filters/filter.h
+ /usr/include/pcl-1.7/pcl/filters/impl/filter.hpp
  /usr/include/pcl-1.7/pcl/for_each_type.h
  /usr/include/pcl-1.7/pcl/geometry/planar_polygon.h
  /usr/include/pcl-1.7/pcl/impl/cloud_iterator.hpp

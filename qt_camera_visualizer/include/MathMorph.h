@@ -22,6 +22,7 @@ public:
         MY_POINT_CLOUD::Ptr camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size);
         MY_POINT_CLOUD::Ptr camera_erode(MY_POINT_CLOUD::Ptr cloud_ptr, double size);
         bool isInRange(MY_POINT_TYPE point, MY_POINT_TYPE searchPoint);
+        MY_POINT_CLOUD::Ptr removeNan(MY_POINT_CLOUD::Ptr cloud);
 };
 
 /*

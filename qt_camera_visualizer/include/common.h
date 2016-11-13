@@ -11,6 +11,8 @@
 #include <vector>
 #include <QMainWindow>
 #include <exception>
+#include <pcl/filters/filter.h>
+#include <limits>
 
 
 #define MY_POINT_TYPE pcl::PointXYZRGB
