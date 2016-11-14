@@ -96,6 +96,7 @@ private:
 	void showMeshViewer2();
 	void greedyReconstruction();
 	void poissonReconstruction();
+	string getFilePathDialog();
 
 protected:
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;  
@@ -110,6 +111,7 @@ private slots:
 	void on_btnErodeCloud_toggled(bool checked);
   	void on_btnTriangulateCloud_toggled(bool checked);
   	void on_btnLoadPointCloud_clicked();
+  	void on_btnSavePointCloud_clicked();
   	void on_btnCaptureCloud_clicked();
 	void on_btnInitVisualizers_clicked();
 	/*

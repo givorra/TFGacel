@@ -1,3 +1,5 @@
+#pragma once
+
 #include <pcl/features/normal_3d.h>
 #include <pcl/common/distances.h>
 #include <iostream>
@@ -12,6 +14,9 @@
 #include <QMainWindow>
 #include <exception>
 #include <pcl/filters/filter.h>
+#include <pcl/filters/radius_outlier_removal.h>
+#include <pcl/filters/statistical_outlier_removal.h>
+#include <pcl/filters/voxel_grid.h>
 #include <limits>
 
 
@@ -20,6 +25,7 @@
 #define MY_POINT_CLOUD pcl::PointCloud<MY_POINT_TYPE>
 #define DEBUG_MODE 0
 #define CAMERA_MODE 1
+
 
 /*
 	Tipo dato PoligonMesh

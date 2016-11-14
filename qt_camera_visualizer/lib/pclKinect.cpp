@@ -205,13 +205,7 @@ hardCopy (pcl::PointCloud<MY_POINT_TYPE> cloud_ptr) {
     MY_POINT_TYPE point;
 
     for (int i=0; i<cloud_ptr.size(); i++) {
-        MY_POINT_TYPE point;
-        point.x=cloud_ptr.points[i].x;
-        point.y=cloud_ptr.points[i].y;
-        point.z=cloud_ptr.points[i].z;
-        point.r=cloud_ptr.points[i].r;
-        point.g=cloud_ptr.points[i].g;
-        point.b=cloud_ptr.points[i].b;
+        MY_POINT_TYPE point(cloud_ptr.points[i]);
         cloud_out->points.push_back(point);
     }
     return cloud_out;
@@ -324,7 +318,14 @@ void KinectViewer::poissonReconstruction()
       //viewer_2->resetCamera();
       showMeshViewer2();
 }
-  
+
+string KinectViewer::getFilePathDialog()
+{
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Point Cloud"), tr("/home/"), tr("Point Cloud (*.ply)"));
+  string path = qPrintable(fileName);
+  return path;
+}
+
 // ------------------------------------------------ SLOTS ------------------------------------------------------//
 
 void KinectViewer::on_btnInitVisualizers_clicked()
@@ -332,19 +333,48 @@ void KinectViewer::on_btnInitVisualizers_clicked()
   initVisualizers();
 }
 
-void KinectViewer::on_btnLoadPointCloud_clicked()
+void KinectViewer::on_btnSavePointCloud_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Point Cloud"), tr("/home/gacel/"), tr("Point Cloud (*.ply);; Poligon Mesh (*.off)"));
-  string path = qPrintable(fileName);
+  //string fileName = getFilePathDialog();  
+  string fileName = qPrintable(QFileDialog::getSaveFileName(this, tr("Save File"), "/home/untitled.ply", tr("PLY (*.ply)")));
 
-  if(qPrintable(fileName) != "")
+  if(fileName != "")
   {
-    string::size_type posExtension = path.find_last_of(".");
+    pcl::PLYWriter ply_writer;
+    string::size_type posExtension = fileName.find_last_of(".");
 
     if(posExtension != string::npos)
     {
       posExtension;
-      string extension = path.substr(posExtension, path.size()-posExtension);
+      string extension = fileName.substr(posExtension, fileName.size()-posExtension);
+      cout << "Extension: " << extension << "\n";
+
+      if(extension != ".ply")
+      {
+        fileName += ".ply";
+      }
+    }
+    else
+    {
+        fileName += ".ply";
+    }
+    if(ply_writer.write(fileName, *cloudViewer_1, false, false) < 0)
+      cerr << "Error writing .ply file" << std::endl; 
+  }
+}
+
+void KinectViewer::on_btnLoadPointCloud_clicked()
+{
+  string fileName = getFilePathDialog();
+
+  if(fileName != "")
+  {
+    string::size_type posExtension = fileName.find_last_of(".");
+
+    if(posExtension != string::npos)
+    {
+      posExtension;
+      string extension = fileName.substr(posExtension, fileName.size()-posExtension);
       cout << "Extension: " << extension << "\n";
 
       if(extension == ".ply")
@@ -354,7 +384,7 @@ void KinectViewer::on_btnLoadPointCloud_clicked()
         pcl::PLYReader ply_reader; 
         MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD());
 
-        if(ply_reader.read(path.c_str(), *tmp) < 0) 
+        if(ply_reader.read(fileName.c_str(), *tmp) < 0) 
         {
            cerr << "Error while reading the .ply file" << std::endl; 
            return;
@@ -362,29 +392,14 @@ void KinectViewer::on_btnLoadPointCloud_clicked()
         else
         {
           ui->btnRunCamera->setChecked(false);
-          //objectType = pointcloud;
-          //MY_POINT_CLOUD::Ptr tmp2(new MY_POINT_CLOUD(*tmp));
           initViewer1();
           cloudViewer_1 = hardCopy(*tmp);
           showPointCloudViewer1(cloudViewer_1);
-          //cout << "Sensor origin cloudViewer_1" << cloudViewer_1->sensor_origin_ << endl;
-          //cout << "Sensor orientation cloudViewer_1" << cloudViewer_1->sensor_orientation_ << endl;
-          //cout << "Sensor origin tmp" << tmp->sensor_origin_ << endl;
-          //cout << "Sensor orientation tmp" << tmp->sensor_orientation_ << endl;
         }
       }
-      else if (extension == ".off")
-      {
-        cout << "Extension: .off\n";
-        OFFReader off_reader;
-        pcl::PolygonMesh mesh;
-        off_reader.read(path, mesh);
-        //objectType = polygonmesh;
-        //initViewer1();
-        //viewer_1->addPolygonMesh(triangles,"meshes",0);
-        //viewer_1->resetCamera();
-        //firstCapture = true;
-      }
+      else
+        cout << "Extensión de archivo inválida: " << extension << "\n";
+
     }
 
     

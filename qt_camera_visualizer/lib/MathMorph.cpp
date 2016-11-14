@@ -80,6 +80,36 @@ MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size)
     return cloud_out2;
 }
 */
+
+MY_POINT_CLOUD::Ptr
+removeOutliers(MY_POINT_CLOUD::Ptr cloud_ptr)
+{
+    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD());
+    pcl::RadiusOutlierRemoval<MY_POINT_TYPE> outrem;
+    // build the filter
+    outrem.setInputCloud(cloud_ptr);
+    outrem.setRadiusSearch(0.8);
+    outrem.setMinNeighborsInRadius (2);
+    // apply filter
+    outrem.filter (*cloud_out);
+
+    return cloud_out;
+}
+
+MY_POINT_CLOUD::Ptr
+statisticalRemoveOutliers(MY_POINT_CLOUD::Ptr cloud_ptr)
+{
+    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD());
+    // Create the filtering object
+    pcl::StatisticalOutlierRemoval<MY_POINT_TYPE> sor;
+    sor.setInputCloud (cloud_ptr);
+    sor.setMeanK (10);
+    sor.setStddevMulThresh (2);
+    sor.filter (*cloud_out);
+
+    return cloud_out;
+}
+
 MY_POINT_CLOUD::Ptr 
 MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
 {
@@ -110,7 +140,16 @@ MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size)
             {
                 float euclideanDilatedDistance = sqrt(pow(dilatedPoint.x - cloud_ptr->points[i].x, 2) + pow(dilatedPoint.y - cloud_ptr->points[i].y, 2) + pow(dilatedPoint.z - cloud_ptr->points[i].z, 2));
                 if(euclideanDilatedDistance > (pointNKNSquaredDistance[0] - epsilon * euclideanDilatedDistance))
+                {
+                    /*
+                    if(cloud_out->points.size() % 10 == 0)
+                    {
+                        MY_POINT_TYPE dilatedPoint2(cloud_ptr->points[i]);
+                        dilatedPoint2.x -= 0.001;
+                        cloud_out->points.push_back(dilatedPoint2);
+                    }*/
                     cloud_out->points.push_back(dilatedPoint);
+                }
                 //cout << "Distancia minima a figura original: " << pointNKNSquaredDistance[0] << endl;
                 //cout << "Punto origen: x=" << itCloud->x << ", y=" << itCloud->y << ", z=" << itCloud->z << endl;
                 //cout << "Punto vecino: x=" << cloud_ptr->points[pointIdxNKNSearch[0]].x << ", y=" << cloud_ptr->points[pointIdxNKNSearch[0]].y << ", z=" << cloud_ptr->points[pointIdxNKNSearch[0]].z << endl;
@@ -118,8 +157,23 @@ MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size)
         }
 
     }
+
     cout << "Puntos cloud_ptr: " << cloud_ptr->size() << "\n";
     cout << "Puntos cloud_out: " << cloud_out->size() << "\n";
+    cloud_out = statisticalRemoveOutliers(cloud_out);
+    cout << "Puntos cloud_out inliers: " << cloud_out->size() << "\n";
+    int size_cloud_ptr = cloud_ptr->points.size();
+    int size_cloud_out = cloud_out->points.size();
+    int numberCreatePoints = (size_cloud_ptr - size_cloud_out) * 0.8;
+    
+
+    for(int i = 0; i < numberCreatePoints; i++)
+    {
+        MY_POINT_TYPE pointToAdd(cloud_out->points[size_cloud_out/numberCreatePoints]);
+        pointToAdd.x -= 0.001;
+        cloud_out->points.push_back(pointToAdd);
+    }
+    cout << "Puntos cloud_out rellenada: " << cloud_out->size() << "\n";
     return cloud_out;
 }
 
@@ -139,15 +193,45 @@ MathMorph::removeNan(MY_POINT_CLOUD::Ptr cloud)
 MY_POINT_CLOUD::Ptr 
 MathMorph::camera_erode(MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
 {
-    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD(*cloud_ptr));
-    
-    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals = computeNormals(cloud_out);
+     MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD());    
+    float epsilon = 0.05;  // Error de desplazamiento
+
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals = computeNormals(cloud_ptr);
+
+    pcl::KdTreeFLANN<MY_POINT_TYPE> kdtree;
+    kdtree.setInputCloud(cloud_ptr);
+    int K = 1;  // Dont modify, the function only contemplated K=1
+    // Dilate the figure
     for (int i=0; i<cloud_ptr->size(); i++) 
     {
-        cloud_out->points[i].x = cloud_out->points[i].x - size*cloud_normals->points[i].normal[0];
-        cloud_out->points[i].y = cloud_out->points[i].y - size*cloud_normals->points[i].normal[1];
-        cloud_out->points[i].z = cloud_out->points[i].z - size*cloud_normals->points[i].normal[2];
+        MY_POINT_TYPE dilatedPoint(cloud_ptr->points[i]);
+        std::vector<int> pointIdxNKNSearch(1);
+        std::vector<float> pointNKNSquaredDistance(1);
+        //cout << "Punto original: x=" << cloud_out->points[i].x << ", y=" << cloud_out->points[i].y << ", z=" << cloud_out->points[i].z << endl;
+        //cout << "Normal: x=" << cloud_normals->points[i].normal[0] << ", y=" << cloud_normals->points[i].normal[1] << ", z=" << cloud_normals->points[i].normal[2] << endl;
+        dilatedPoint.x -= size*cloud_normals->points[i].normal[0];
+        dilatedPoint.y -= size*cloud_normals->points[i].normal[1];
+        dilatedPoint.z -= size*cloud_normals->points[i].normal[2];
+        if (dilatedPoint.x == dilatedPoint.x
+            && dilatedPoint.y == dilatedPoint.y
+            && dilatedPoint.z == dilatedPoint.z)
+        {
+            if(kdtree.nearestKSearch(dilatedPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
+            {
+                float euclideanDilatedDistance = sqrt(pow(dilatedPoint.x - cloud_ptr->points[i].x, 2) + pow(dilatedPoint.y - cloud_ptr->points[i].y, 2) + pow(dilatedPoint.z - cloud_ptr->points[i].z, 2));
+                if(euclideanDilatedDistance > (pointNKNSquaredDistance[0] - epsilon * euclideanDilatedDistance))
+                    cloud_out->points.push_back(dilatedPoint);
+                //cout << "Distancia minima a figura original: " << pointNKNSquaredDistance[0] << endl;
+                //cout << "Punto origen: x=" << itCloud->x << ", y=" << itCloud->y << ", z=" << itCloud->z << endl;
+                //cout << "Punto vecino: x=" << cloud_ptr->points[pointIdxNKNSearch[0]].x << ", y=" << cloud_ptr->points[pointIdxNKNSearch[0]].y << ", z=" << cloud_ptr->points[pointIdxNKNSearch[0]].z << endl;
+            }
+        }
+
     }
+    cout << "Puntos cloud_ptr: " << cloud_ptr->size() << "\n";
+    cout << "Puntos cloud_out: " << cloud_out->size() << "\n";
+    cloud_out = statisticalRemoveOutliers(cloud_out);
+    cout << "Puntos cloud_out inliers: " << cloud_out->size() << "\n";
     return cloud_out;
 }
 
