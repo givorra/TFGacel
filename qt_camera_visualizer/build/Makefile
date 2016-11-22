@@ -255,6 +255,30 @@ lib/OFFReader.cpp.s:
 	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.s
 .PHONY : lib/OFFReader.cpp.s
 
+lib/common.o: lib/common.cpp.o
+.PHONY : lib/common.o
+
+# target to build an object file
+lib/common.cpp.o:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/lib/common.cpp.o
+.PHONY : lib/common.cpp.o
+
+lib/common.i: lib/common.cpp.i
+.PHONY : lib/common.i
+
+# target to preprocess a source file
+lib/common.cpp.i:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/lib/common.cpp.i
+.PHONY : lib/common.cpp.i
+
+lib/common.s: lib/common.cpp.s
+.PHONY : lib/common.s
+
+# target to generate assembly for a file
+lib/common.cpp.s:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/lib/common.cpp.s
+.PHONY : lib/common.cpp.s
+
 lib/pclKinect.o: lib/pclKinect.cpp.o
 .PHONY : lib/pclKinect.o
 
@@ -330,6 +354,9 @@ help:
 	@echo "... lib/OFFReader.o"
 	@echo "... lib/OFFReader.i"
 	@echo "... lib/OFFReader.s"
+	@echo "... lib/common.o"
+	@echo "... lib/common.i"
+	@echo "... lib/common.s"
 	@echo "... lib/pclKinect.o"
 	@echo "... lib/pclKinect.i"
 	@echo "... lib/pclKinect.s"

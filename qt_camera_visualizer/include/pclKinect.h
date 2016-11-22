@@ -97,6 +97,8 @@ private:
 	void greedyReconstruction();
 	void poissonReconstruction();
 	string getFilePathDialog();
+	void boxCounting(pcl::PointCloud<MY_POINT_TYPE>::Ptr);
+
 
 protected:
   	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;  
@@ -106,8 +108,11 @@ public slots:
   void processFrameAndUpdateGUI();
 
 private slots:
+	void on_btnBoxCounting_toggled(bool checked);
   	void on_btnRunCamera_toggled(bool checked);
   	void on_btnDilateCloud_toggled(bool checked);
+  	void on_btnDeleteOutliners_toggled(bool checked);
+  	void on_btnBilateralFilter_toggled(bool checked);
 	void on_btnErodeCloud_toggled(bool checked);
   	void on_btnTriangulateCloud_toggled(bool checked);
   	void on_btnLoadPointCloud_clicked();

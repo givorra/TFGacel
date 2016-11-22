@@ -49,6 +49,9 @@ public:
     QLabel *labelMaxNeighbors;
     QPushButton *btnLoadPointCloud;
     QPushButton *btnSavePointCloud;
+    QPushButton *btnDeleteOutliners;
+    QPushButton *btnBilateralFilter;
+    QPushButton *btnBoxCounting;
 
     void setupUi(QMainWindow *KinectViewer)
     {
@@ -87,14 +90,14 @@ public:
         btnViewer2to1->setGeometry(QRect(460, 240, 40, 30));
         dilateSizeValue = new QDoubleSpinBox(centralwidget);
         dilateSizeValue->setObjectName(QString::fromUtf8("dilateSizeValue"));
-        dilateSizeValue->setGeometry(QRect(770, 460, 66, 24));
+        dilateSizeValue->setGeometry(QRect(640, 660, 66, 24));
         dilateSizeValue->setDecimals(4);
         dilateSizeValue->setMaximum(20);
         dilateSizeValue->setSingleStep(0.01);
         dilateSizeValue->setValue(0.01);
         labelSize = new QLabel(centralwidget);
         labelSize->setObjectName(QString::fromUtf8("labelSize"));
-        labelSize->setGeometry(QRect(690, 460, 71, 20));
+        labelSize->setGeometry(QRect(560, 660, 71, 20));
         QFont font1;
         font1.setBold(false);
         font1.setWeight(50);
@@ -113,14 +116,14 @@ public:
         btnErodeCloud->setCheckable(true);
         erodeSizeValue = new QDoubleSpinBox(centralwidget);
         erodeSizeValue->setObjectName(QString::fromUtf8("erodeSizeValue"));
-        erodeSizeValue->setGeometry(QRect(770, 530, 66, 24));
+        erodeSizeValue->setGeometry(QRect(820, 670, 66, 24));
         erodeSizeValue->setDecimals(4);
         erodeSizeValue->setMaximum(20);
         erodeSizeValue->setSingleStep(0.01);
         erodeSizeValue->setValue(0.01);
         labelSize_2 = new QLabel(centralwidget);
         labelSize_2->setObjectName(QString::fromUtf8("labelSize_2"));
-        labelSize_2->setGeometry(QRect(690, 530, 71, 20));
+        labelSize_2->setGeometry(QRect(730, 670, 71, 20));
         labelSize_2->setFont(font1);
         btnInitVisualizers = new QPushButton(centralwidget);
         btnInitVisualizers->setObjectName(QString::fromUtf8("btnInitVisualizers"));
@@ -132,25 +135,25 @@ public:
         btnTriangulateCloud->setCheckable(true);
         triRadiusSearch = new QDoubleSpinBox(centralwidget);
         triRadiusSearch->setObjectName(QString::fromUtf8("triRadiusSearch"));
-        triRadiusSearch->setGeometry(QRect(810, 600, 66, 24));
+        triRadiusSearch->setGeometry(QRect(420, 640, 66, 24));
         triRadiusSearch->setDecimals(4);
         triRadiusSearch->setMaximum(20);
         triRadiusSearch->setSingleStep(0.001);
         triRadiusSearch->setValue(0.025);
         labelRadiusSearch = new QLabel(centralwidget);
         labelRadiusSearch->setObjectName(QString::fromUtf8("labelRadiusSearch"));
-        labelRadiusSearch->setGeometry(QRect(710, 600, 91, 20));
+        labelRadiusSearch->setGeometry(QRect(320, 640, 91, 20));
         labelRadiusSearch->setFont(font1);
         triMaxNeighbors = new QDoubleSpinBox(centralwidget);
         triMaxNeighbors->setObjectName(QString::fromUtf8("triMaxNeighbors"));
-        triMaxNeighbors->setGeometry(QRect(810, 630, 66, 24));
+        triMaxNeighbors->setGeometry(QRect(420, 670, 66, 24));
         triMaxNeighbors->setDecimals(0);
         triMaxNeighbors->setMaximum(10000);
         triMaxNeighbors->setSingleStep(10);
         triMaxNeighbors->setValue(100);
         labelMaxNeighbors = new QLabel(centralwidget);
         labelMaxNeighbors->setObjectName(QString::fromUtf8("labelMaxNeighbors"));
-        labelMaxNeighbors->setGeometry(QRect(710, 630, 91, 20));
+        labelMaxNeighbors->setGeometry(QRect(320, 670, 91, 20));
         labelMaxNeighbors->setFont(font1);
         btnLoadPointCloud = new QPushButton(centralwidget);
         btnLoadPointCloud->setObjectName(QString::fromUtf8("btnLoadPointCloud"));
@@ -160,6 +163,18 @@ public:
         btnSavePointCloud->setObjectName(QString::fromUtf8("btnSavePointCloud"));
         btnSavePointCloud->setGeometry(QRect(30, 600, 110, 50));
         btnSavePointCloud->setCheckable(false);
+        btnDeleteOutliners = new QPushButton(centralwidget);
+        btnDeleteOutliners->setObjectName(QString::fromUtf8("btnDeleteOutliners"));
+        btnDeleteOutliners->setGeometry(QRect(700, 460, 110, 50));
+        btnDeleteOutliners->setCheckable(true);
+        btnBilateralFilter = new QPushButton(centralwidget);
+        btnBilateralFilter->setObjectName(QString::fromUtf8("btnBilateralFilter"));
+        btnBilateralFilter->setGeometry(QRect(700, 530, 110, 50));
+        btnBilateralFilter->setCheckable(true);
+        btnBoxCounting = new QPushButton(centralwidget);
+        btnBoxCounting->setObjectName(QString::fromUtf8("btnBoxCounting"));
+        btnBoxCounting->setGeometry(QRect(700, 600, 110, 50));
+        btnBoxCounting->setCheckable(true);
         KinectViewer->setCentralWidget(centralwidget);
 
         retranslateUi(KinectViewer);
@@ -186,6 +201,9 @@ public:
         labelMaxNeighbors->setText(QApplication::translate("KinectViewer", "Max neighbors:", 0, QApplication::UnicodeUTF8));
         btnLoadPointCloud->setText(QApplication::translate("KinectViewer", "Load Point Cloud", 0, QApplication::UnicodeUTF8));
         btnSavePointCloud->setText(QApplication::translate("KinectViewer", "Save Point Cloud", 0, QApplication::UnicodeUTF8));
+        btnDeleteOutliners->setText(QApplication::translate("KinectViewer", "Delete Outliners", 0, QApplication::UnicodeUTF8));
+        btnBilateralFilter->setText(QApplication::translate("KinectViewer", "Bilateral Filter", 0, QApplication::UnicodeUTF8));
+        btnBoxCounting->setText(QApplication::translate("KinectViewer", "Box Counting", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

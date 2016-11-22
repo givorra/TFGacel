@@ -8,6 +8,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/pcl_visualizer.dir/lib/pclKinect.cpp.o"
   "CMakeFiles/pcl_visualizer.dir/lib/MathMorph.cpp.o"
   "CMakeFiles/pcl_visualizer.dir/lib/OFFReader.cpp.o"
+  "CMakeFiles/pcl_visualizer.dir/lib/common.cpp.o"
   "CMakeFiles/pcl_visualizer.dir/include/moc_pclKinect.cxx.o"
   "CMakeFiles/pcl_visualizer.dir/include/moc_common.cxx.o"
   "CMakeFiles/pcl_visualizer.dir/include/moc_MathMorph.cxx.o"

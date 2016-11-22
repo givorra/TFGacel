@@ -9,6 +9,7 @@ using namespace std;
 // Normal parameters
 #define NORMAL_RADIUS_SEARCH 0.005
 
+
 class MathMorph 
 {
 private:

@@ -1,6 +1,7 @@
 #include "pclKinect.h"
 #include "../build/ui_pclKinect.h"
 
+
 KinectViewer::KinectViewer (QWidget *parent) :
   QMainWindow (parent),
   ui (new Ui::KinectViewer)
@@ -142,9 +143,11 @@ void KinectViewer::cloud_cb_(const MY_POINT_CLOUD::ConstPtr &cloud)
     if(!firstCall)
       cloudViewer_1->clear();
 
+    //MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloud));
     MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD(*cloud));
-    std::vector<int> indices;
-    pcl::removeNaNFromPointCloud(*cloud, *tmp, indices);
+    //cloudViewer_1 = fastBilateralFilter(tmp);
+    //std::vector<int> indices;
+    //pcl::removeNaNFromPointCloud(*cloud, *tmp, indices);
     cloudViewer_1 = tmp;
 
     bCopying = false;
@@ -326,7 +329,131 @@ string KinectViewer::getFilePathDialog()
   return path;
 }
 
+MY_POINT_CLOUD::Ptr bilateralFilter(MY_POINT_CLOUD::Ptr cloud_ptr)
+{
+
+  MY_POINT_CLOUD::Ptr cloud_out;
+  cloud_out = fastBilateralFilter(cloud_ptr);
+
+  return cloud_out;
+}
+
+void KinectViewer::boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr)
+{
+
+  string fileName = qPrintable(QFileDialog::getSaveFileName(this, tr("Save results"), "/home/box_counting_results", tr("All files (*.*)")));
+  ofstream f;
+  f.open(fileName.c_str());
+
+  if(f)
+  {
+    const int iterations = 100;
+    // Vectores con las soluciones y leaf size de cada solución
+    std::vector<int> results;
+    std::vector<float> leafSizes;
+
+    MY_POINT_CLOUD::Ptr cloud_filtered(new MY_POINT_CLOUD());
+    pcl::VoxelGrid<MY_POINT_TYPE> sor;
+    sor.setInputCloud(cloud_ptr);
+
+    //cout << "boxCounting()\n";
+    MY_POINT_TYPE min_pt, max_pt;
+    float xSize, ySize, zSize, maxSize, leafSize, increment;
+
+    pcl::getMinMax3D(*cloud_ptr, min_pt, max_pt);
+
+    //xSize = max_pt.x - min_pt.x;
+    //ySize = max_pt.y - min_pt.y;
+    //zSize = max_pt.z - min_pt.z;
+
+    //leafSize.x = xSize/iterations;
+    //leafSize.y = ySize/iterations;
+    //leafSize.z = zSize/iterations;
+
+    //maxSize = fmaxf(fmaxf(xSize, ySize), zSize);
+    maxSize = fmaxf(fmaxf(max_pt.x - min_pt.x, max_pt.y - min_pt.y), max_pt.z - min_pt.z);
+    increment = maxSize/iterations;
+    leafSize = 0;
+
+    #if DEBUG_MODE == 1
+      cout << "BOX COUNTING DATA:\n";
+      cout << "Max X = " << max_pt.x << ", Min X = " << min_pt.x << "\n";
+      cout << "Max Y = " << max_pt.y << ", Min Y = " << min_pt.y << "\n";
+      cout << "Max Z = " << max_pt.z << ", Min Z = " << min_pt.z << "\n";
+      cout << "Max Size = " << maxSize << "\n";
+      cout << "Increment = " << increment << "\n";
+    #endif
+
+    for(int i = 0; i < iterations; i++)
+    {
+      cloud_filtered->clear();
+
+      leafSize += increment;
+      sor.setLeafSize (leafSize, leafSize, leafSize);
+      sor.filter (*cloud_filtered);
+
+      results.push_back(cloud_filtered->size());
+      leafSizes.push_back(leafSize);
+    }
+    cout << "Last leaf size = " << leafSize << "\n";
+
+    Eigen::Vector3i nrDivisions = sor.getNrDivisions();
+
+    cout << "Number of voxels in the last iteration = " << nrDivisions(0) * nrDivisions(1) * nrDivisions(2) << "\n";
+
+
+
+    for(int i = 0; i < iterations; i++)
+    {
+      f << leafSizes[i] << ";" << results[i] << "\n";
+    }
+    f.close();
+  }
+  else
+    cerr << "ERROR: No se ha podido crear el archivo " << fileName << "\n";
+
+  
+}
+
 // ------------------------------------------------ SLOTS ------------------------------------------------------//
+
+void KinectViewer::on_btnBoxCounting_toggled(bool checked)
+{
+  if(checked)
+  {
+    boxCounting(cloudViewer_2);
+    ui->btnBoxCounting->setChecked(false);
+  }
+}
+
+void KinectViewer::on_btnDeleteOutliners_toggled(bool checked)
+{
+  cout << "DeleteOutliers\n";
+  if(checked)
+  {
+    if(cloudViewer_2 != NULL)
+    {
+      cloudViewer_2 = statisticalRemoveOutliers(cloudViewer_2);
+      viewer_2->updatePointCloud(cloudViewer_2,"cloudViewer_2");
+      ui->qvtkWidget_2->update();
+    }
+    ui->btnDeleteOutliners->setChecked(false);
+  }
+}
+void KinectViewer::on_btnBilateralFilter_toggled(bool checked)
+{
+  cout << "BilateralFilter\n";
+  if(checked)
+  {
+    if(cloudViewer_2 != NULL)
+    {
+      cloudViewer_2 = fastBilateralFilter(cloudViewer_2);
+      viewer_2->updatePointCloud(cloudViewer_2,"cloudViewer_2");
+      ui->qvtkWidget_2->update();
+    }
+    ui->btnDeleteOutliners->setChecked(false);
+  }
+}
 
 void KinectViewer::on_btnInitVisualizers_clicked()
 {

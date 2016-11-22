@@ -96,30 +96,30 @@ removeOutliers(MY_POINT_CLOUD::Ptr cloud_ptr)
     return cloud_out;
 }
 
-MY_POINT_CLOUD::Ptr
-statisticalRemoveOutliers(MY_POINT_CLOUD::Ptr cloud_ptr)
-{
-    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD());
-    // Create the filtering object
-    pcl::StatisticalOutlierRemoval<MY_POINT_TYPE> sor;
-    sor.setInputCloud (cloud_ptr);
-    sor.setMeanK (10);
-    sor.setStddevMulThresh (2);
-    sor.filter (*cloud_out);
-
-    return cloud_out;
-}
-
 MY_POINT_CLOUD::Ptr 
 MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size) 
 {
-    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD());    
-    float epsilon = 0.05;  // Error de desplazamiento
+    cout << "Puntos cloud_ptr: " << cloud_ptr->size() << "\n";
+/*
+    if(cloud_ptr->isOrganized())
+    {
+        cloud_ptr = fastBilateralFilter(cloud_ptr);
+    }
+
+    cloud_out->width =  cloud_ptr->width;  
+    cloud_out->height =  cloud_ptr->height; 
+    cloud_out->is_dense =  cloud_ptr->is_dense; */
+    MY_POINT_CLOUD::Ptr cloud_out(new MY_POINT_CLOUD()); 
+    const float nan_point = std::numeric_limits<float>::quiet_NaN(); 
+    cout << "Cloud width = " << cloud_ptr->width << ", height = " << cloud_ptr->height << "\n";
+    float epsilon = 0.1;  // Error de desplazamiento
 
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals = computeNormals(cloud_ptr);
+    cout << "Computed normals" << cloud_ptr->size() << "\n";
 
     pcl::KdTreeFLANN<MY_POINT_TYPE> kdtree;
     kdtree.setInputCloud(cloud_ptr);
+    cout << "KdTree with input cloud" << cloud_ptr->size() << "\n";
     int K = 1;  // Dont modify, the function only contemplated K=1
     // Dilate the figure
     for (int i=0; i<cloud_ptr->size(); i++) 
@@ -132,9 +132,10 @@ MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size)
         dilatedPoint.x += size*cloud_normals->points[i].normal[0];
         dilatedPoint.y += size*cloud_normals->points[i].normal[1];
         dilatedPoint.z += size*cloud_normals->points[i].normal[2];
-        if (dilatedPoint.x == dilatedPoint.x
-            && dilatedPoint.y == dilatedPoint.y
-            && dilatedPoint.z == dilatedPoint.z)
+        
+        if (pcl_isfinite (dilatedPoint.x) && 
+            pcl_isfinite (dilatedPoint.y) &&
+            pcl_isfinite (dilatedPoint.z))
         {
             if(kdtree.nearestKSearch(dilatedPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
             {
@@ -150,14 +151,29 @@ MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size)
                     }*/
                     cloud_out->points.push_back(dilatedPoint);
                 }
+                else
+                {
+                    dilatedPoint.x = dilatedPoint.y = dilatedPoint.z = nan_point;
+                    cloud_out->points.push_back(dilatedPoint);
+                }
                 //cout << "Distancia minima a figura original: " << pointNKNSquaredDistance[0] << endl;
                 //cout << "Punto origen: x=" << itCloud->x << ", y=" << itCloud->y << ", z=" << itCloud->z << endl;
                 //cout << "Punto vecino: x=" << cloud_ptr->points[pointIdxNKNSearch[0]].x << ", y=" << cloud_ptr->points[pointIdxNKNSearch[0]].y << ", z=" << cloud_ptr->points[pointIdxNKNSearch[0]].z << endl;
             }
+            else
+            {
+                dilatedPoint.x = dilatedPoint.y = dilatedPoint.z = nan_point;
+                cloud_out->points.push_back(dilatedPoint);
+            }
+        }
+        else
+        {
+            cloud_out->points.push_back(dilatedPoint);
         }
 
     }
-
+    cout << "Dilated cloud\n";
+/*
     cout << "Puntos cloud_ptr: " << cloud_ptr->size() << "\n";
     cout << "Puntos cloud_out: " << cloud_out->size() << "\n";
     cloud_out = statisticalRemoveOutliers(cloud_out);
@@ -174,6 +190,14 @@ MathMorph::camera_dilate(MY_POINT_CLOUD::Ptr cloud_ptr, double size)
         cloud_out->points.push_back(pointToAdd);
     }
     cout << "Puntos cloud_out rellenada: " << cloud_out->size() << "\n";
+
+    
+    if(cloud_out->isOrganized())
+    {
+        cloud_out = fastBilateralFilter(cloud_out);
+    }*/
+
+    cout << "Puntos cloud_out: " << cloud_out->size() << "\n";
     return cloud_out;
 }
 
