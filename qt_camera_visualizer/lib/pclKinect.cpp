@@ -345,7 +345,7 @@ void KinectViewer::boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr)
   ofstream f;
   f.open(fileName.c_str());
 
-  if(f)
+  if(f.is_open())
   {
     const int iterations = 100;
     // Vectores con las soluciones y leaf size de cada solución
@@ -371,7 +371,8 @@ void KinectViewer::boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr)
     //leafSize.z = zSize/iterations;
 
     //maxSize = fmaxf(fmaxf(xSize, ySize), zSize);
-    maxSize = fmaxf(fmaxf(max_pt.x - min_pt.x, max_pt.y - min_pt.y), max_pt.z - min_pt.z);
+    //maxSize = fmaxf(fmaxf(max_pt.x - min_pt.x, max_pt.y - min_pt.y), max_pt.z - min_pt.z);
+    maxSize = fminf(fminf(max_pt.x - min_pt.x, max_pt.y - min_pt.y), max_pt.z - min_pt.z);  // Prueba cogiendo el minimo en vez del maximo
     increment = maxSize/iterations;
     leafSize = 0;
 
@@ -405,7 +406,7 @@ void KinectViewer::boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr)
 
     for(int i = 0; i < iterations; i++)
     {
-      f << leafSizes[i] << ";" << results[i] << "\n";
+      f << leafSizes[i] << ";" << results[i] << ";" << log(leafSizes[i]+1) << ";" << log(results[i])  << "\n";
     }
     f.close();
   }
