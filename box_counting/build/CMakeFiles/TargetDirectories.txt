@@ -1,1 +1,0 @@
-/home/gacel/TFGacel/box_counting/build/CMakeFiles/box_counting.dir
