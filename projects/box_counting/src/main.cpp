@@ -21,6 +21,7 @@ using namespace std;
 
 void infoParms();
 bool checkPathExist(const string& path);
+bool isNumber(const string& number);
 bool loadPointCloud(const string& fileName, MY_POINT_CLOUD::Ptr cloud_out);
 void boxCountingDirectory(const string& dir);
 void boxCountingFile(const string& ply_file);
@@ -32,34 +33,47 @@ void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults);
 
 const string optionFile = "-f";		// Box Counting sobre fichero ply
 const string optionDir 	= "-d";		// Box Counting sobre ficheros ply de un directorio
-const int iterations	= 100;		// Iteraciones del algoritmo
 
 // </CONST>
 
+int iterations;		// Iteraciones del algoritmo
+
 int main (int argc, char *argv[])
 {
-	if(argc == 3)
+	if(argc == 4)
 	{
 		string option 	= string(argv[1]);
 		string path 	= string(argv[2]);
+		string siterations = string(argv[3]);
 
-		if(option == optionFile)
+		if(isNumber(siterations))
 		{
-			boxCountingFile(path);	
-		}
-		else if(option == optionDir)
-		{
-			 boxCountingDirectory(path);
+			iterations = atoi(siterations.c_str());
+
+			if(option == optionFile)
+			{
+				boxCountingFile(path);	
+			}
+			else if(option == optionDir)
+			{
+				 boxCountingDirectory(path);
+			}
+			else
+			{
+				cerr << "ERROR: Parámetro ["<< option << "] desconocido\n";
+				infoParms();
+			}
 		}
 		else
 		{
-			cerr << "ERROR: Parámetro ["<< option << "] desconocido\n";
+			cerr << "ERROR: El tercer parámetro (iteraciones) debe ser numérico\n";
 			infoParms();
 		}
+
 	}
 	else
 	{
-		cout << "ERROR: Se deben recibir dos parámetros\n";
+		cerr << "ERROR: Se deben recibir tres parámetros\n";
 		infoParms();
 	}
   	return 0;
@@ -68,8 +82,8 @@ int main (int argc, char *argv[])
 void infoParms()
 {
 	cout << "Las opciones posibles de ejecucuón son:\n";
-	cout << "  - Parm 1 [-f], Parm 2 [ply file name]  --> Realizar Box Counting para un objeto PLY\n";
-	cout << "  - Parm 1 [-d], Parm 2 [directory path] --> Realizar Box Counting sobre todos los PLY de un directorio\n";
+	cout << "  - Parm 1 [-f], Parm 2 [ply file name], Parm 3 [n iterations]  --> Realizar Box Counting para un objeto PLY\n";
+	cout << "  - Parm 1 [-d], Parm 2 [directory path], Parm 3 [n iterations] --> Realizar Box Counting sobre todos los PLY de un directorio\n";
 }
 
 bool loadPointCloud(const string& fileName, MY_POINT_CLOUD::Ptr cloud_out)
@@ -102,6 +116,18 @@ bool loadPointCloud(const string& fileName, MY_POINT_CLOUD::Ptr cloud_out)
   		cerr << "ERROR: El fichero [" << fileName << "] no existe\n";
 
   return false; // Indica que no hay que procesar fichero
+}
+
+bool isNumber(const string& number)
+{
+	for(int i = 0; i < number.size(); i++)
+	{
+		if(number[i] < '0' || number[i] > '9')
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 // Sirve tanto para ficheros como directorios
