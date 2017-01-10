@@ -211,8 +211,8 @@ void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults)
 	    MY_POINT_TYPE min_pt, max_pt;								// X Y Z max y min del voxel que engloba el objeto
     	float xSize, ySize, zSize;									// Tamaño del objeto en cada eje
     	float selectedSize;											// Tamaño seleccionado para calcular el incremento dividiendolo entre las iteraciones
-    	float leafSize;
-    	float increment;
+    	float leafSizeX, leafSizeY, leafSizeZ;
+    	float incrementX, incrementY, incrementZ;
 
     	pcl::getMinMax3D(*cloud_ptr, min_pt, max_pt);				
 
@@ -221,22 +221,29 @@ void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults)
 	    ySize = max_pt.y - min_pt.y;
 	    zSize = max_pt.z - min_pt.z;
 
-	    selectedSize = fmaxf(fmaxf(xSize, ySize), zSize);
+	    //selectedSize = fmaxf(fmaxf(xSize, ySize), zSize);
 	    //selectedSize = fminf(fminf(xSize, ySize), zSize);  // Prueba cogiendo el minimo en vez del maximo
-	    increment = selectedSize/iterations;
-	    leafSize = 0;
+	    incrementX = xSize/iterations;
+	    incrementY = ySize/iterations;
+	    incrementZ = zSize/iterations;
+	    leafSizeX = 0;
+	    leafSizeY = 0;
+	    leafSizeZ = 0;
 
 
 	    for(int i = 0; i < iterations; i++)					// Itera incrementando el leafsize
 	    {
 			cloud_filtered->clear();
 
-			leafSize += increment;							// Incremento del leaf size
-			sor.setLeafSize (leafSize, leafSize, leafSize);	// Leaf size en x, y, z 	*NOTA: Posibilidad de rectangulos y no cuadrados, sería factible?
+			leafSizeX += incrementX;							// Incremento del leaf size
+			leafSizeY += incrementY;							// Incremento del leaf size
+			leafSizeZ += incrementZ;							// Incremento del leaf size
+			sor.setLeafSize (leafSizeX, leafSizeY, leafSizeZ);	// Leaf size en x, y, z 	*NOTA: Posibilidad de rectangulos y no cuadrados, sería factible?
 			sor.filter (*cloud_filtered);					// Aplica filtro, conserva un solo punto por cada voxel
 
 			results.push_back(cloud_filtered->size());		// El tamaño de la nube filtrada son el numero de voxeles que no están vacíos
-			leafSizes.push_back(leafSize);					// Se almacena leafsize para el resultado almacenado
+			//leafSizes.push_back(leafSize);					// Se almacena leafsize para el resultado almacenado
+			leafSizes.push_back(i);					// Se almacena leafsize para el resultado almacenado
 	    }
 
 	    Eigen::Vector3i nrDivisions = sor.getNrDivisions();
@@ -247,9 +254,9 @@ void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults)
 	      	cout << "#  - Max Y = " << max_pt.y << ", Min Y = " << min_pt.y << ", Size = " << ySize << "\n";
 	      	cout << "#  - Max X = " << max_pt.x << ", Min X = " << min_pt.x << ", Size = " << xSize << "\n";
 	      	cout << "#  - Max Z = " << max_pt.z << ", Min Z = " << min_pt.z << ", Size = " << zSize << "\n";
-	      	cout << "#  - Selected size = " << selectedSize << "\n";
-	      	cout << "#  - Increment = " << increment << "\n";
-	    	cout << "#  - Last leaf size = " << leafSize << "\n";
+	      	//cout << "#  - Selected size = " << selectedSize << "\n";
+	      	//cout << "#  - Increment = " << increment << "\n";
+	    	//cout << "#  - Last leaf size = " << leafSize << "\n";
 	    	cout << "#  - Number of voxels in the last iteration = " << nrDivisions(0) * nrDivisions(1) * nrDivisions(2) << "\n";	// Divisiones en X*Y*Z
 	    	cout << "##########################################################\n";
 	    #endif
