@@ -7,6 +7,10 @@
 #include <vector>
 #include <string>
 #include <pcl/io/ply_io.h>
+// Includes for gnuplot
+#include <cmath>
+#include <boost/tuple/tuple.hpp>
+#include "gnuplot-iostream.h"
 
 
 
@@ -26,6 +30,7 @@ bool loadPointCloud(const string& fileName, MY_POINT_CLOUD::Ptr cloud_out);
 void boxCountingDirectory(const string& dir);
 void boxCountingFile(const string& ply_file);
 void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults);
+void plotXYgraph(string filename, std::vector<std::pair<double, double> > xy_pts);
 
 // </HEADERS>
 
@@ -202,19 +207,29 @@ void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults)
   	{
     	// Vectores con las soluciones y leaf size de cada solución
     	std::vector<int> results;									// Vector con resultado de cada iteracion
-    	std::vector<float> leafSizes;								// Leaf size de cada resultado, results[i] -> leafSizes[i]
+    	std::vector<double> leafSizes;								// Leaf size de cada resultado, results[i] -> leafSizes[i]
+    	std::vector<std::pair<double, double> > xy_pts;				// Tupla que almacena ambos datos juntos
+    	std::vector<std::pair<double, double> > xy_log_pts;				// Tupla que almacena ambos datos juntos
 
     	MY_POINT_CLOUD::Ptr cloud_filtered(new MY_POINT_CLOUD());	// Point Cloud donde se almacena la nube filtrada en cada iteracion
     	pcl::VoxelGrid<MY_POINT_TYPE> sor;							// Filtro que realiza el box counting
     	sor.setInputCloud(cloud_ptr);								// Set de la nube sobre la que se aplica el filtro
 
 	    MY_POINT_TYPE min_pt, max_pt;								// X Y Z max y min del voxel que engloba el objeto
-    	float xSize, ySize, zSize;									// Tamaño del objeto en cada eje
-    	float selectedSize;											// Tamaño seleccionado para calcular el incremento dividiendolo entre las iteraciones
-    	float leafSizeX, leafSizeY, leafSizeZ;
-    	float incrementX, incrementY, incrementZ;
+    	double xSize, ySize, zSize;									// Tamaño del objeto en cada eje
+    	double selectedSize;											// Tamaño seleccionado para calcular el incremento dividiendolo entre las iteraciones
+    	double leafSizeX, leafSizeY, leafSizeZ;
+    	double incrementX, incrementY, incrementZ;
 
-    	pcl::getMinMax3D(*cloud_ptr, min_pt, max_pt);				
+    	pcl::getMinMax3D(*cloud_ptr, min_pt, max_pt);
+
+    	// Desplaza la nube al punto 0,0,0
+    	for(int i = 0; i < cloud_ptr->points.size(); i++)
+    	{
+    		cloud_ptr->points[i].x -= min_pt.x;
+    		cloud_ptr->points[i].y -= min_pt.y;
+    		cloud_ptr->points[i].z -= min_pt.z;
+    	}			
 
     	// Aqui se calcula el incremento del leaf size para cada iteracion
     	xSize = max_pt.x - min_pt.x;
@@ -238,26 +253,34 @@ void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults)
 			leafSizeX += incrementX;							// Incremento del leaf size
 			leafSizeY += incrementY;							// Incremento del leaf size
 			leafSizeZ += incrementZ;							// Incremento del leaf size
-			sor.setLeafSize (leafSizeX, leafSizeY, leafSizeZ);	// Leaf size en x, y, z 	*NOTA: Posibilidad de rectangulos y no cuadrados, sería factible?
-			sor.filter (*cloud_filtered);					// Aplica filtro, conserva un solo punto por cada voxel
 
-			results.push_back(cloud_filtered->size());		// El tamaño de la nube filtrada son el numero de voxeles que no están vacíos
+			sor.setLeafSize (leafSizeX, leafSizeY, leafSizeZ);	// Leaf size en x, y, z 	*NOTA: Posibilidad de rectangulos y no cuadrados, sería factible?
+			sor.filter (*cloud_filtered);						// Aplica filtro, conserva un solo punto por cada voxel
+
+			results.push_back(cloud_filtered->size());			// El tamaño de la nube filtrada son el numero de voxeles que no están vacíos
 			//leafSizes.push_back(leafSize);					// Se almacena leafsize para el resultado almacenado
-			leafSizes.push_back(i);					// Se almacena leafsize para el resultado almacenado
-	    }
+			leafSizes.push_back((leafSizeX*leafSizeY*leafSizeZ)/3);								// Se almacena leafsize para el resultado almacenado
+
+			xy_pts.push_back(std::make_pair((leafSizeX*leafSizeY*leafSizeZ)/3, cloud_filtered->size()));
+			xy_log_pts.push_back(std::make_pair(log(((leafSizeX*leafSizeY*leafSizeZ)/3)+1), log(cloud_filtered->size())));
+		}
 
 	    Eigen::Vector3i nrDivisions = sor.getNrDivisions();
 
 	    #if DEBUG_MODE == 1
 	    	cout << "##########################################################\n";
 	      	cout << "# BOX COUNTING DATA:\n";
-	      	cout << "#  - Max Y = " << max_pt.y << ", Min Y = " << min_pt.y << ", Size = " << ySize << "\n";
-	      	cout << "#  - Max X = " << max_pt.x << ", Min X = " << min_pt.x << ", Size = " << xSize << "\n";
-	      	cout << "#  - Max Z = " << max_pt.z << ", Min Z = " << min_pt.z << ", Size = " << zSize << "\n";
+	      	cout << "#  - Cloud -> Max X = " << max_pt.x << "\tMin X = " << min_pt.x << "\tSize = " << xSize << "\n";
+	      	cout << "#  - Cloud -> Max Y = " << max_pt.y << "\tMin Y = " << min_pt.y << "\tSize = " << ySize << "\n";
+	      	cout << "#  - Cloud -> Max Z = " << max_pt.z << "\tMin Z = " << min_pt.z << "\tSize = " << zSize << "\n";
 	      	//cout << "#  - Selected size = " << selectedSize << "\n";
 	      	//cout << "#  - Increment = " << increment << "\n";
-	    	//cout << "#  - Last leaf size = " << leafSize << "\n";
+	    	cout << "#  - Last leaf size -> X = " << leafSizeX << "\t Y = " << leafSizeY << "\t Z = " << leafSizeZ << "\n";
 	    	cout << "#  - Number of voxels in the last iteration = " << nrDivisions(0) * nrDivisions(1) * nrDivisions(2) << "\n";	// Divisiones en X*Y*Z
+	    	for(int i = 0; i < cloud_filtered->points.size(); i++)
+	    	{
+	    		cout << "#  - Point " << i << ": X = " << cloud_filtered->points[i].x << "\tY = " << cloud_filtered->points[i].y << "\tZ = " << cloud_filtered->points[i].z << "\n";
+	    	}
 	    	cout << "##########################################################\n";
 	    #endif
 
@@ -268,7 +291,28 @@ void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults)
 	      	f << leafSizes[i] << ";" << results[i] << ";" << log(leafSizes[i]+1) << ";" << log(results[i])  << "\n";
 	    }
 	    f.close();
+	    plotXYgraph(fresults, xy_log_pts);
 	}
 	else
 		cerr << "ERROR: No se ha podido crear el archivo " << fresults << "\n";  
+}
+
+void plotXYgraph(string filename, std::vector<std::pair<double, double> > xy_pts)
+{
+	Gnuplot gp;
+	string format = "png";
+	filename = filename + "." + format;
+
+	gp << "set terminal " << format << "\n";
+	gp << "set output '"<< filename << "'\n";
+	gp << "set grid\n";
+	gp << "set xlabel 'Log(Leaf size)'\n";
+	gp << "set ylabel 'Log(N Points)'\n";
+	gp << "f(x) = m*x+b\n";
+	gp << "fit f(x)" << gp.file1d(xy_pts) << " via m,b\n";
+	gp << "title_f(m,b) = sprintf('f(x) = %.2fx + %.2f', m, b)\n";
+	gp << "plot" << gp.file1d(xy_pts) << "with points title 'P', f(x) title title_f(m,b)\n";
+
+	cout << "title_f(a,b) = sprintf('f(x) = %2fx + %.2f', a, b)\n";
+	//gp.clearTmpfiles();
 }
