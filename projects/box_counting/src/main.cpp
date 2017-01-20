@@ -27,10 +27,12 @@ void infoParms();
 bool checkPathExist(const string& path);
 bool isNumber(const string& number);
 bool loadPointCloud(const string& fileName, MY_POINT_CLOUD::Ptr cloud_out);
-void boxCountingDirectory(const string& dir);
-void boxCountingFile(const string& ply_file);
-void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults);
+std::vector<std::pair<std::vector<std::pair<double, double> >, string > > boxCountingDirectory(const string& dir);
+std::vector<std::pair<double, double> > boxCountingFile(const string& ply_file);
+std::vector<std::pair<double, double> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, string fresults);
+void plotXYgraphDir(string filename, std::vector<std::pair<std::vector<std::pair<double, double> >, string > > xy_pts);
 void plotXYgraph(string filename, std::vector<std::pair<double, double> > xy_pts);
+string numberToString(int number);
 
 // </HEADERS>
 
@@ -100,7 +102,7 @@ bool loadPointCloud(const string& fileName, MY_POINT_CLOUD::Ptr cloud_out)
 
     	if(posExtension != string::npos)								// Si ha encontrado algun punto...
     	{
-      		posExtension;
+      		//posExtension;
       		string extension = fileName.substr(posExtension, fileName.size()-posExtension);		// Se obtiene extension del archivo mediante sub string
 
       		if(extension == ".ply")
@@ -109,6 +111,16 @@ bool loadPointCloud(const string& fileName, MY_POINT_CLOUD::Ptr cloud_out)
 		        if(pcl::io::loadPLYFile(fileName, *cloud_out) < 0)
 		        {
 		           cerr << "ERROR: No se ha podido leer fichero PLY [" << fileName << "]\n";
+		        }
+		        else
+		        	return true;		// Nube cargada correctamente
+      		}
+      		else if(extension == ".pcd")      			
+      		{
+		        //if(ply_reader.read(fileName.c_str(), *tmp) < 0) 
+		        if(pcl::io::loadPCDFile(fileName, *cloud_out) < 0)
+		        {
+		           cerr << "ERROR: No se ha podido leer fichero PCD [" << fileName << "]\n";
 		        }
 		        else
 		        	return true;		// Nube cargada correctamente
@@ -142,10 +154,11 @@ bool checkPathExist(const string& path)
   	return (stat (path.c_str(), &buffer) == 0); 
 }
 
-void boxCountingDirectory(const string& dir)
+std::vector<std::pair<std::vector<std::pair<double, double> >, string > > boxCountingDirectory(const string& dir)
 {
 	if(checkPathExist(dir))
 	{
+		std::vector<std::pair<std::vector<std::pair<double, double> >, string > > dir_results;
 
 		cout << "Se va a aplicar el algoritmo Box Counting sobre todos los PLY del directorio " << dir
 			 << "\nSalida > " << dir << "/[filename].out\n";
@@ -165,7 +178,7 @@ void boxCountingDirectory(const string& dir)
 
 			while(!f.eof())
 			{
-				boxCountingFile(ply_file);
+				dir_results.push_back(std::make_pair(boxCountingFile(ply_file), ply_file));
 				getline(f, ply_file);
 			}
 		}
@@ -174,20 +187,23 @@ void boxCountingDirectory(const string& dir)
 		cerr << "ERROR: El directorio [" << dir << "] no existe o no es accesible\n";
 }
 
-void boxCountingFile(const string& ply_file)
+std::vector<std::pair<double, double> > boxCountingFile(const string& ply_file)
 {
-	string fresults = ply_file + ".out";	// Fichero de salida con los resultados
-
-	cout << "\n"
-		 << "###########################################################\n"
-		 << "# Box Counting on " << ply_file
-		 << "\n# Output > " << fresults << "\n";
+	
 
 	MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD());
 
 	if(loadPointCloud(ply_file, tmp))
 	{
-		boxCounting(tmp, fresults);
+		string::size_type posExtension = ply_file.find_last_of(".");	// Obtiene pos del ultimo '.' del nombre del fichero
+
+		string fresults = ply_file.substr(0, posExtension);	// File name without extension
+		cout << "\n"
+		 << "###########################################################\n"
+		 << "# Box Counting on " << ply_file
+		 << "\n# Output > " << fresults << "\n";
+
+		return boxCounting(tmp, fresults);
 	}
 }
 
@@ -198,18 +214,20 @@ void boxCountingFile(const string& ply_file)
  * a realizar obtiene el incremento a aplicar al tamaño del voxel en cada iteracion
 */
 
-void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults)
+std::vector<std::pair<double, double> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, string fresults)
 {
+	std::vector<std::pair<double, double> > xy_pts;				// Tupla que almacena ambos datos juntos
+	std::vector<std::pair<double, double> > xy_log_pts;				// Tupla que almacena ambos datos juntos
+
+	string fresults_data = fresults + ".out";
 	ofstream f;
-  	f.open(fresults.c_str());										// Open del fichero del fichero de salida para almacenar resultados
+  	f.open(fresults_data.c_str());										// Open del fichero del fichero de salida para almacenar resultados
 
   	if(f.good())
   	{
     	// Vectores con las soluciones y leaf size de cada solución
     	std::vector<int> results;									// Vector con resultado de cada iteracion
     	std::vector<double> leafSizes;								// Leaf size de cada resultado, results[i] -> leafSizes[i]
-    	std::vector<std::pair<double, double> > xy_pts;				// Tupla que almacena ambos datos juntos
-    	std::vector<std::pair<double, double> > xy_log_pts;				// Tupla que almacena ambos datos juntos
 
     	MY_POINT_CLOUD::Ptr cloud_filtered(new MY_POINT_CLOUD());	// Point Cloud donde se almacena la nube filtrada en cada iteracion
     	pcl::VoxelGrid<MY_POINT_TYPE> sor;							// Filtro que realiza el box counting
@@ -259,10 +277,11 @@ void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults)
 
 			results.push_back(cloud_filtered->size());			// El tamaño de la nube filtrada son el numero de voxeles que no están vacíos
 			//leafSizes.push_back(leafSize);					// Se almacena leafsize para el resultado almacenado
-			leafSizes.push_back((leafSizeX*leafSizeY*leafSizeZ)/3);								// Se almacena leafsize para el resultado almacenado
+			double average_leafSize = (leafSizeX*leafSizeY*leafSizeZ/3)+1;	// Se suma 1 para que el log no pueda dar negativo
+			leafSizes.push_back(average_leafSize);								// Se almacena leafsize para el resultado almacenado
 
-			xy_pts.push_back(std::make_pair((leafSizeX*leafSizeY*leafSizeZ)/3, cloud_filtered->size()));
-			xy_log_pts.push_back(std::make_pair(log(((leafSizeX*leafSizeY*leafSizeZ)/3)+1), log(cloud_filtered->size())));
+			xy_pts.push_back(std::make_pair(average_leafSize, cloud_filtered->size()));
+			xy_log_pts.push_back(std::make_pair(log(1/average_leafSize), log(cloud_filtered->size())));
 		}
 
 	    Eigen::Vector3i nrDivisions = sor.getNrDivisions();
@@ -295,7 +314,45 @@ void boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, const string& fresults)
 	}
 	else
 		cerr << "ERROR: No se ha podido crear el archivo " << fresults << "\n";  
+
+	return xy_log_pts;
 }
+
+/*
+void plotXYgraphDir(string filename, std::vector<std::pair<std::vector<std::pair<double, double> >, string > > xy_pts)
+{
+	Gnuplot gp;
+	string format = "png";
+	filename = filename + "." + format;
+	string command = "";
+
+	gp << "set terminal " << format << "\n";
+	gp << "set output '"<< filename << "'\n";
+	gp << "set grid\n";
+	gp << "set xlabel 'Log(Leaf size)'\n";
+	gp << "set ylabel 'Log(N Points)'\n";
+	gp << "f(x) = m*x+b\n";
+
+	for(int i = 0; i < xy_pts.size(); i++)
+	{
+		command += "fit f_" + numberToString(i) + "(x) '-' via m,b\n";
+		command += "title_f_" + numberToString(i) + "(m,b) = sprintf('" + xy_pts[i].second + " - f(x) = %.2fx + %.2f', m, b)\n";
+
+		if(i = 0)
+			command += "plot ";
+		else
+			command += ", ";
+		command += "f_" + numberToString(i) + "(x) title title_f(m,b)";
+	}
+	gp << command << "\n";
+
+	for(int i = 0; i < xy_pts.size(); i++)
+	{
+		gp.file1d(xy_pts[i].first);
+	}
+
+	cout << "title_f(a,b) = sprintf('f(x) = %2fx + %.2f', a, b)\n";
+}*/
 
 void plotXYgraph(string filename, std::vector<std::pair<double, double> > xy_pts)
 {
@@ -306,7 +363,7 @@ void plotXYgraph(string filename, std::vector<std::pair<double, double> > xy_pts
 	gp << "set terminal " << format << "\n";
 	gp << "set output '"<< filename << "'\n";
 	gp << "set grid\n";
-	gp << "set xlabel 'Log(Leaf size)'\n";
+	gp << "set xlabel 'Log(1/Leaf size)'\n";
 	gp << "set ylabel 'Log(N Points)'\n";
 	gp << "f(x) = m*x+b\n";
 	gp << "fit f(x)" << gp.file1d(xy_pts) << " via m,b\n";
@@ -314,5 +371,11 @@ void plotXYgraph(string filename, std::vector<std::pair<double, double> > xy_pts
 	gp << "plot" << gp.file1d(xy_pts) << "with points title 'P', f(x) title title_f(m,b)\n";
 
 	cout << "title_f(a,b) = sprintf('f(x) = %2fx + %.2f', a, b)\n";
-	//gp.clearTmpfiles();
+}
+
+string numberToString(int number)
+{
+	ostringstream ss;
+	ss << number;
+	return ss.str();
 }
