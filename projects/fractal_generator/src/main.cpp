@@ -9,7 +9,7 @@ using namespace std;
 #define POINT pcl::PointXYZ						
 #define POINT_CLOUD pcl::PointCloud<POINT>
 #define fractal_size 100
-#define debug 2
+#define debug 1
 
 // HEADERS
 void infoParms();
@@ -251,30 +251,36 @@ void sierpinskiPyramid(int iterations, POINT_CLOUD::Ptr sierpinski_set)
 
 			if(!repetido)
 				sierpinski_set_t->points.push_back(sierpinski_set->points[j]);
-			POINT p1_aux, p2_aux, p3_aux;
+			POINT p1_aux, p2_aux, p3_aux, p4_aux;
 
-			p1_aux.x = sierpinski_set->points[j].x;
+			p1_aux.x = sierpinski_set->points[j].x + fractal_size;
 			p1_aux.y = sierpinski_set->points[j].y;
-			p1_aux.z = sierpinski_set->points[j].z - fractal_size;
+			p1_aux.z = sierpinski_set->points[j].z;
 
-			p2_aux.x = sierpinski_set->points[j].x + abs(p3.x-p2.x);
+			p2_aux.x = sierpinski_set->points[j].x;
 			p2_aux.y = sierpinski_set->points[j].y;
-			p2_aux.z = sierpinski_set->points[j].z - abs(p3.z-p2.z);
+			p2_aux.z = sierpinski_set->points[j].z - fractal_size;
 
-			p3_aux.x = sierpinski_set->points[j].x + p4.x;
-			p3_aux.y = sierpinski_set->points[j].y + h;
-			p3_aux.z = sierpinski_set->points[j].z - (fractal_size)/2;
+			p3_aux.x = sierpinski_set->points[j].x + fractal_size;
+			p3_aux.y = sierpinski_set->points[j].y;
+			p3_aux.z = sierpinski_set->points[j].z - fractal_size;
+
+			p4_aux.x = sierpinski_set->points[j].x + fractal_size/2;
+			p4_aux.y = sierpinski_set->points[j].y + p5.y;
+			p4_aux.z = sierpinski_set->points[j].z - fractal_size/2;
 
 #if debug == 2
 			cout << "# Punto " << j << " = " << sierpinski_set->points[j] << "\n";
 			cout << "# Punto " << j << "_1 = " << p1_aux << "\n";
 			cout << "# Punto " << j << "_2 = " << p2_aux << "\n";
 			cout << "# Punto " << j << "_3 = " << p3_aux << "\n";
+			cout << "# Punto " << j << "_3 = " << p4_aux << "\n";
 #endif
 
 			bool repetido_p1_aux = false;
 			bool repetido_p2_aux = false;
 			bool repetido_p3_aux = false;
+			bool repetido_p4_aux = false;
 
 			for(int l = 0; l < sierpinski_set_t->points.size(); l++)
 			{
@@ -306,6 +312,21 @@ void sierpinskiPyramid(int iterations, POINT_CLOUD::Ptr sierpinski_set)
 				{
 					repetido_p3_aux = true;
 				}
+				if((p1_aux.x == p4_aux.x &&
+					p1_aux.y == p4_aux.y &&
+					p1_aux.z == p4_aux.z) ||
+					(p2_aux.x == p4_aux.x &&
+					p2_aux.y == p4_aux.y &&
+					p2_aux.z == p4_aux.z) ||
+					(p3_aux.x == p4_aux.x &&
+					p3_aux.y == p4_aux.y &&
+					p3_aux.z == p4_aux.z) ||
+					(sierpinski_set_t->points[l].x == p4_aux.x &&
+					sierpinski_set_t->points[l].y == p4_aux.y &&
+					sierpinski_set_t->points[l].z == p4_aux.z))
+				{
+					repetido_p4_aux = true;
+				}
 			}
 
 			if(!repetido_p1_aux)
@@ -314,9 +335,10 @@ void sierpinskiPyramid(int iterations, POINT_CLOUD::Ptr sierpinski_set)
 				sierpinski_set_t->points.push_back(p2_aux);
 			if(!repetido_p3_aux)
 				sierpinski_set_t->points.push_back(p3_aux);
+			if(!repetido_p4_aux)
+				sierpinski_set_t->points.push_back(p4_aux);
 
 		}
-		increment = increment*2;
 		sierpinski_set->points.clear();
 		for(int j = 0; j < sierpinski_set_t->points.size(); j++)
 		{
