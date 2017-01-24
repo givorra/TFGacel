@@ -63,7 +63,7 @@ int main (int argc, char *argv[])
 			}
 			else if(option == optionDir)
 			{
-				 boxCountingDirectory(path);
+				std::vector<std::pair<std::vector<std::pair<double, double> >, string > > dir_results = boxCountingDirectory(path);				
 			}
 			else
 			{
@@ -156,6 +156,8 @@ bool checkPathExist(const string& path)
 
 std::vector<std::pair<std::vector<std::pair<double, double> >, string > > boxCountingDirectory(const string& dir)
 {
+	std::vector<std::pair<std::vector<std::pair<double, double> >, string > > dir_results;
+
 	if(checkPathExist(dir))
 	{
 		std::vector<std::pair<std::vector<std::pair<double, double> >, string > > dir_results;
@@ -179,12 +181,15 @@ std::vector<std::pair<std::vector<std::pair<double, double> >, string > > boxCou
 			while(!f.eof())
 			{
 				dir_results.push_back(std::make_pair(boxCountingFile(ply_file), ply_file));
+				//cout << "Procesado " << ply_file << "\n";
 				getline(f, ply_file);
 			}
 		}
 	}
 	else
 		cerr << "ERROR: El directorio [" << dir << "] no existe o no es accesible\n";
+
+	return dir_results;
 }
 
 std::vector<std::pair<double, double> > boxCountingFile(const string& ply_file)
@@ -254,11 +259,11 @@ std::vector<std::pair<double, double> > boxCounting(MY_POINT_CLOUD::Ptr cloud_pt
 	    ySize = max_pt.y - min_pt.y;
 	    zSize = max_pt.z - min_pt.z;
 
-	    //selectedSize = fmaxf(fmaxf(xSize, ySize), zSize);
+	    selectedSize = fmaxf(fmaxf(xSize, ySize), zSize)/iterations;
 	    //selectedSize = fminf(fminf(xSize, ySize), zSize);  // Prueba cogiendo el minimo en vez del maximo
-	    incrementX = xSize/iterations;
-	    incrementY = ySize/iterations;
-	    incrementZ = zSize/iterations;
+	    incrementX = selectedSize;
+	    incrementY = selectedSize;
+	    incrementZ = selectedSize;
 	    leafSizeX = 0;
 	    leafSizeY = 0;
 	    leafSizeZ = 0;

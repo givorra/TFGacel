@@ -1,0 +1,33 @@
+ply
+format ascii 1.0
+comment PCL generated
+obj_info is_cyberware_data 0
+obj_info is_mesh 0
+obj_info is_warped 0
+obj_info is_interlaced 0
+obj_info num_cols 10
+obj_info num_rows 1
+obj_info echo_rgb_offset_x 0
+obj_info echo_rgb_offset_y 0
+obj_info echo_rgb_offset_z 0
+obj_info echo_rgb_frontfocus 0.0
+obj_info echo_rgb_backfocus 0.0
+obj_info echo_rgb_pixelsize 0.0
+obj_info echo_rgb_centerpixel 0
+obj_info echo_frames 1
+obj_info echo_lgincr 0.0
+element vertex 10
+property float x
+property float y
+property float z
+end_header
+0 0 0
+0 0 -1
+0.866025 0 -0.5
+0.288675 0.816497 -0.5
+0 0 1
+0.866025 0 0.5
+0.288675 0.816497 0.5
+1.73205 0 0
+1.1547 0.816497 0
+0.57735 1.63299 0

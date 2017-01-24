@@ -228,6 +228,11 @@ CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/io/file_io.h
 CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/io/impl/pcd_io.hpp
 CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/io/lzf.h
 CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/io/pcd_io.h
+CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/byte_order.h
+CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/io_operators.h
+CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/ply.h
+CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/io/ply/ply_parser.h
+CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/io/ply_io.h
 CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/pcl_base.h
 CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/pcl_config.h
 CMakeFiles/sierpinski.dir/main.cpp.o: /usr/include/pcl-1.7/pcl/pcl_exports.h
